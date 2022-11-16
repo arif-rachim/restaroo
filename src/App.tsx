@@ -1,26 +1,73 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {createContext, useMemo} from 'react';
+
+
+import AppShell from "./components/AppShell";
+
+export const WindowSizeContext = createContext<{ width: number, height: number }>({width: 0, height: 0})
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+    let {width, height} = useMemo(() => ({width: window.innerWidth, height: window.innerHeight}), []);
+
+    const isSimulator = width > 490;
+    let scale = 1;
+    if (width > 490) {
+        width = 390;
+        height = 844;
+        scale = (window.innerHeight - 20) / height;
+    }
+    const windowsSizeContextProviderValue = useMemo(() => ({width, height}), [height, width]);
+    if (isSimulator) {
+
+        return <div style={{display: 'flex', height: '100%', overflow: 'hidden',alignItems:'center',boxSizing:'border-box'}}>
+            <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center'}}>
+                <div style={{margin: 60, marginTop: 0, display: 'flex', flexDirection: 'column'}}>
+                    <div style={{fontSize: 55}}>
+                        Restaroo
+                    </div>
+                    <div>
+                        Designed and Developed by Arif Rachim 2022
+                    </div>
+                </div>
+            </div>
+
+            <WindowSizeContext.Provider value={windowsSizeContextProviderValue}>
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height,
+                    width,
+                    flexShrink: 0,
+                    borderRadius: 30,
+                    marginRight: '5%',
+                    overflow: 'auto',
+                    boxShadow: '0 5px 5px 0 rgba(0,0,0,0.5)',
+                    border: '10px solid rgba(0,0,0,1)',
+                    transform:`scale(${scale})`
+                }}>
+                    <AppShell/>
+                </div>
+            </WindowSizeContext.Provider>
+
+        </div>
+    }
+
+    return <div style={{display: 'flex', height: '100%', overflow: 'auto'}}>
+        <WindowSizeContext.Provider value={windowsSizeContextProviderValue}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                height,
+                width,
+                flexShrink: 0,
+                overflow: 'auto',
+                margin: 0,
+                borderRadius: 0
+            }}>
+                <AppShell/>
+            </div>
+        </WindowSizeContext.Provider>
     </div>
-  );
 }
 
 export default App;
