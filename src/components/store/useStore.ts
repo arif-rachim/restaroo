@@ -28,7 +28,11 @@ export interface Store<S> {
     setState: (newStateOrCallback: S | ((currentState: S) => S)) => void
 }
 
-export function useCreateStore<S>(initializer: S | (() => S), reducer?: (action: Action) => (oldState: S) => S): Store<S> {
+export function createStoreInitValue<T>(param: T):Store<T> {
+    return {stateRef:{current:param},setState:() => {},dispatch:() => {},addListener:() => () => {}};
+}
+
+export function useStore<S>(initializer: S | (() => S), reducer?: (action: Action) => (oldState: S) => S): Store<S> {
 
     const listenerRef = useRef<Listener[]>([]);
     const reducerRef = useRef(reducer)

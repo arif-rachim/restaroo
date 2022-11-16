@@ -1,6 +1,16 @@
 import {RouteProps, useRoute} from "./useRoute";
-import {createContext, FunctionComponent, useContext, useEffect, useMemo, useRef, useState} from "react";
+import {
+    createContext,
+    FunctionComponent,
+    useContext,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import {motion, Variants} from "framer-motion";
+
 
 const variants:Variants = {
     left : {
@@ -46,6 +56,9 @@ const variants:Variants = {
  */
 export function RouterPageContainer() {
     const componentsRef = useRef<PathAbleComponent[]>([]);
+    const headerComponent = useRef<HTMLDivElement>(null);
+    const footerComponent = useRef<HTMLDivElement>(null);
+
     const {
         params,
         routeComponent: RouteComponent,
@@ -74,6 +87,8 @@ export function RouterPageContainer() {
     } else {
         componentsRef.current[componentIndex].params = params;
     }
+
+
     return <CurrentActivePathContext.Provider value={path}>
         <div style={{
             height: '100%',
@@ -88,10 +103,10 @@ export function RouterPageContainer() {
                 const isFocused = c.path === path;
                 return <Component key={c.path} params={c.params} path={c.path} isFocused={isFocused}/>
             })}
-            <div style={{position: 'absolute', bottom: 0, width: '100%'}}>
+            <div style={{position: 'absolute', bottom: 0, width: '100%'}} ref={footerComponent}>
                 <RouteFooterComponent path={path} params={params}/>
             </div>
-            <div style={{position: 'absolute', top: 0, width: '100%'}}>
+            <div style={{position: 'absolute', top: 0, width: '100%'}} ref={headerComponent}>
                 <RouterHeaderComponent path={path} params={params}/>
             </div>
         </div>

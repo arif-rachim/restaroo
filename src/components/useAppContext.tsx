@@ -1,5 +1,5 @@
 import {createContext, Dispatch, PropsWithChildren, ReactElement, useCallback, useContext, useMemo} from "react";
-import {Store} from "./store/useCreateStore";
+import {Store} from "./store/useStore";
 import {AppState} from "./AppState";
 import {WindowSizeContext} from "../App";
 

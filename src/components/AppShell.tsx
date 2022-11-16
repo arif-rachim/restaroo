@@ -2,7 +2,7 @@ import {CSSProperties, ReactElement, useState} from "react";
 import {AppContextProvider} from "./useAppContext";
 import {AnimatePresence, motion} from "framer-motion";
 import {RouterPageContainer} from "./RouterPageContainer";
-import {useCreateStore} from "./store/useCreateStore";
+import {useStore} from "./store/useStore";
 
 const shellStyle: CSSProperties = {
     width: '100%',
@@ -36,7 +36,7 @@ const dialogPanelStyle: CSSProperties = {
 
 export default function AppShell() {
     const [modalPanel, setModalPanel] = useState<ReactElement | false>(false);
-    const store = useCreateStore({
+    const store = useStore({
         shoppingCart: [],
         cardInfo: {
             cardNumber: '',
