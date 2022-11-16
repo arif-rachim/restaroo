@@ -1,7 +1,6 @@
 import {RouteProps, useRoute} from "./useRoute";
 import {createContext, FunctionComponent, useContext, useEffect, useMemo, useRef, useState} from "react";
 import {motion, Variants} from "framer-motion";
-import {usePreviousValue} from "./page-components/usePreviousValue";
 
 const variants:Variants = {
     left : {
@@ -58,16 +57,6 @@ export function RouterPageContainer() {
 
     const Component = useMemo(() => function RouteComponentContainer(props: { isFocused: boolean } & RouteProps) {
         const {isFocused} = props;
-        const beforeIsFocused = usePreviousValue(isFocused);
-        const changeToFocused = (beforeIsFocused !== isFocused) && isFocused;
-        const changeToBlurred = (beforeIsFocused !== isFocused) && !isFocused;
-        if (changeToBlurred) {
-            //console.log('A panel is blurred');
-        }
-        if (changeToFocused) {
-            //console.log('A panel is focused');
-        }
-
         return <motion.div
             initial={initial}
             style={{position: 'absolute', height: '100%', width: '100%', overflow: 'auto'}}
