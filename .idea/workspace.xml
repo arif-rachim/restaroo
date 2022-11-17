@@ -5,32 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a247198-0416-4b34-8fd2-b5fdcc028bec" name="Changes" comment="Update folder .idea">
-      <change afterPath="$PROJECT_DIR$/src/components/page-components/InputModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Account.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Auditable.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Product.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/Profile.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/useUserProfile.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/page-components/InputModal.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/HeaderNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/HeaderNavigation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Input.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/ItemIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/ItemIcon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/store/useStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/store/useStore.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/useAppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useAppContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/useNavigate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useNavigate.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/useRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useRoute.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/HomePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/Theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/Theme.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/InputModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/InputModal.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +19,7 @@
       <list>
         <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -73,6 +51,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -106,7 +85,8 @@
       <workItem from="1668328896474" duration="2030000" />
       <workItem from="1668337595491" duration="3858000" />
       <workItem from="1668611101907" duration="7649000" />
-      <workItem from="1668695880329" duration="479000" />
+      <workItem from="1668695880329" duration="8771000" />
+      <workItem from="1668706998655" duration="656000" />
     </task>
     <task id="LOCAL-00001" summary="Update folder .idea">
       <created>1668328183391</created>
