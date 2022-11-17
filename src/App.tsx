@@ -6,9 +6,7 @@ import AppShell from "./components/AppShell";
 export const WindowSizeContext = createContext<{ width: number, height: number }>({width: 0, height: 0})
 
 function App() {
-
     let {width, height} = useMemo(() => ({width: window.innerWidth, height: window.innerHeight}), []);
-
     const isSimulator = width > 490;
     let scale = 1;
     if (width > 490) {
@@ -23,10 +21,10 @@ function App() {
             <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center'}}>
                 <div style={{margin: 60, marginTop: 0, display: 'flex', flexDirection: 'column'}}>
                     <div style={{fontSize: 55}}>
-                        Restaroo
+                        EsnaadM
                     </div>
                     <div>
-                        Designed and Developed by Arif Rachim 2022
+                        Arif Rachim 2022
                     </div>
                 </div>
             </div>

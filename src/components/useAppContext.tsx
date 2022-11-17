@@ -1,7 +1,8 @@
 import {createContext, Dispatch, PropsWithChildren, ReactElement, useCallback, useContext, useMemo} from "react";
-import {Store} from "./store/useStore";
+import {createStoreInitValue, Store} from "./store/useStore";
 import {AppState} from "./AppState";
 import {WindowSizeContext} from "../App";
+import {GuestProfile} from "../model/Profile";
 
 export function useAppContext() {
     return useContext(AppContext);
@@ -34,33 +35,7 @@ const AppContext = createContext<AppContextType>({
         appDimension: {width: 0, height: 0},
         appType: AppType.Mobile,
         showModal: Nothing,
-        store: {
-            dispatch: Nothing,
-            stateRef: {
-                current: {
-                    shoppingCart: [],
-                    shippingAddress: {
-                        addressLine2: '',
-                        state: '',
-                        addressLine1: '',
-                        city: '',
-                        firstName: '',
-                        country: '',
-                        email: '',
-                        lastName: '',
-                        note: '',
-                        phone: '',
-                        zipCode: ''
-                    },
-                    cardInfo: {
-                        cardNumber: '',
-                        cardHolderName: '',
-                        validUntil: ''
-                    }
-                }
-            }, addListener: (state: any) => Nothing,
-            setState: Nothing,
-        }
+        store: createStoreInitValue({user:GuestProfile})
     }
 );
 

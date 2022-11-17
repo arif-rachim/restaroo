@@ -4,7 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a247198-0416-4b34-8fd2-b5fdcc028bec" name="Changes" comment="Update folder .idea" />
+    <list default="true" id="9a247198-0416-4b34-8fd2-b5fdcc028bec" name="Changes" comment="Update folder .idea">
+      <change afterPath="$PROJECT_DIR$/src/components/page-components/InputModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Account.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Auditable.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Product.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/Profile.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/useUserProfile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppState.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/HeaderNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/HeaderNavigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/Input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/ItemIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/ItemIcon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/store/useStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/store/useStore.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/useAppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useAppContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/useNavigate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useNavigate.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/useRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/HomePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/LandingPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/Theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/Theme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,16 +72,17 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/routes" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/routes" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/app/hooks" />
@@ -77,7 +105,8 @@
       <workItem from="1668328813966" duration="57000" />
       <workItem from="1668328896474" duration="2030000" />
       <workItem from="1668337595491" duration="3858000" />
-      <workItem from="1668611101907" duration="7417000" />
+      <workItem from="1668611101907" duration="7649000" />
+      <workItem from="1668695880329" duration="479000" />
     </task>
     <task id="LOCAL-00001" summary="Update folder .idea">
       <created>1668328183391</created>

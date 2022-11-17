@@ -4,7 +4,6 @@ import {
     FunctionComponent,
     useContext,
     useEffect,
-    useLayoutEffect,
     useMemo,
     useRef,
     useState
@@ -72,7 +71,7 @@ export function RouterPageContainer() {
         const {isFocused} = props;
         return <motion.div
             initial={initial}
-            style={{position: 'absolute', height: '100%', width: '100%', overflow: 'auto'}}
+            style={{position: 'absolute', height: '100%', width: '100%', overflow: 'auto',boxSizing:'border-box',display:'flex',flexDirection:'column'}}
             animate={isFocused ? 'center' : initial}
             variants={variants}
         >

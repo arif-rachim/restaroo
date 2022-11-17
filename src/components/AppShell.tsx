@@ -3,13 +3,15 @@ import {AppContextProvider} from "./useAppContext";
 import {AnimatePresence, motion} from "framer-motion";
 import {RouterPageContainer} from "./RouterPageContainer";
 import {useStore} from "./store/useStore";
+import {AppState} from "./AppState";
+import {GuestProfile} from "../model/Profile";
+import {InputModal} from "./page-components/InputModal";
 
 const shellStyle: CSSProperties = {
     width: '100%',
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    background: 'url("background.jpeg")',
     alignItems: 'center',
     boxSizing: 'border-box',
     overflow: 'auto',
@@ -34,43 +36,31 @@ const dialogPanelStyle: CSSProperties = {
     minHeight: 0,
 }
 
+function Modal(props:{modalPanel:ReactElement}) {
+    return <motion.div style={modalStyle} initial={{opacity: 0}} animate={{opacity: 1}}
+                       exit={{opacity: 0}} transition={{ease: "easeInOut", duration: 0.3}}
+                       key={'modal'}>
+        <motion.div style={dialogPanelStyle} initial={{scale: 0.7, opacity: 0.4}}
+                    animate={{scale: 1, opacity: 1}} exit={{scale: 0.7, opacity: 0.4}}>
+            {props.modalPanel}
+        </motion.div>
+    </motion.div>;
+}
+
 export default function AppShell() {
     const [modalPanel, setModalPanel] = useState<ReactElement | false>(false);
-    const store = useStore({
-        shoppingCart: [],
-        cardInfo: {
-            cardNumber: '',
-            validUntil: '',
-            cardHolderName: ''
-        },
-        shippingAddress: {
-            firstName: '',
-            lastName: '',
-            addressLine1: '',
-            addressLine2: '',
-            city: '',
-            state: '',
-            zipCode: '',
-            country: '',
-            email: '',
-            phone: '',
-            note: '',
-        }
+
+    const store = useStore<AppState>({
+        user : GuestProfile
     });
 
     return <AppContextProvider setModalPanel={setModalPanel} store={store}>
         <div style={shellStyle}>
             <RouterPageContainer/>
             <AnimatePresence>
-                {modalPanel && <motion.div style={modalStyle} initial={{opacity: 0}} animate={{opacity: 1}}
-                                           exit={{opacity: 0}} transition={{ease: "easeInOut", duration: 0.3}}
-                                           key={'modal'}>
-                    <motion.div style={dialogPanelStyle} initial={{scale: 0.7, opacity: 0.4}}
-                                animate={{scale: 1, opacity: 1}} exit={{scale: 0.7, opacity: 0.4}}>
-                        {modalPanel}
-                    </motion.div>
-                </motion.div>}
+                {modalPanel && <Modal modalPanel={modalPanel} />}
             </AnimatePresence>
         </div>
+        <InputModal />
     </AppContextProvider>
 }

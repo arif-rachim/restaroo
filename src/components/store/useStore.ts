@@ -39,7 +39,10 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
     reducerRef.current = reducer;
 
     const [initialState] = useState<S>(() => {
+
         let stateInitial: any = initializer;
+
+
         if (isFunction(initializer)) {
             stateInitial = (initializer as any)();
         }
@@ -68,6 +71,7 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
         if (newState === stateRef.current) {
             return;
         }
+        stateRef.current = newState;
         stateRef.current = newState;
         listenerRef.current.forEach(l => l.call(null, newState));
     }, []);

@@ -17,7 +17,8 @@ export function useRoute(): ParamsAndComponent {
     useEffect(() => {
         const hashChangeListener = () => setParamsRouteComponent(getParamsAndComponent(route));
         window.addEventListener('hashchange', hashChangeListener)
-        return () => window.removeEventListener('hashchange', hashChangeListener)
+        return () => window.removeEventListener('hashchange', hashChangeListener);
+        // eslint-disable-next-line
     }, [route]);
     return paramsAndComponent;
 }
