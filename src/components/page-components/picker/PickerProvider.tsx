@@ -4,6 +4,8 @@ import {ForwardedRef, forwardRef, PropsWithChildren, useImperativeHandle} from "
 import {StoreValue, useStore, useStoreValue} from "../../store/useStore";
 import {motion} from "framer-motion";
 import {TimePicker} from "./TimePicker";
+import {IoCloseCircleOutline} from "react-icons/io5";
+import invariant from "tiny-invariant";
 
 
 export type ShowPickerFunction = (control: PickerOptions, value: any) => Promise<any>;
@@ -38,6 +40,11 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
         return {showPicker}
     }, [store]);
     const show = useStoreValue(store, param => param.control !== undefined)
+    function close(){
+        const current = store.stateRef.current;
+        invariant(current.onChange);
+        current.onChange(current.value);
+    }
     return <motion.div style={{
         height: '100%',
         position: 'absolute',
@@ -63,6 +70,12 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
                 </PickerContainer>
             </StoreValue>
         })}
+        <motion.div style={{right:20,position:'absolute',fontSize:40,color:'white'
+        }} animate={{top:show ? 20 : -40}} initial={{top:-40}} whileTap={{scale:0.9}} onTap={() => {
+            close();
+        }}>
+            <IoCloseCircleOutline />
+        </motion.div>
     </motion.div>
 })
 
@@ -72,7 +85,7 @@ function PickerContainer(props: PropsWithChildren<{ show: boolean }>) {
         display: 'flex',
         flexDirection: 'column',
         position: 'absolute'
-    }} initial={{bottom: '-100%'}} animate={{bottom: show ? 0 : '-100%'}}>
+    }} initial={{bottom: '-100%'}} animate={{bottom: show ? 0 : '-100%'}} transition={{bounce:0}}>
         {props.children}
     </motion.div>
 }
