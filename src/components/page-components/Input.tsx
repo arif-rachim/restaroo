@@ -1,4 +1,4 @@
-import {ChangeEventHandler, CSSProperties, HTMLInputTypeAttribute} from "react";
+import {ChangeEventHandler, CSSProperties, HTMLInputTypeAttribute, FocusEventHandler} from "react";
 import {ButtonTheme, theme} from "../../routes/Theme";
 
 interface InputStyle {
@@ -20,28 +20,29 @@ export function Input(props: {
     disabled?: boolean,
     inputMode?: "none" | "text" | "tel" | "url" | "email" | "numeric" | "decimal" | "search",
     titlePosition?: 'top' | 'left',
-    titleWidth? : number | string
+    titleWidth?: number | string,
+    onFocus?: FocusEventHandler<HTMLInputElement>
 }) {
 
-    const {error, value, defaultValue, style, type, inputMode, titlePosition,titleWidth} = props;
+    const {error, value, defaultValue, style, type, inputMode, titlePosition, titleWidth, onFocus} = props;
     const inlineTitle = titlePosition === 'left';
     return <label style={{
         display: 'flex',
-        flexDirection:  inlineTitle? 'row' : 'column',
+        flexDirection: inlineTitle ? 'row' : 'column',
         padding: '5px 0px 0px 0px',
         position: 'relative',
         borderBottom: '1px solid rgba(0,0,0,0.1)',
         ...style?.containerStyle
     }}>
         <div style={{
-            display:'flex',
+            display: 'flex',
             paddingLeft: 10,
             fontWeight: 'bold',
-            alignItems : 'center',
-            width : inlineTitle ? titleWidth : 'unset',
+            alignItems: 'center',
+            width: inlineTitle ? titleWidth : 'unset',
             paddingBottom: inlineTitle ? 10 : 0,
             marginRight: inlineTitle ? 10 : 0,
-            whiteSpace:'nowrap',
+            whiteSpace: 'nowrap',
             fontSize: 16, ...style?.titleStyle
         }}>{props.title}</div>
         <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
@@ -55,7 +56,12 @@ export function Input(props: {
                 minWidth: 0,
                 ...style?.inputStyle
             }} placeholder={props.placeholder} value={value} defaultValue={defaultValue} onChange={props.onChange}
-                   title={error} type={type} inputMode={inputMode} onFocus={e => e.target.select()}
+                   title={error} type={type} inputMode={inputMode} onFocus={e => {
+                e.target.select();
+                if (onFocus) {
+                    onFocus(e);
+                }
+            }}
                    disabled={props.disabled}/>
             <div style={{
                 paddingRight: 5,

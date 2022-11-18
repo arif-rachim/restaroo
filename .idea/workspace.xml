@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a247198-0416-4b34-8fd2-b5fdcc028bec" name="Changes" comment="Update folder .idea">
-      <change afterPath="$PROJECT_DIR$/src/components/page-components/InputModal.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/InputModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/InputModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/Input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/InputModal.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/InputModal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/useAppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useAppContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Account.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Account.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Auditable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Auditable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Product.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Profile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/useUserProfile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/useUserProfile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/HomePage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +96,7 @@
       <workItem from="1668611101907" duration="7649000" />
       <workItem from="1668695880329" duration="8771000" />
       <workItem from="1668706998655" duration="656000" />
+      <workItem from="1668759123472" duration="159000" />
     </task>
     <task id="LOCAL-00001" summary="Update folder .idea">
       <created>1668328183391</created>

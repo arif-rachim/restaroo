@@ -1,11 +1,11 @@
-import {CSSProperties, ReactElement, useState} from "react";
+import {CSSProperties, ReactElement, useCallback, useRef, useState} from "react";
 import {AppContextProvider} from "./useAppContext";
 import {AnimatePresence, motion} from "framer-motion";
 import {RouterPageContainer} from "./RouterPageContainer";
 import {useStore} from "./store/useStore";
 import {AppState} from "./AppState";
 import {GuestProfile} from "../model/Profile";
-import {InputModal} from "./page-components/InputModal";
+import {PickerProvider, ShowPickerFunction} from "./page-components/picker/PickerProvider";
 
 const shellStyle: CSSProperties = {
     width: '100%',
@@ -49,18 +49,18 @@ function Modal(props:{modalPanel:ReactElement}) {
 
 export default function AppShell() {
     const [modalPanel, setModalPanel] = useState<ReactElement | false>(false);
-
+    const showPickerRef = useRef<ShowPickerFunction>();
     const store = useStore<AppState>({
         user : GuestProfile
     });
 
-    return <AppContextProvider setModalPanel={setModalPanel} store={store}>
+    return <AppContextProvider setModalPanel={setModalPanel} store={store} showPickerRef={showPickerRef}>
         <div style={shellStyle}>
             <RouterPageContainer/>
             <AnimatePresence>
                 {modalPanel && <Modal modalPanel={modalPanel} />}
             </AnimatePresence>
         </div>
-        <InputModal />
+        <PickerProvider ref={instance => {showPickerRef.current = instance?.showPicker}} />
     </AppContextProvider>
 }
