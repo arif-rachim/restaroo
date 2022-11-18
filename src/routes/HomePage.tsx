@@ -21,7 +21,6 @@ export function HomePage() {
             <StoreValue store={store} property={'value'} selector={s => dateToHhMm(s.dateTime)}>
                 <Input title={'Time'} titlePosition={'left'} titleWidth={50} placeholder={'Please select time'}
                        onFocus={async () => {
-                           console.log('WE GOT SHIT !',store.stateRef.current.dateTime);
                            const value = await appContext.showPicker({picker: 'time', value: store.stateRef.current.dateTime});
                            store.setState({dateTime: value})
                        }} inputMode={'none'} readOnly={true}/>

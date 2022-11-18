@@ -63,10 +63,7 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
             return <StoreValue store={store} property={'show'} selector={s => s.control === key} key={key}>
                 <PickerContainer show={false}>
                     <StoreValue store={store} property={['value', 'onChange']} selector={[
-                        s => {
-                            console.log('VALUE',dateToDdMmmYyyy(s.value),key);
-                            return owner(key as PickerOptions, s.control, s.value);
-                        },
+                        s => owner(key as PickerOptions, s.control, s.value),
                         s => owner(key as PickerOptions, s.control, s.onChange),
                     ]} >
                         <Picker/>

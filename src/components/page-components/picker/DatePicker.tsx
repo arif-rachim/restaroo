@@ -12,12 +12,15 @@ function dateToCalendar(value: Date) {
     const day = value.getDate() - 1;
     const month = value.getMonth();
     const year = currentYear - value.getFullYear();
-    return {day, month, year};
+    return {day, month, year, date: value};
 }
 
-function calendarToDate(props: { day: number, month: number, year: number }) {
-    const date = new Date(currentYear - props.year, props.month, props.day + 1);
-    return date;
+function calendarToDate(props: { day: number, month: number, year: number,date:Date }) {
+    const newDate = new Date(props.date.getTime());
+    newDate.setFullYear(currentYear - props.year);
+    newDate.setMonth(props.month);
+    newDate.setDate(props.day + 1);
+    return newDate;
 }
 
 const MONTHS: KeyValue[] = [
@@ -68,7 +71,7 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
         <div style={{
             display: 'flex',
             justifyContent: 'center',
-            position:'relative'
+            position: 'relative'
         }}>
             <StoreValue store={store} property={'value'} selector={s => s.day}>
                 <Picker width={70}
@@ -86,7 +89,13 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
                         onChange={year => store.setState(old => ({...old, year}))}
                 />
             </StoreValue>
-            <div style={{position:'absolute',width:'100%',top:150,height:50,backgroundColor:'rgba(0,0,0,0.1)'}}/>
+            <div style={{
+                position: 'absolute',
+                width: '100%',
+                top: 150,
+                height: 50,
+                backgroundColor: 'rgba(0,0,0,0.1)'
+            }}/>
 
         </div>
 
