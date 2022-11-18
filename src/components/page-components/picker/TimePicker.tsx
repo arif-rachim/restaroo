@@ -9,14 +9,14 @@ import {ButtonTheme} from "../../../routes/Theme";
 const defaultDate = new Date();
 const nothing = () => {};
 
-function toTimeFormat(value: Date) {
+function dateToTime(value: Date) {
     const hours = value.getHours();
     const minutes = value.getMinutes();
     return {hours,minutes};
 }
 
 
-function toDateFormat(props: { hours: number, minutes:number,date?:Date }) {
+function timeToDate(props: { hours: number, minutes:number,date?:Date }) {
     const date = props.date ?? new Date();
     const newDate = new Date(date.getTime());
     newDate.setHours(props.hours,props.minutes,0,0);
@@ -27,9 +27,9 @@ export function TimePicker(props:{ value?: Date, onChange?: (value: Date) => voi
     const value = props.value ?? defaultDate;
     const onChange = props.onChange ?? nothing;
 
-    const store = useStore(() => toTimeFormat(value));
+    const store = useStore(() => dateToTime(value));
     useAfterInit(() => {
-        const newState = toTimeFormat(value);
+        const newState = dateToTime(value);
         store.setState(newState);
     }, [value, store]);
 
@@ -58,7 +58,7 @@ export function TimePicker(props:{ value?: Date, onChange?: (value: Date) => voi
             </StoreValue>
         </div>
         <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
-            <Button title={'OK'} onTap={() => onChange(toDateFormat(store.stateRef.current))} icon={IoCalendar}
+            <Button title={'OK'} onTap={() => onChange(timeToDate(store.stateRef.current))} icon={IoCalendar}
                     theme={ButtonTheme.promoted}/>
         </div>
     </div>

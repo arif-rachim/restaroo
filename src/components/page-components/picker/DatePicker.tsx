@@ -9,14 +9,14 @@ import {useAfterInit} from "../useAfterInit";
 
 const currentYear = new Date().getFullYear();
 
-function toCalendarFormat(value: Date) {
+function dateToCalendar(value: Date) {
     const day = value.getDate() - 1;
     const month = value.getMonth();
     const year = currentYear - value.getFullYear();
     return {day, month, year};
 }
 
-function toDateFormat(props: { day: number, month: number, year: number }) {
+function calendarToDate(props: { day: number, month: number, year: number }) {
     const date = new Date( currentYear - props.year,props.month,props.day + 1);
     return date;
 }
@@ -50,9 +50,9 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
     const value = props.value ?? defaultDate;
     const onChange = props.onChange ?? nothing;
 
-    const store = useStore(() => toCalendarFormat(value));
+    const store = useStore(() => dateToCalendar(value));
     useAfterInit(() => {
-        const newState = toCalendarFormat(value);
+        const newState = dateToCalendar(value);
         store.setState(newState);
     }, [value, store]);
 
@@ -86,7 +86,7 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
             </StoreValue>
         </div>
         <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
-            <Button title={'OK'} onTap={() => onChange(toDateFormat(store.stateRef.current))} icon={IoCalendar}
+            <Button title={'OK'} onTap={() => onChange(calendarToDate(store.stateRef.current))} icon={IoCalendar}
                     theme={ButtonTheme.promoted}/>
         </div>
     </div>
