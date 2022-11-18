@@ -3,9 +3,14 @@ import {MdPlace} from "react-icons/md";
 import {CgProfile} from "react-icons/cg";
 import {useAppContext} from "../useAppContext";
 import {IoChevronDown} from "react-icons/io5";
+import {motion} from "framer-motion";
+import {useNavigate} from "../useNavigate";
 export function HeaderNavigation(){
     const {appDimension} = useAppContext();
-    return <div style={{display:'flex',overflow:'auto',flexWrap:'nowrap',boxSizing:'border-box',width:appDimension.width,padding:5}}>
+    const navigate = useNavigate();
+    return <motion.div style={{display:'flex',overflow:'auto',flexWrap:'nowrap',boxSizing:'border-box',width:appDimension.width,padding:5}}
+                       initial={{y:-100}} animate={{y:0}} exit={{y:-100}}
+    >
         <div style={{fontSize:30,marginRight:5}}>
             <MdPlace/>
         </div>
@@ -19,8 +24,10 @@ export function HeaderNavigation(){
 
             <div style={{textOverflow:'ellipsis',width:'100%',whiteSpace:'nowrap',overflow:'hidden'}}>Marina Diamond 5, Flat 806, Dubai Marina, Dubai Marina</div>
         </div>
-        <div style={{fontSize:35,width:35,flexShrink:0,marginLeft:5}}>
+        <motion.div style={{fontSize:35,width:35,flexShrink:0,marginLeft:5}} whileTap={{scale:0.9}} onTap={() => {
+            navigate('account');
+        }}>
             <CgProfile/>
-        </div>
-    </div>
+        </motion.div>
+    </motion.div>
 }

@@ -5,6 +5,7 @@ import {FooterNavigation} from "../components/page-components/FooterNavigation";
 import {DiningPage} from "./DiningPage";
 import {ReservationPage} from "./ReservationPage";
 import {Routes} from "../components/useRoute";
+import {AccountPage} from "./AccountPage";
 
 
 export const routes:Routes = {
@@ -29,5 +30,9 @@ export const routes:Routes = {
         footerComponent:FooterNavigation,
         initial:'right',
         headerComponent : HeaderNavigation
+    },
+    'account' : {
+        component : AccountPage,
+        initial : 'right'
     }
 }

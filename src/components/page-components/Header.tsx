@@ -10,18 +10,14 @@ export function Header(props: PropsWithChildren<{ title: Element }>) {
     return <div style={{
         display: 'flex',
         alignItems: 'center',
-        borderBottom: '1px solid rgba(0,0,0,0.05)',
-        paddingLeft: 10,
-        padding: 5,
-        paddingTop: 7,
-        paddingRight: 20,
+        padding: '5px 5px',
     }}>
         <motion.div onTap={() => window.history.back()}
                     whileHover={{scale: 1.05}}
                     whileTap={{scale: 0.95}}>
-            <IoChevronBackOutline style={{fontSize: 36}}/>
+            <IoChevronBackOutline style={{fontSize: 25}}/>
         </motion.div>
-        
+
         <div style={{fontSize: 18, fontWeight: 'bold', lineHeight: 1, marginBottom: 2, marginLeft: 10}}>{title}</div>
         {props.children}
     </div>;

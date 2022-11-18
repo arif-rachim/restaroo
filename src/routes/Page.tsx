@@ -1,6 +1,7 @@
-import {PropsWithChildren} from "react";
+import {CSSProperties, PropsWithChildren} from "react";
 
-export function Page(props:PropsWithChildren) {
+export function Page(props:PropsWithChildren<{style?:CSSProperties}>) {
+    const style = props.style ?? {};
     return <div style={{
         paddingTop: 55,
         paddingLeft: 10,
@@ -9,7 +10,8 @@ export function Page(props:PropsWithChildren) {
         flexDirection: 'column',
         boxSizing: 'border-box',
         height: '100%',
-        overflow: 'auto'
+        overflow: 'auto',
+        ...style
     }}>
         {props.children}
     </div>;

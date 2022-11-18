@@ -1,50 +1,42 @@
 import {RouteProps, useRoute} from "./useRoute";
-import {
-    createContext,
-    FunctionComponent,
-    useContext,
-    useEffect,
-    useMemo,
-    useRef,
-    useState
-} from "react";
+import {createContext, FunctionComponent, useContext, useEffect, useMemo, useRef, useState} from "react";
 import {motion, Variants} from "framer-motion";
 
 
-const variants:Variants = {
-    left : {
-        top : 0,
-        left : '-100%',
-        transition : {
-            bounce : 0,
+const variants: Variants = {
+    left: {
+        top: 0,
+        left: '-100%',
+        transition: {
+            bounce: 0,
         }
     },
-    right : {
-        top : 0,
-        left : '100%',
-        transition : {
-            bounce : 0,
+    right: {
+        top: 0,
+        left: '100%',
+        transition: {
+            bounce: 0,
         }
     },
-    top : {
-        top : '-100%',
-        left : 0,
-        transition : {
-            bounce : 0,
+    top: {
+        top: '-100%',
+        left: 0,
+        transition: {
+            bounce: 0,
         }
     },
-    bottom : {
-        top : '100%',
-        left : 0,
-        transition : {
-            bounce : 0,
+    bottom: {
+        top: '100%',
+        left: 0,
+        transition: {
+            bounce: 0,
         }
     },
-    center : {
-        top : 0,
-        left : 0,
-        transition : {
-            bounce : 0,
+    center: {
+        top: 0,
+        left: 0,
+        transition: {
+            bounce: 0,
         }
     }
 }
@@ -64,14 +56,22 @@ export function RouterPageContainer() {
         path,
         initial,
         routeFooterComponent: RouteFooterComponent,
-        routeHeaderComponent : RouterHeaderComponent
+        routeHeaderComponent: RouterHeaderComponent
     } = useRoute();
 
     const Component = useMemo(() => function RouteComponentContainer(props: { isFocused: boolean } & RouteProps) {
         const {isFocused} = props;
         return <motion.div
             initial={initial}
-            style={{position: 'absolute', height: '100%', width: '100%', overflow: 'auto',boxSizing:'border-box',display:'flex',flexDirection:'column'}}
+            style={{
+                position: 'absolute',
+                height: '100%',
+                width: '100%',
+                overflow: 'auto',
+                boxSizing: 'border-box',
+                display: 'flex',
+                flexDirection: 'column'
+            }}
             animate={isFocused ? 'center' : initial}
             variants={variants}
         >
@@ -89,6 +89,7 @@ export function RouterPageContainer() {
 
 
     return <CurrentActivePathContext.Provider value={path}>
+
         <div style={{
             height: '100%',
             width: '100%',
@@ -102,13 +103,16 @@ export function RouterPageContainer() {
                 const isFocused = c.path === path;
                 return <Component key={c.path} params={c.params} path={c.path} isFocused={isFocused}/>
             })}
+
             <div style={{position: 'absolute', bottom: 0, width: '100%'}} ref={footerComponent}>
                 <RouteFooterComponent path={path} params={params}/>
             </div>
+
             <div style={{position: 'absolute', top: 0, width: '100%'}} ref={headerComponent}>
                 <RouterHeaderComponent path={path} params={params}/>
             </div>
         </div>
+
     </CurrentActivePathContext.Provider>
 }
 
@@ -120,11 +124,9 @@ interface PathAbleComponent {
 
 const CurrentActivePathContext = createContext('');
 
-export function useFocusListener(path: string) {
+export function useFocusListener(path: string,callback:(isFocus:boolean) => void) {
     const currentActivePath = useContext(CurrentActivePathContext);
-    const [isFocused, setIsFocused] = useState<boolean>(currentActivePath === path);
-    useEffect(() => setIsFocused(currentActivePath === path), [path, currentActivePath]);
-    return isFocused;
+    callback(currentActivePath === path);
 }
 
 

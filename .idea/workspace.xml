@@ -5,14 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="update the picker">
-      <change afterPath="$PROJECT_DIR$/src/routes/Page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/page-components/adjustThemeColor.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/AccountPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppState.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/FooterNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/FooterNavigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/HeaderClose.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/page-components/HeaderNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/HeaderNavigation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/DiningPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DiningPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/Page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/Page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +30,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -64,7 +72,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668759644605</updated>
-      <workItem from="1668759649164" duration="20664000" />
+      <workItem from="1668759649164" duration="24982000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
