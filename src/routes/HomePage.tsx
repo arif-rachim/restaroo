@@ -11,7 +11,10 @@ export function HomePage() {
                 const value = await appContext.showPicker({picker:'date',value:new Date()});
                 alert('WE GOT VALUE ' + value.toISOString());
             }} inputMode={'none'}/>
-            <Input title={'Time'} titlePosition={'left'} titleWidth={50}  placeholder={'Please select time'}/>
+            <Input title={'Time'} titlePosition={'left'} titleWidth={50}  placeholder={'Please select time'} onFocus={async () => {
+                const value = await appContext.showPicker({picker:'time',value:new Date()});
+                alert('WE GOT VALUE ' + value.toISOString());
+            }} inputMode={'none'}/>
         </div>
 
     </div>

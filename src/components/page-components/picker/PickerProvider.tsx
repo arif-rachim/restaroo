@@ -1,16 +1,24 @@
 import {useAppContext} from "../../useAppContext";
 import {DatePicker} from "./DatePicker";
-import {useImperativeHandle, forwardRef, ForwardedRef} from "react";
-import {useStore, StoreValue, useStoreValue} from "../../store/useStore";
+import {ForwardedRef, forwardRef, PropsWithChildren, useImperativeHandle} from "react";
+import {StoreValue, useStore, useStoreValue} from "../../store/useStore";
 import {motion} from "framer-motion";
+import {TimePicker} from "./TimePicker";
 
-export type PickerOptions = 'date' | 'time';
+
 export type ShowPickerFunction = (control: PickerOptions, value: any) => Promise<any>;
 
 const owner = (match: PickerOptions, control?: PickerOptions, param?: any) => {
     return control === match ? param : undefined
 }
 const NO_PICKER = {control: undefined, value: undefined, onChange: undefined};
+
+export const PickerMap = {
+    date: DatePicker,
+    time: TimePicker
+}
+
+export type PickerOptions = keyof typeof PickerMap;
 
 export const PickerProvider = forwardRef(function PickerProvider(props, ref: ForwardedRef<{ showPicker: ShowPickerFunction }>) {
     const store = useStore<{ control?: PickerOptions, value?: any, onChange?: (param: any) => void }>(NO_PICKER);
@@ -42,17 +50,29 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
                            backgroundColor: show ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0)',
                            zIndex: show ? 0 : -1
                        }}>
-        <motion.div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'absolute'
-        }} initial={{bottom: '-100%'}} animate={{bottom: show ? 0 : '-100%'}}>
-            <StoreValue store={store} property={['value', 'onChange']} selector={[
-                s => owner('date', s.control, s.value),
-                s => owner('date', s.control, s.onChange),
-            ]}>
-                <DatePicker/>
+        {Object.keys(PickerMap).map((key) => {
+            const Picker = (PickerMap as any)[key];
+            return <StoreValue store={store} property={'show'} selector={s => s.control === key} key={key}>
+                <PickerContainer show={false}>
+                    <StoreValue store={store} property={['value', 'onChange']} selector={[
+                        s => owner('date', s.control, s.value),
+                        s => owner('date', s.control, s.onChange),
+                    ]}>
+                        <Picker/>
+                    </StoreValue>
+                </PickerContainer>
             </StoreValue>
-        </motion.div>
+        })}
     </motion.div>
 })
+
+function PickerContainer(props: PropsWithChildren<{ show: boolean }>) {
+    const {show} = props;
+    return <motion.div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'absolute'
+    }} initial={{bottom: '-100%'}} animate={{bottom: show ? 0 : '-100%'}}>
+        {props.children}
+    </motion.div>
+}

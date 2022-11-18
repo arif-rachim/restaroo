@@ -17,7 +17,7 @@ function toCalendarFormat(value: Date) {
 }
 
 function toDateFormat(props: { day: number, month: number, year: number }) {
-    const date = new Date(props.day + 1, props.month, currentYear - props.year);
+    const date = new Date( currentYear - props.year,props.month,props.day + 1);
     return date;
 }
 
@@ -63,10 +63,7 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
         width: appDimension.width,
         backgroundColor: 'white'
     }}>
-        <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
-            <Button title={'OK'} onTap={() => onChange(toDateFormat(store.stateRef.current))} icon={IoCalendar}
-                    theme={ButtonTheme.promoted}/>
-        </div>
+
         <div style={{
             display: 'flex',
             justifyContent: 'center'
@@ -87,6 +84,10 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
                         onChange={year => store.setState(old => ({...old, year}))}
                 />
             </StoreValue>
+        </div>
+        <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
+            <Button title={'OK'} onTap={() => onChange(toDateFormat(store.stateRef.current))} icon={IoCalendar}
+                    theme={ButtonTheme.promoted}/>
         </div>
     </div>
 }
