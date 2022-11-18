@@ -79,7 +79,7 @@ export function AppContextProvider<State extends AppState>(props: PropsWithChild
     const showPicker: PickerFunction = useCallback((props: { picker: PickerOptions, value: any }) => {
         invariant(showPickerRef.current);
         return showPickerRef.current.call(null, props.picker, props.value);
-    }, []);
+    }, [showPickerRef]);
     const contextValue = useMemo(() => {
         const appDimension: Dimension = window;
 

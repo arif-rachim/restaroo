@@ -6,6 +6,7 @@ import {motion} from "framer-motion";
 import {TimePicker} from "./TimePicker";
 import {IoCloseCircleOutline} from "react-icons/io5";
 import invariant from "tiny-invariant";
+import {dateToDdMmmYyyy} from "../utils/dateToDdMmmYyyy";
 
 
 export type ShowPickerFunction = (control: PickerOptions, value: any) => Promise<any>;
@@ -62,7 +63,10 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
             return <StoreValue store={store} property={'show'} selector={s => s.control === key} key={key}>
                 <PickerContainer show={false}>
                     <StoreValue store={store} property={['value', 'onChange']} selector={[
-                        s => owner(key as PickerOptions, s.control, s.value),
+                        s => {
+                            console.log('VALUE',dateToDdMmmYyyy(s.value),key);
+                            return owner(key as PickerOptions, s.control, s.value);
+                        },
                         s => owner(key as PickerOptions, s.control, s.onChange),
                     ]} >
                         <Picker/>

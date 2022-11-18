@@ -67,7 +67,8 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
 
         <div style={{
             display: 'flex',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            position:'relative'
         }}>
             <StoreValue store={store} property={'value'} selector={s => s.day}>
                 <Picker width={70}
@@ -85,7 +86,10 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
                         onChange={year => store.setState(old => ({...old, year}))}
                 />
             </StoreValue>
+            <div style={{position:'absolute',width:'100%',top:150,height:50,backgroundColor:'rgba(0,0,0,0.1)'}}/>
+
         </div>
+
         <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
             <Button title={'OK'} onTap={() => onChange(calendarToDate(store.stateRef.current))} icon={IoCalendar}
                     theme={ButtonTheme.promoted}/>

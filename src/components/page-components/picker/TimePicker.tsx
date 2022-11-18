@@ -7,23 +7,25 @@ import {IoCalendar} from "react-icons/io5";
 import {ButtonTheme} from "../../../routes/Theme";
 
 const defaultDate = new Date();
-const nothing = () => {};
+const nothing = () => {
+};
 
 function dateToTime(value: Date) {
     const hours = value.getHours();
     const minutes = value.getMinutes();
-    return {hours,minutes};
+    return {hours, minutes, date: value};
 }
 
 
-function timeToDate(props: { hours: number, minutes:number,date?:Date }) {
-    const date = props.date ?? new Date();
+function timeToDate(props: { hours: number, minutes: number, date: Date }) {
+    const date = props.date;
     const newDate = new Date(date.getTime());
-    newDate.setHours(props.hours,props.minutes,0,0);
+    newDate.setHours(props.hours, props.minutes, 0, 0);
     return newDate;
 }
 
-export function TimePicker(props:{ value?: Date, onChange?: (value: Date) => void }){
+export function TimePicker(props: { value?: Date, onChange?: (value: Date) => void }) {
+
     const value = props.value ?? defaultDate;
     const onChange = props.onChange ?? nothing;
     const store = useStore(() => dateToTime(value));
@@ -39,19 +41,33 @@ export function TimePicker(props:{ value?: Date, onChange?: (value: Date) => voi
     }}>
         <div style={{
             display: 'flex',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            position: 'relative'
         }}>
             <StoreValue store={store} property={'value'} selector={s => s.hours}>
                 <Picker width={70}
-                        data={Array.from({length: 24}).map((_, index) => ({key: index, value: `${(index).toString().padStart(2,'0')}`}))}
-                        onChange={hours => store.setState(old => ({...old, hours }))}
+                        data={Array.from({length: 24}).map((_, index) => ({
+                            key: index,
+                            value: `${(index).toString().padStart(2, '0')}`
+                        }))}
+                        onChange={hours => store.setState(old => ({...old, hours}))}
                 />
             </StoreValue>
             <StoreValue store={store} property={'value'} selector={s => s.minutes}>
-                <Picker data={Array.from({length: 60}).map((_, index) => ({key: index, value: `${(index).toString().padStart(2,'0') }`}))}
+                <Picker data={Array.from({length: 60}).map((_, index) => ({
+                    key: index,
+                    value: `${(index).toString().padStart(2, '0')}`
+                }))}
                         onChange={minutes => store.setState(old => ({...old, minutes}))}
                 />
             </StoreValue>
+            <div style={{
+                position: 'absolute',
+                width: '100%',
+                top: 150,
+                height: 50,
+                backgroundColor: 'rgba(0,0,0,0.1)'
+            }}/>
         </div>
         <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
             <Button title={'OK'} onTap={() => onChange(timeToDate(store.stateRef.current))} icon={IoCalendar}

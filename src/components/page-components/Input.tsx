@@ -21,7 +21,8 @@ export function Input(props: {
     inputMode?: "none" | "text" | "tel" | "url" | "email" | "numeric" | "decimal" | "search",
     titlePosition?: 'top' | 'left',
     titleWidth?: number | string,
-    onFocus?: FocusEventHandler<HTMLInputElement>
+    onFocus?: FocusEventHandler<HTMLInputElement>,
+    readOnly?:boolean
 }) {
 
     const {error, value, defaultValue, style, type, inputMode, titlePosition, titleWidth, onFocus} = props;
@@ -57,12 +58,12 @@ export function Input(props: {
                 ...style?.inputStyle
             }} placeholder={props.placeholder} value={value} defaultValue={defaultValue} onChange={props.onChange}
                    title={error} type={type} inputMode={inputMode} onFocus={e => {
-                e.target.select();
+
                 if (onFocus) {
                     onFocus(e);
                 }
             }}
-                   disabled={props.disabled}/>
+                   disabled={props.disabled} readOnly={props.readOnly}/>
             <div style={{
                 paddingRight: 5,
                 fontSize: 12,
