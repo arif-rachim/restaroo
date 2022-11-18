@@ -36,7 +36,7 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
             })
         }
         return {showPicker}
-    }, []);
+    }, [store]);
     const show = useStoreValue(store, param => param.control !== undefined)
     return <motion.div style={{
         height: '100%',
@@ -55,9 +55,9 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
             return <StoreValue store={store} property={'show'} selector={s => s.control === key} key={key}>
                 <PickerContainer show={false}>
                     <StoreValue store={store} property={['value', 'onChange']} selector={[
-                        s => owner('date', s.control, s.value),
-                        s => owner('date', s.control, s.onChange),
-                    ]}>
+                        s => owner(key as PickerOptions, s.control, s.value),
+                        s => owner(key as PickerOptions, s.control, s.onChange),
+                    ]} >
                         <Picker/>
                     </StoreValue>
                 </PickerContainer>

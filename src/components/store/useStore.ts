@@ -28,8 +28,13 @@ export interface Store<S> {
     setState: (newStateOrCallback: S | ((currentState: S) => S)) => void
 }
 
-export function createStoreInitValue<T>(param: T):Store<T> {
-    return {stateRef:{current:param},setState:() => {},dispatch:() => {},addListener:() => () => {}};
+export function createStoreInitValue<T>(param: T): Store<T> {
+    return {
+        stateRef: {current: param}, setState: () => {
+        }, dispatch: () => {
+        }, addListener: () => () => {
+        }
+    };
 }
 
 export function useStore<S>(initializer: S | (() => S), reducer?: (action: Action) => (oldState: S) => S): Store<S> {
@@ -68,7 +73,7 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
             const functionParam = param as (param: S) => S
             newState = functionParam(stateRef.current)
         }
-        if (newState === stateRef.current) {
+        if ( newState === stateRef.current) {
             return;
         }
         stateRef.current = newState;
@@ -98,7 +103,15 @@ export function useStoreValue<T, S>(store: Store<T>, selector: (param: T) => S, 
     }, deps);
 
     // eslint-disable-next-line
-    useEffect(() => setValue(propsRef.current.selector(stateRef.current)), deps);
+    useEffect(() => setValue(current => {
+        const next = propsRef.current.selector(stateRef.current);
+        if (isMatch(next, current)) {
+            return current;
+        }
+        return next;
+        // eslint-disable-next-line
+    }), deps);
+
     return value;
 }
 
@@ -176,4 +189,23 @@ export function StoreValue<T, S>(props: PropsWithChildren<StoreValueInjectorProp
     }
     return cloneElement((children as any), childrenProps)
 
+}
+
+const isMatch = (a: any, b: any) => {
+    if (a === b) {
+        return true;
+    }
+    if (Array.isArray(a) && Array.isArray(b)) {
+        const arrayA = a as [];
+        const arrayB = b as [];
+        if (arrayA.length === arrayB.length) {
+            for (let i = 0; i < arrayA.length; i++) {
+                if (arrayA[i] !== arrayB[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
 }

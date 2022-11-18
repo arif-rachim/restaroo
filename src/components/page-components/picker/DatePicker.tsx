@@ -1,5 +1,4 @@
 import {StoreValue, useStore} from "../../store/useStore";
-import {useEffect} from "react";
 import {useAppContext} from "../../useAppContext";
 import {Button} from "../Button";
 import {IoCalendar} from "react-icons/io5";
@@ -17,7 +16,7 @@ function dateToCalendar(value: Date) {
 }
 
 function calendarToDate(props: { day: number, month: number, year: number }) {
-    const date = new Date( currentYear - props.year,props.month,props.day + 1);
+    const date = new Date(currentYear - props.year, props.month, props.day + 1);
     return date;
 }
 
@@ -44,7 +43,9 @@ const YEARS: KeyValue[] = Array.from({length: 50}).map((_, index) => {
     }
 })
 const defaultDate = new Date();
-const nothing = () => {};
+const nothing = () => {
+};
+
 export function DatePicker(props: { value?: Date, onChange?: (value: Date) => void }) {
 
     const value = props.value ?? defaultDate;
