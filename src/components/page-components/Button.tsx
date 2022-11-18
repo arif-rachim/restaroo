@@ -10,15 +10,14 @@ export function Button(props: { onTap: () => void, title: string, icon: IconType
     return <motion.button layout style={{
         minWidth: 0,
         fontSize: 18,
-        border: '1px solid rgba(0,0,0,0.03)',
+        border: '1px solid rgba(0,0,0,0)',
         borderRadius: 5,
         padding: '5px 20px',
-        background: theme[buttonTheme],
-        color: white,
+        color: theme[buttonTheme],
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        boxShadow: '0 5px 20px -3px rgba(255,255,255,0.1) inset',
+        background:'unset',
         ...props.style
     }} disabled={isBusy}
                           whileTap={{scale: 0.98}}

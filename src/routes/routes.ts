@@ -10,7 +10,7 @@ import {Routes} from "../components/useRoute";
 export const routes:Routes = {
     '': {
         component: LandingPage,
-        initial: 'left'
+        initial: 'bottom'
     },
     'delivery' : {
         component : DeliveryPage,
