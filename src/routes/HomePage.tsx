@@ -8,7 +8,7 @@ export function HomePage() {
         <Header title={'Home Page'}/>
         <div style={{display: 'flex', flexDirection: 'column'}}>
             <Input title={'Date'} titlePosition={'left'} titleWidth={50} placeholder={'Please select date'} onFocus={async () => {
-                const value = await appContext.showPicker({picker:'date',value:new Date(2000,1,1)});
+                const value = await appContext.showPicker({picker:'date',value:new Date()});
                 alert('WE GOT VALUE ' + value.toISOString());
             }} inputMode={'none'}/>
             <Input title={'Time'} titlePosition={'left'} titleWidth={50}  placeholder={'Please select time'}/>

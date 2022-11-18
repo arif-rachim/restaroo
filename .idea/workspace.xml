@@ -4,18 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a247198-0416-4b34-8fd2-b5fdcc028bec" name="Changes" comment="Update folder .idea">
+    <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/page-components/useAfterInit.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Input.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/InputModal.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/InputModal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/useAppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useAppContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Account.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Account.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Auditable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Auditable.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Product.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Profile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/useUserProfile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/useUserProfile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/picker/DatePicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/picker/DatePicker.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/HomePage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,28 +20,16 @@
       <list>
         <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
-        <option value="CSS File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitSEFilterConfiguration">
-    <file-type-list>
-      <filtered-out-file-type name="LOCAL_BRANCH" />
-      <filtered-out-file-type name="REMOTE_BRANCH" />
-      <filtered-out-file-type name="TAG" />
-      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
-    </file-type-list>
-  </component>
-  <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="a7fda519-94b9-41b5-b10f-fa940cf5bbdc" />
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="2HU7qrN3qk13Q9r80I8Po2MZuaC" />
+  <component name="ProjectId" id="2HiEk6meaMeJjz3wBkg9iZDR0i8" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -59,60 +39,23 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/src/routes" />
-      <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/app/hooks" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/assets" />
-    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="9a247198-0416-4b34-8fd2-b5fdcc028bec" name="Changes" comment="" />
-      <created>1668328003644</created>
+      <changelist id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="" />
+      <created>1668759644605</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1668328003644</updated>
-      <workItem from="1668328007157" duration="295000" />
-      <workItem from="1668328345598" duration="117000" />
-      <workItem from="1668328468507" duration="340000" />
-      <workItem from="1668328813966" duration="57000" />
-      <workItem from="1668328896474" duration="2030000" />
-      <workItem from="1668337595491" duration="3858000" />
-      <workItem from="1668611101907" duration="7649000" />
-      <workItem from="1668695880329" duration="8771000" />
-      <workItem from="1668706998655" duration="656000" />
-      <workItem from="1668759123472" duration="159000" />
+      <updated>1668759644605</updated>
+      <workItem from="1668759649164" duration="3373000" />
     </task>
-    <task id="LOCAL-00001" summary="Update folder .idea">
-      <created>1668328183391</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1668328183391</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Update folder .idea">
-      <created>1668328269888</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1668328269888</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -128,9 +71,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update folder .idea" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update folder .idea" />
   </component>
 </project>

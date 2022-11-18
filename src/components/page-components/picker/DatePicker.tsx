@@ -5,6 +5,7 @@ import {Button} from "../Button";
 import {IoCalendar} from "react-icons/io5";
 import {ButtonTheme} from "../../../routes/Theme";
 import {KeyValue, Picker} from "./Picker";
+import {useAfterInit} from "../useAfterInit";
 
 const currentYear = new Date().getFullYear();
 
@@ -50,7 +51,7 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
     const onChange = props.onChange ?? nothing;
 
     const store = useStore(() => toCalendarFormat(value));
-    useEffect(() => {
+    useAfterInit(() => {
         const newState = toCalendarFormat(value);
         store.setState(newState);
     }, [value, store]);
