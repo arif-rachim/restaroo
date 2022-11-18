@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="update the picker">
+      <change afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/DiningPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/picker/DatePicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/picker/DatePicker.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/picker/PickerProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/picker/PickerProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/HomePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/FooterNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/FooterNavigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/useNavigate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useNavigate.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/LandingPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +64,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668759644605</updated>
-      <workItem from="1668759649164" duration="12910000" />
+      <workItem from="1668759649164" duration="15258000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
