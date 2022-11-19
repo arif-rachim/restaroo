@@ -3,25 +3,96 @@ import {Header} from "../components/page-components/Header";
 import {useFocusListener} from "../components/RouterPageContainer";
 import {RouteProps} from "../components/useRoute";
 import {adjustThemeColor} from "../components/page-components/adjustThemeColor";
+import {Card, CardRow, CardTitle} from "../components/page-components/Card";
+import {BsCreditCard2Front} from "react-icons/bs";
+import {
+    IoBagHandleOutline,
+    IoChatboxOutline,
+    IoHeartOutline,
+    IoHomeOutline,
+    IoInformationCircleOutline,
+    IoSettingsOutline,
+    IoStarOutline
+} from "react-icons/io5";
+import {useRef} from "react";
+import invariant from "tiny-invariant";
+import {RiDraftLine} from "react-icons/ri";
 
-export function AccountPage(props:RouteProps){
-    useFocusListener(props.path,(isFocus) => {
-        if(isFocus){
+
+export function AccountPage(props: RouteProps) {
+    useFocusListener(props.path, (isFocus) => {
+        if (isFocus) {
             adjustThemeColor('#F2F2F2');
         }
     });
-    return <Page style={{padding:0,background:'rgba(0,0,0,0.05)'}}>
-        <Header title={''} />
-        <div style={{padding:10,display:'flex',flexDirection:'column'}}>
-            <div style={{display:'flex',backgroundColor:'white',padding:'10px 10px',borderRadius:13,boxShadow:'0 3px 10px -3px rgba(0,0,0,0.06)'}}>
-                <div style={{display:'flex',flexDirection:'column',flexGrow:1}}>
-                    <div style={{fontSize:23,fontWeight:'bold',marginBottom:10}}>Arif</div>
-                    <div style={{marginBottom:5}} >a.arif.r@gmail.com</div>
-                    <div >+971509018075</div>
-                </div>
-                <div style={{width:80,height:80,backgroundColor:'#CCC'}}>
+    const containerRef = useRef<HTMLDivElement>(null);
+    return <Page style={{padding: 0, background: 'rgba(0,0,0,0.05)'}}>
+        <Header title={''}/>
+        <div style={{display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto'}}>
 
+            <Card style={{margin: 10, marginBottom: -10}} ref={containerRef}>
+                <div style={{display: 'flex'}}>
+                    <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
+                        <div style={{fontSize: 23, fontWeight: 'bold', marginBottom: 10}}>Arif</div>
+                        <div style={{marginBottom: 5}}>a.arif.r@gmail.com</div>
+                        <div>+971509018075</div>
+                    </div>
+                    <div style={{width: 80, height: 80, backgroundColor: '#CCC', borderRadius: 13}}>
+                    </div>
                 </div>
+            </Card>
+
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                overflow: 'auto',
+                padding: '30px 10px 50px 10px'
+            }} onScroll={(event) => {
+                invariant(containerRef.current);
+                if((event.target as HTMLDivElement).scrollTop < 20){
+
+                    containerRef.current.style.boxShadow = '0 0 5px 3px rgba(0,0,0,0.0)';
+                    containerRef.current.style.zIndex = '0';
+                    containerRef.current.style.transition = 'box-shadow 100ms ease-in-out';
+                }else{
+                    containerRef.current.style.boxShadow = '0 5px 5px -3px rgba(0,0,0,0.1)';
+                    containerRef.current.style.zIndex = '1';
+                    containerRef.current.style.transition = 'box-shadow 300ms ease-in-out';
+                }
+
+            }}>
+                <div style={{display: 'flex', marginBottom: 20}}>
+                    <Card style={{marginRight: 10, flexGrow: 1, alignItems: 'center'}}>
+                        <div style={{fontSize: 30}}>
+                            <BsCreditCard2Front/>
+                        </div>
+                        <div>
+                            Payments
+                        </div>
+                    </Card>
+                    <Card style={{flexGrow: 1, alignItems: 'center'}}>
+                        <div style={{fontSize: 30}}>
+                            <IoSettingsOutline/>
+                        </div>
+                        <div>
+                            Settings
+                        </div>
+                    </Card>
+                </div>
+                <Card style={{padding: '15px 0px', marginBottom: 20}}>
+                    <CardTitle title={'Food Orders'}/>
+                    <CardRow icon={IoBagHandleOutline} title={'Your orders'}/>
+                    <CardRow icon={IoHeartOutline} title={'Favorite orders'}/>
+                    <CardRow icon={IoHomeOutline} title={'Address book'}/>
+                    <CardRow icon={IoChatboxOutline} title={'Online ordering help'}/>
+                </Card>
+                <Card style={{padding: '15px 0px'}}>
+                    <CardTitle title={'More'}/>
+                    <CardRow icon={IoInformationCircleOutline} title={'About'}/>
+                    <CardRow icon={RiDraftLine} title={'Send feedback'}/>
+                    <CardRow icon={IoStarOutline} title={'Rate us on play store'}/>
+                </Card>
             </div>
         </div>
     </Page>
