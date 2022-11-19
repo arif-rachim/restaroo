@@ -21,10 +21,10 @@ function App() {
             <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center'}}>
                 <div style={{margin: 60, marginTop: 0, display: 'flex', flexDirection: 'column'}}>
                     <div style={{fontSize: 55}}>
-                        EsnaadM
+                        Restaroo
                     </div>
                     <div>
-                        Arif Rachim 2022
+                        Design and Developed by Arif Rachim 2022
                     </div>
                 </div>
             </div>

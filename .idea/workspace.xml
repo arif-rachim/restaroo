@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="update the picker">
-      <change afterPath="$PROJECT_DIR$/src/components/page-components/Visible.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/HeaderNavigation.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/AccountPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AccountPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/Page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/Page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/assets/product/burger.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/data.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +73,7 @@
       <option name="presentableId" value="Default" />
       <updated>1668759644605</updated>
       <workItem from="1668759649164" duration="25097000" />
-      <workItem from="1668823282000" duration="28470000" />
+      <workItem from="1668823282000" duration="37010000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
