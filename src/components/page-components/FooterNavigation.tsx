@@ -77,6 +77,7 @@ export function FooterNavigation(props: RouteProps) {
         width: appDimension.width,
         boxSizing: 'border-box',
         borderTop: '1px solid rgba(0,0,0,0.05)',
+        backgroundColor:'white'
     }} initial={{y:100}} animate={{y:0}} exit={{y:100}}>
         <div style={{height:5,marginBottom:5,position:'relative'}}>
             <motion.div style={{width,background:'#333',borderBottomLeftRadius:5,borderBottomRightRadius:5,height:'100%',left:`calc(${width} * ${selectedIndex})`,position:'relative',transition:'left 200ms cubic-bezier(.49,.13,.21,.92)'}} />

@@ -8,7 +8,7 @@ export const Card =  forwardRef(function Card(props: PropsWithChildren<{style?:C
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: 'white',
-        padding: '10px 10px',
+        padding: '10px 0px',
         borderRadius: 13,
         boxShadow: '0 3px 10px -3px rgba(0,0,0,0.06)',
         ...style
@@ -20,7 +20,7 @@ export const Card =  forwardRef(function Card(props: PropsWithChildren<{style?:C
 
 export function CardRow(props:{icon:IconType,title:string}) {
     const {icon:Icon,title} = props;
-    return <div style={{display: 'flex', alignItems: 'center', marginBottom: 15}}>
+    return <div style={{display: 'flex', alignItems: 'center', margin: '10px 0px'}}>
         <div style={{fontSize: 30, marginLeft: 20}}>
             <Icon/>
         </div>
@@ -39,7 +39,7 @@ export function CardRow(props:{icon:IconType,title:string}) {
 
 export function CardTitle(props:{title:string}) {
     const {title} = props;
-    return <div style={{display: 'flex', marginBottom: 15}}>
+    return <div style={{display: 'flex', margin: '10px 0px'}}>
         <div style={{
             background: 'red',
             width: 3,

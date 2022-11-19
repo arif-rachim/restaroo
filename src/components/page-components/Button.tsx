@@ -13,7 +13,7 @@ export function Button(props: { onTap: () => void, title: string, icon: IconType
         borderColor :theme[buttonTheme],
         borderWidth : 1,
         borderStyle : 'solid',
-        borderRadius: 5,
+        borderRadius: 10,
         padding: '10px 20px',
         color: theme[buttonTheme],
         display: 'flex',

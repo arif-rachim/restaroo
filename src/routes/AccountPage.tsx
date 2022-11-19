@@ -26,12 +26,14 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
 
     return <Card style={{margin: 10, marginBottom: -10}} ref={props.containerRef}>
         <Visible if={!isSessionActive}>
+            <div style={{display:'flex',flexDirection:'column',padding:10}}>
             <div style={{fontSize:20,marginBottom:5,fontWeight:'bold'}}>Your profile</div>
             <div style={{marginBottom:15}}>Log in or sign up to view your complete profile</div>
             <Button title={'Continue'} theme={ButtonTheme.danger} onTap={() => {}} icon={IoLogInOutline}></Button>
+            </div>
         </Visible>
         <Visible if={isSessionActive}>
-            <div style={{display: 'flex'}}>
+            <div style={{display: 'flex',padding:10}}>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
                     <div style={{fontSize: 23, fontWeight: 'bold', marginBottom: 10}}>Arif</div>
                     <div style={{marginBottom: 5}}>a.arif.r@gmail.com</div>
@@ -57,7 +59,7 @@ export function AccountPage(props: RouteProps) {
         }
     });
     const containerRef = useRef<HTMLDivElement>(null);
-    return <Page style={{padding: 0, background: 'rgba(0,0,0,0.05)'}}>
+    return <Page style={{padding: 0, background: '#F2F2F2'}}>
         <Header title={''}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto'}}>
 

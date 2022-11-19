@@ -8,7 +8,7 @@ import {useNavigate} from "../useNavigate";
 export function HeaderNavigation(){
     const {appDimension} = useAppContext();
     const navigate = useNavigate();
-    return <motion.div style={{display:'flex',overflow:'auto',flexWrap:'nowrap',boxSizing:'border-box',width:appDimension.width,padding:5}}
+    return <motion.div style={{display:'flex',overflow:'auto',flexWrap:'nowrap',boxSizing:'border-box',width:appDimension.width,padding:5,backgroundColor:'#F2F2F2'}}
                        initial={{y:-100}} animate={{y:0}} exit={{y:-100}}
     >
         <div style={{fontSize:30,marginRight:5}}>
