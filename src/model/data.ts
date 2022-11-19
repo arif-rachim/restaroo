@@ -423,8 +423,7 @@ export const products: Product[] = [
             ]
 
         }]
-    }
-    ,
+    },
     {
         id: 'internet',
         name: 'Internet',
@@ -517,7 +516,8 @@ export const products: Product[] = [
 
             }
         ]
-    }, {
+    },
+    {
         id: 'sup-buntut-rempah',
         name: 'Sup Buntut Rempah',
         isVegan: false,
@@ -572,7 +572,8 @@ export const products: Product[] = [
                 ]
             }
         ]
-    }, {
+    },
+    {
         id: 'ayam-penyet',
         name: 'Ayam Penyet',
         isVegan: false,
@@ -646,7 +647,100 @@ export const products: Product[] = [
         servesFor: 1,
         imageAddress: '/assets/product/konro-bakar-makasar.jpeg',
         config: []
+    },
+    {
+        id: 'es-kopi-luwak',
+        name: 'Es Kopi Luwak',
+        isVegan: false,
+        price: 25,
+        discount: 0,
+        currency: 'AED',
+        description: 'Kopi luwak is the world\'s most exclusive and most expensive coffee. The main factor of its high price is its unique method production',
+        servesFor: 1,
+        imageAddress: '/assets/product/es-kopi-luwak.jpeg',
+        config: []
+    },
+    {
+        id: 'bir-pletok-betawi',
+        name: 'Bir Pletok Betawi',
+        isVegan: false,
+        price: 25,
+        discount: 0,
+        currency: 'AED',
+        description: 'Non alcoholic traditional drink of Indonesia. Made from several spices namely ginger, pandan leaves, boiled sappan wood, and lemongrass',
+        servesFor: 1,
+        imageAddress: '/assets/product/bir-pletok-betawi.jpeg',
+        config: [
+            {
+                name : 'Hot or Cold',
+                maximumSelection : 1,
+                required : true,
+                options : [
+                    {
+                        name : 'Cold',
+                        isVegan : true,
+                        price : 0
+                    },
+                    {
+                        name : 'Less Ice',
+                        isVegan : true,
+                        price : 0
+                    },
+                    {
+                        name : 'No Ice',
+                        isVegan : true,
+                        price : 0
+                    },
+                    {
+                        name : 'Hot',
+                        isVegan : true,
+                        price : 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        id: 'es-teler-rempah',
+        name: 'Es Teler Rempah',
+        isVegan: false,
+        price: 30,
+        discount: 0,
+        currency: 'AED',
+        description: 'Mix avocado, coconut and jackfruit, served with sweetened condensed milk and crushed ice',
+        servesFor: 1,
+        imageAddress: '/assets/product/es-teler-rempah.jpeg',
+        config: [
+            {
+                name : 'Hot or Cold',
+                maximumSelection : 1,
+                required : true,
+                options : [
+                    {
+                        name : 'Cold',
+                        isVegan : true,
+                        price : 0
+                    },
+                    {
+                        name : 'Less Ice',
+                        isVegan : true,
+                        price : 0
+                    },
+                    {
+                        name : 'No Ice',
+                        isVegan : true,
+                        price : 0
+                    },
+                    {
+                        name : 'Hot',
+                        isVegan : true,
+                        price : 0
+                    }
+                ]
+            }
+        ]
     }
+
 ]
 
 export const menus: Menu[] = [
