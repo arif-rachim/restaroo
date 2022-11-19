@@ -10,14 +10,45 @@ import {
     IoChatboxOutline,
     IoHeartOutline,
     IoHomeOutline,
-    IoInformationCircleOutline,
+    IoInformationCircleOutline, IoLogInOutline,
     IoSettingsOutline,
     IoStarOutline
 } from "react-icons/io5";
-import {useRef} from "react";
+import {PropsWithChildren, RefObject, useRef} from "react";
 import invariant from "tiny-invariant";
 import {RiDraftLine} from "react-icons/ri";
+import {useSessionIsActive} from "../model/useUserProfile";
+import {Button} from "../components/page-components/Button";
+import {ButtonTheme} from "./Theme";
 
+function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
+    const isSessionActive = useSessionIsActive();
+
+    return <Card style={{margin: 10, marginBottom: -10}} ref={props.containerRef}>
+        <Visible if={!isSessionActive}>
+            <div style={{fontSize:20,marginBottom:5,fontWeight:'bold'}}>Your profile</div>
+            <div style={{marginBottom:15}}>Log in or sign up to view your complete profile</div>
+            <Button title={'Continue'} theme={ButtonTheme.danger} onTap={() => {}} icon={IoLogInOutline}></Button>
+        </Visible>
+        <Visible if={isSessionActive}>
+            <div style={{display: 'flex'}}>
+                <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
+                    <div style={{fontSize: 23, fontWeight: 'bold', marginBottom: 10}}>Arif</div>
+                    <div style={{marginBottom: 5}}>a.arif.r@gmail.com</div>
+                    <div>+971509018075</div>
+                </div>
+                <div style={{width: 80, height: 80, backgroundColor: '#CCC', borderRadius: 13}}>
+                </div>
+            </div>
+        </Visible>
+    </Card>;
+}
+
+function Visible(props: PropsWithChildren<{ if: boolean }>) {
+    return <>
+        {props.if && props.children}
+    </>
+}
 
 export function AccountPage(props: RouteProps) {
     useFocusListener(props.path, (isFocus) => {
@@ -30,17 +61,7 @@ export function AccountPage(props: RouteProps) {
         <Header title={''}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto'}}>
 
-            <Card style={{margin: 10, marginBottom: -10}} ref={containerRef}>
-                <div style={{display: 'flex'}}>
-                    <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
-                        <div style={{fontSize: 23, fontWeight: 'bold', marginBottom: 10}}>Arif</div>
-                        <div style={{marginBottom: 5}}>a.arif.r@gmail.com</div>
-                        <div>+971509018075</div>
-                    </div>
-                    <div style={{width: 80, height: 80, backgroundColor: '#CCC', borderRadius: 13}}>
-                    </div>
-                </div>
-            </Card>
+            <ProfilePanel containerRef={containerRef}/>
 
             <div style={{
                 display: 'flex',
@@ -50,12 +71,11 @@ export function AccountPage(props: RouteProps) {
                 padding: '30px 10px 50px 10px'
             }} onScroll={(event) => {
                 invariant(containerRef.current);
-                if((event.target as HTMLDivElement).scrollTop < 20){
-
+                if ((event.target as HTMLDivElement).scrollTop < 20) {
                     containerRef.current.style.boxShadow = '0 0 5px 3px rgba(0,0,0,0.0)';
                     containerRef.current.style.zIndex = '0';
                     containerRef.current.style.transition = 'box-shadow 100ms ease-in-out';
-                }else{
+                } else {
                     containerRef.current.style.boxShadow = '0 5px 5px -3px rgba(0,0,0,0.1)';
                     containerRef.current.style.zIndex = '1';
                     containerRef.current.style.transition = 'box-shadow 300ms ease-in-out';

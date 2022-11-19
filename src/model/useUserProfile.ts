@@ -6,6 +6,6 @@ export function useUserProfile(){
     return useStoreValue(useAppContext().store, s => s.user);
 }
 
-export function useUserIsActive(){
-    return useUserProfile().id === GuestProfile.id;
+export function useSessionIsActive(){
+    return useUserProfile().id !== GuestProfile.id;
 }

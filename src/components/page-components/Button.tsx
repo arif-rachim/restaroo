@@ -10,9 +10,11 @@ export function Button(props: { onTap: () => void, title: string, icon: IconType
     return <motion.button layout style={{
         minWidth: 0,
         fontSize: 18,
-        border: '1px solid rgba(0,0,0,0)',
+        borderColor :theme[buttonTheme],
+        borderWidth : 1,
+        borderStyle : 'solid',
         borderRadius: 5,
-        padding: '5px 20px',
+        padding: '10px 20px',
         color: theme[buttonTheme],
         display: 'flex',
         alignItems: 'center',
