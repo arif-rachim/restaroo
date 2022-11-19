@@ -1,4 +1,3 @@
-import {Image} from "./Image";
 import {MdPlace} from "react-icons/md";
 import {CgProfile} from "react-icons/cg";
 import {useAppContext} from "../useAppContext";

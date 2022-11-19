@@ -64,9 +64,9 @@ const menus: Menu[] = [{
 ];
 
 export function FooterNavigation(props: RouteProps) {
-    const navigate = useNavigate();
+
     const path = props.path;
-    const {store, appDimension} = useAppContext();
+    const {appDimension} = useAppContext();
     const width = (100 / menus.length).toFixed(2) + '%';
     const selectedIndex = menus.findIndex(m => m.path === path);
     return <motion.div style={{

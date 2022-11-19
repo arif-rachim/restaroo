@@ -1,5 +1,5 @@
 import {IconType} from "react-icons";
-import {ButtonTheme, theme, white} from "../../routes/Theme";
+import {ButtonTheme, theme} from "../../routes/Theme";
 import {motion, MotionStyle} from "framer-motion";
 import {AiOutlineLoading3Quarters} from "react-icons/ai";
 

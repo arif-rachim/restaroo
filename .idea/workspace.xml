@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="update the picker">
-      <change afterPath="$PROJECT_DIR$/src/model/data.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/page-components/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Card.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/page-components/FooterNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/FooterNavigation.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/page-components/HeaderNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/HeaderNavigation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Product.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/AccountPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AccountPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/data.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,7 +49,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/components/page-components/utils" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/assets/product" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -62,6 +59,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/assets/product" />
       <recent name="$PROJECT_DIR$/src/components/page-components/utils" />
     </key>
   </component>
@@ -74,7 +72,7 @@
       <option name="presentableId" value="Default" />
       <updated>1668759644605</updated>
       <workItem from="1668759649164" duration="25097000" />
-      <workItem from="1668823282000" duration="15062000" />
+      <workItem from="1668823282000" duration="17673000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>

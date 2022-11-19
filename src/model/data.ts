@@ -9,7 +9,7 @@ const product:Product = {
     currency:'AED',
     description : '100% All-beef chargrilled patty topped with philly cheeseteak melted American & Swiss cheese and mayo on our special toasted hardees sessame bun.',
     servesFor : 1,
-    imageAddress : '182932.png',
+    imageAddress : '/assets/product/burger.jpg',
     config : [
         {
             name : 'Fries',
