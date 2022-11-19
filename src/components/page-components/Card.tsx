@@ -1,6 +1,7 @@
-import {CSSProperties, ForwardedRef, PropsWithChildren,forwardRef} from "react";
+import {CSSProperties, ForwardedRef, PropsWithChildren, forwardRef, useEffect, useId} from "react";
 import {IconType} from "react-icons";
 import {IoChevronForward} from "react-icons/io5";
+import invariant from "tiny-invariant";
 
 export const Card =  forwardRef(function Card(props: PropsWithChildren<{style?:CSSProperties}>,ref:ForwardedRef<HTMLDivElement>) {
     const style = props.style ?? {};
@@ -37,9 +38,32 @@ export function CardRow(props:{icon:IconType,title:string}) {
     </div>;
 }
 
-export function CardTitle(props:{title:string}) {
-    const {title} = props;
-    return <div style={{display: 'flex', margin: '10px 0px'}}>
+export function CardTitle(props:{title?:string,onMounted?:(params:{title:string,dimension:DOMRect}) => () => void}) {
+    const {title,onMounted} = props;
+    const id = useId();
+    useEffect(() => {
+        if(!onMounted){
+            return () => {};
+        }
+        const dom = document.getElementById(id);
+        invariant(dom);
+        let unMount:any = undefined;
+        setTimeout(() => {
+            const dimension = dom.getBoundingClientRect();
+            unMount = onMounted({
+                title:title??'',
+                dimension
+            });
+        },300);
+
+        return () => {
+            if(unMount){
+                unMount();
+            }
+        }
+        // eslint-disable-next-line
+    },[])
+    return <div style={{display: 'flex', margin: '10px 0px'}} id={id}>
         <div style={{
             background: 'red',
             width: 3,

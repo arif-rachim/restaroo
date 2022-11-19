@@ -14,12 +14,13 @@ import {
     IoSettingsOutline,
     IoStarOutline
 } from "react-icons/io5";
-import {PropsWithChildren, RefObject, useRef} from "react";
+import {RefObject, useRef} from "react";
 import invariant from "tiny-invariant";
 import {RiDraftLine} from "react-icons/ri";
 import {useSessionIsActive} from "../model/useUserProfile";
 import {Button} from "../components/page-components/Button";
 import {ButtonTheme} from "./Theme";
+import {Visible} from "../components/page-components/Visible";
 
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     const isSessionActive = useSessionIsActive();
@@ -46,11 +47,7 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     </Card>;
 }
 
-function Visible(props: PropsWithChildren<{ if: boolean }>) {
-    return <>
-        {props.if && props.children}
-    </>
-}
+
 
 export function AccountPage(props: RouteProps) {
     useFocusListener(props.path, (isFocus) => {

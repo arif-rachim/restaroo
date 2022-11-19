@@ -1,18 +1,15 @@
-import {CSSProperties, PropsWithChildren} from "react";
+import {CSSProperties, PropsWithChildren, UIEventHandler} from "react";
 
-export function Page(props:PropsWithChildren<{style?:CSSProperties}>) {
+export function Page(props:PropsWithChildren<{style?:CSSProperties,onScroll?:UIEventHandler<HTMLDivElement>}>) {
     const style = props.style ?? {};
     return <div style={{
-        paddingTop: 55,
-        paddingLeft: 10,
-        paddingRight: 10,
         display: 'flex',
         flexDirection: 'column',
         boxSizing: 'border-box',
         height: '100%',
         overflow: 'auto',
         ...style
-    }}>
+    }} onScroll={props.onScroll}>
         {props.children}
     </div>;
 }
