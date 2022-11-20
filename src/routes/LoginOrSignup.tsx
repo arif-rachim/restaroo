@@ -13,6 +13,8 @@ import {BsThreeDots} from "react-icons/bs";
 import {useCallback} from "react";
 import {Image} from "../components/page-components/Image";
 import restaroo from "../assets/arif-rachim-restaroo.png";
+import {useNavigate} from "../components/useNavigate";
+import invariant from "tiny-invariant";
 const defaultCountry = countryList.find(c => c.code === 'AE');
 
 export function LoginOrSignup(route: RouteProps) {
@@ -25,7 +27,8 @@ export function LoginOrSignup(route: RouteProps) {
             return false;
         }
         return true;
-    }, [phoneNumberStore])
+    }, [phoneNumberStore]);
+    const navigate = useNavigate();
     return <Page>
 
         <div style={{backgroundColor:'red',position:'absolute',top:0}}>
@@ -91,6 +94,9 @@ export function LoginOrSignup(route: RouteProps) {
             <Button title={'Continue'} onTap={() => {
                 if (storeValid()) {
                     // lets continue validate phone here
+                    // first we are sending the otp to user
+                    invariant(countryStore.stateRef.current);
+                    navigate(`otp/${countryStore.stateRef.current.dial_code}${phoneNumberStore.stateRef.current.value}`)
                 }
             }} theme={ButtonTheme.danger} icon={IoLogInOutline} style={{marginBottom: 30}}/>
             <div style={{
