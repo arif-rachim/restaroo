@@ -1,7 +1,6 @@
 import {
     cloneElement,
     ComponentType,
-    createElement,
     DependencyList,
     MutableRefObject,
     PropsWithChildren,
@@ -12,7 +11,7 @@ import {
     useState
 } from "react";
 
-type Listener = (param: any) => void
+type Listener = (next: any, prev: any) => void
 
 export interface Action {
     type: string,
@@ -44,10 +43,7 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
     reducerRef.current = reducer;
 
     const [initialState] = useState<S>(() => {
-
         let stateInitial: any = initializer;
-
-
         if (isFunction(initializer)) {
             stateInitial = (initializer as any)();
         }
@@ -63,8 +59,10 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
         if (newState === stateRef.current) {
             return;
         }
+        const prevState = stateRef.current;
         stateRef.current = newState;
-        listenerRef.current.forEach(l => l.call(null, newState));
+        listenerRef.current.forEach(l => l.call(null, newState, prevState));
+
     }, []);
 
     const setState = useCallback(function setState(param: S | ((param: S) => S)) {
@@ -73,15 +71,15 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
             const functionParam = param as (param: S) => S
             newState = functionParam(stateRef.current)
         }
-        if ( newState === stateRef.current) {
+        if (newState === stateRef.current) {
             return;
         }
+        const prevState = stateRef.current;
         stateRef.current = newState;
-        stateRef.current = newState;
-        listenerRef.current.forEach(l => l.call(null, newState));
+        listenerRef.current.forEach(l => l.call(null, newState, prevState));
     }, []);
 
-    const addListener = useCallback(function addListener(selector: (param: S) => any) {
+    const addListener = useCallback(function addListener(selector: (param: S, next: S) => any) {
         listenerRef.current.push(selector);
         return () => listenerRef.current = listenerRef.current.filter(l => l !== selector)
     }, []);
@@ -89,7 +87,38 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
     return useMemo(() => ({dispatch, stateRef, addListener, setState}), [addListener, dispatch, setState])
 }
 
+export function useStoreListener<T, S>(store: Store<T>, selector: (param: T) => S, listener: (next: S, prev?: S) => void, deps?: DependencyList | undefined) {
+    const {addListener, stateRef} = store;
+    const propsRef = useRef({selector});
+    propsRef.current = {selector};
+    deps = deps ?? [];
+    useEffect(() => {
+        const next = propsRef.current.selector(stateRef.current);
+        listener(next);
+
+        return addListener((nextState: any, prevState: any) => {
+            const {selector} = propsRef.current;
+            const current = selector(prevState);
+            const next = selector(nextState);
+            if (!isMatch(next, current)) {
+                listener(next, current);
+            }
+        });
+        // eslint-disable-next-line
+    }, deps);
+}
+
 export function useStoreValue<T, S>(store: Store<T>, selector: (param: T) => S, deps?: DependencyList | undefined) {
+    const [value, setValue] = useState<S>(() => selector(store.stateRef.current));
+    useStoreListener(store, selector, (next, prev) => {
+        setValue(next)
+    }, deps);
+    return value;
+}
+
+/**
+ * LEGACY CODE USE STORE VALUE
+ export function useStoreValue<T, S>(store: Store<T>, selector: (param: T) => S, deps?: DependencyList | undefined) {
     const [value, setValue] = useState<S>(() => selector(store.stateRef.current));
     const {addListener, stateRef} = store;
     const propsRef = useRef({selector});
@@ -114,6 +143,7 @@ export function useStoreValue<T, S>(store: Store<T>, selector: (param: T) => S, 
 
     return value;
 }
+ */
 
 function isFunction(functionToCheck: any) {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
@@ -131,31 +161,8 @@ interface StoreValueProps<T, S, PropsType> {
 
 interface StoreValueInjectorProps<T, S> {
     store: Store<T>,
-    selector: (Selector<T, S> | Selector<T, S>[]),
+    selector: (Selector<T, S> | Selector<T, any>[]),
     property: (string | string[])
-}
-
-
-export function StoreValueHOC<T, S, PT, Z extends PT>(props: PropsWithChildren<StoreValueProps<T, S, PT> & Z>) {
-    const {store, property, selector, component, ...cp} = props;
-    validateSelectorAndProperty(selector, property);
-    const value: any = useStoreValue(store, (param) => {
-        if (Array.isArray(selector)) {
-            return selector.map(s => s(param));
-        }
-        return selector(param);
-    }, [selector]);
-    const Component: any = component;
-    const childrenProps: any = {...cp};
-    if (Array.isArray(property)) {
-        property.forEach((props, index) => {
-            childrenProps[props] = value[index];
-        })
-    } else {
-        childrenProps[property] = value;
-    }
-    return createElement(Component, childrenProps)
-
 }
 
 function validateSelectorAndProperty<S, T>(selector: Selector<T, S> | (Selector<T, S>[]), property: string | string[]) {

@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="update the picker">
-      <change afterPath="$PROJECT_DIR$/src/routes/OtpPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/page-components/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/LoginOrSignup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/LoginOrSignup.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/store/useStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/store/useStore.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/OtpPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OtpPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +81,7 @@
       <workItem from="1668759649164" duration="25097000" />
       <workItem from="1668823282000" duration="39028000" />
       <workItem from="1668916419909" duration="527000" />
-      <workItem from="1668921947678" duration="16549000" />
+      <workItem from="1668921947678" duration="25811000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>

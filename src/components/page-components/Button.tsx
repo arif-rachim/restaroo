@@ -4,8 +4,9 @@ import {motion, MotionStyle} from "framer-motion";
 import {AiOutlineLoading3Quarters} from "react-icons/ai";
 import {CSSProperties} from "react";
 
-export function Button(props: { onTap: () => void, title: string, icon: IconType, theme: ButtonTheme, style?: MotionStyle,iconStyle?:CSSProperties, isBusy?: boolean }) {
+export function Button(props: { onTap: () => void, title: string, icon: IconType, theme: ButtonTheme, style?: MotionStyle,iconStyle?:CSSProperties, isBusy?: boolean,disabled?:boolean}) {
     const isBusy = props.isBusy;
+    const disabled = props.disabled;
     const Icon: IconType = isBusy ? AiOutlineLoading3Quarters : props.icon;
     const buttonTheme = props.theme ?? ButtonTheme.danger;
     return <motion.button layout style={{
@@ -22,7 +23,7 @@ export function Button(props: { onTap: () => void, title: string, icon: IconType
         justifyContent: 'center',
         background:'rgba(0,0,0,0)',
         ...props.style
-    }} disabled={isBusy}
+    }} disabled={isBusy || disabled === true}
                           whileTap={{scale: 0.98}}
                           onTap={isBusy ? nothing : props.onTap}>
         <div>{props.title}</div>
@@ -31,7 +32,7 @@ export function Button(props: { onTap: () => void, title: string, icon: IconType
                 <motion.div style={{width:20,height:20,...props.iconStyle}}
                             animate={isBusy ? {rotate: [360, 0], position: 'fixed'} : undefined}
                             transition={isBusy ? {repeat: Infinity} : undefined}>
-                    <Icon/>
+                    <Icon />
                 </motion.div>
             }
         </div>
