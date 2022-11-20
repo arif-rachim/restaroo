@@ -1,9 +1,9 @@
-import {useEffect, useId} from "react";
+import {ReactElement, useEffect, useId} from "react";
 import invariant from "tiny-invariant";
 
 export interface KeyValue {
     key: number,
-    value: string,
+    value: string | ReactElement,
 }
 
 const ROW_HEIGHT = 50;
@@ -79,7 +79,7 @@ function updateAnimation(compKey: string, selectedIndex: number, movementPercent
         }
         element.setAttribute('style', calculateStyle(1 - (step * movementPercentage)));
     });
-    Array.from({length: (halfList + 1)}).map((_, index) => {
+    Array.from({length: (halfList + 2)}).map((_, index) => {
         index = index + 1;
         return [-index, index]
     }).forEach(value => {

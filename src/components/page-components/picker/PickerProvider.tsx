@@ -6,7 +6,7 @@ import {motion} from "framer-motion";
 import {TimePicker} from "./TimePicker";
 import {IoCloseCircleOutline} from "react-icons/io5";
 import invariant from "tiny-invariant";
-import {dateToDdMmmYyyy} from "../utils/dateToDdMmmYyyy";
+import {CountryPicker} from "./CountryPicker";
 
 
 export type ShowPickerFunction = (control: PickerOptions, value: any) => Promise<any>;
@@ -18,7 +18,8 @@ const NO_PICKER = {control: undefined, value: undefined, onChange: undefined};
 
 export const PickerMap = {
     date: DatePicker,
-    time: TimePicker
+    time: TimePicker,
+    country : CountryPicker
 }
 
 export type PickerOptions = keyof typeof PickerMap;

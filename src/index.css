@@ -30,7 +30,6 @@ input {
 input:focus {
     outline: none;
 }
-
 .background-css {
     background: linear-gradient(270deg, #38bd9b, #3887bd);
     background-size: 400% 400%;

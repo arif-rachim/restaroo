@@ -207,6 +207,5 @@ export function DeliveryPage(props: RouteProps) {
                 </StoreValue>
             </div>
         </div>
-
     </Page>
 }

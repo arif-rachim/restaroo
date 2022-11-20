@@ -5,6 +5,7 @@ import {DiningPage} from "./DiningPage";
 import {ReservationPage} from "./ReservationPage";
 import {Routes} from "../components/useRoute";
 import {AccountPage} from "./AccountPage";
+import {LoginOrSignup} from "./LoginOrSignup";
 
 
 export const routes:Routes = {
@@ -30,5 +31,9 @@ export const routes:Routes = {
     'account' : {
         component : AccountPage,
         initial : 'right'
+    },
+    'login' : {
+        component : LoginOrSignup,
+        initial : "bottom"
     }
 }

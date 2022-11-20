@@ -1,4 +1,10 @@
-import {ChangeEventHandler, CSSProperties, HTMLInputTypeAttribute, FocusEventHandler} from "react";
+import {
+    ChangeEventHandler,
+    CSSProperties,
+    HTMLInputTypeAttribute,
+    FocusEventHandler,
+    ReactElement
+} from "react";
 import {ButtonTheme, theme} from "../../routes/Theme";
 
 interface InputStyle {
@@ -9,7 +15,7 @@ interface InputStyle {
 }
 
 export function Input(props: {
-    title: string,
+    title: string|ReactElement,
     placeholder: string,
     value?: string,
     defaultValue?: string,
@@ -33,6 +39,7 @@ export function Input(props: {
         padding: '5px 0px 0px 0px',
         position: 'relative',
         borderBottom: '1px solid rgba(0,0,0,0.1)',
+        boxSizing:'border-box',
         ...style?.containerStyle
     }}>
         <div style={{
@@ -44,9 +51,10 @@ export function Input(props: {
             paddingBottom: inlineTitle ? 10 : 0,
             marginRight: inlineTitle ? 10 : 0,
             whiteSpace: 'nowrap',
+            boxSizing:'border-box',
             fontSize: 16, ...style?.titleStyle
         }}>{props.title}</div>
-        <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
+        <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1,boxSizing:'border-box'}}>
             <input style={{
                 backgroundColor: 'rgba(0,0,0,0.03)',
                 border: `1px solid ${error ? theme[ButtonTheme.danger] : 'rgba(0,0,0,0.01)'}`,
@@ -55,6 +63,8 @@ export function Input(props: {
                 flexGrow: 1,
                 fontSize: 20,
                 minWidth: 0,
+                width:'100%',
+                boxSizing:'border-box',
                 ...style?.inputStyle
             }} placeholder={props.placeholder} value={value} defaultValue={defaultValue} onChange={props.onChange}
                    title={error} type={type} inputMode={inputMode} onFocus={e => {

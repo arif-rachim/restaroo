@@ -21,16 +21,17 @@ import {useSessionIsActive} from "../model/useUserProfile";
 import {Button} from "../components/page-components/Button";
 import {ButtonTheme} from "./Theme";
 import {Visible} from "../components/page-components/Visible";
+import {useNavigate} from "../components/useNavigate";
 
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     const isSessionActive = useSessionIsActive();
-
+    const navigate = useNavigate();
     return <Card style={{margin: 10, marginBottom: -10}} ref={props.containerRef}>
         <Visible if={!isSessionActive}>
             <div style={{display:'flex',flexDirection:'column',padding:10}}>
             <div style={{fontSize:20,marginBottom:5,fontWeight:'bold'}}>Your profile</div>
             <div style={{marginBottom:15}}>Log in or sign up to view your complete profile</div>
-            <Button title={'Continue'} theme={ButtonTheme.danger} onTap={() => {}} icon={IoLogInOutline}></Button>
+            <Button title={'Continue'} theme={ButtonTheme.danger} onTap={() => {navigate('login')}} icon={IoLogInOutline}></Button>
             </div>
         </Visible>
         <Visible if={isSessionActive}>

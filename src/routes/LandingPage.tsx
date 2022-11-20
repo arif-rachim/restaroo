@@ -11,7 +11,7 @@ export function LandingPage(props: RouteProps) {
     return <div style={{display:'flex',flexDirection:'column',padding : 10,justifyContent:'center',height:'100%',overflow:'auto'}}>
         <Image src={restaroo} height={300}/>
         <Button title={'To know more, please click here'} onTap={() => {
-            navigate('delivery',{});
+            navigate('delivery');
         }} theme={ButtonTheme.promoted} icon={MdRestaurant}/>
     </div>
 }

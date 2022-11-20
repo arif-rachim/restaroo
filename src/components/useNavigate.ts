@@ -1,16 +1,14 @@
 import {useCallback} from "react";
-import {routes} from "../routes/routes";
-
-export type RoutePath = keyof typeof routes;
 
 export function useNavigate() {
-    return useCallback((path: RoutePath,params?:any) => {
-        let stringPath = path as string;
-        if(params){
-            Object.keys(params).forEach(key => {
-                stringPath = stringPath.replace('$'+key,params[key]);
-            })
+    const navigate = useCallback((path: string) => {
+        if (path.startsWith('#')) {
+            path = path.substring(1, path.length);
         }
-        window.location.hash = '#' + stringPath;
+        if (path.startsWith('/')) {
+            path = path.substring(1, path.length);
+        }
+        window.location.hash = '#' + path;
     }, [])
+    return navigate;
 }
