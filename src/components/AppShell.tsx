@@ -14,7 +14,7 @@ const shellStyle: CSSProperties = {
     flexDirection: 'column',
     alignItems: 'center',
     boxSizing: 'border-box',
-    overflow: 'auto',
+    overflow: 'auto'
 
 }
 

@@ -1,4 +1,4 @@
-import {useStore} from "../../store/useStore";
+import {useStore,StoreValue} from "../../store/useStore";
 import {useAfterInit} from "../useAfterInit";
 import {useAppContext} from "../../useAppContext";
 import {Picker} from "./Picker";
@@ -33,10 +33,14 @@ export function CountryPicker(props: { value?: Country, onChange?: (value: Count
             justifyContent: 'center',
             position: 'relative'
         }}>
-
-            <Picker data={countryList.map((country, index) => ({key: index, value: <div style={{fontSize:30}}>{country.name}</div>}))}
-                    onChange={index => store.setState(countryList[index])}
+            <StoreValue store={store} property={'value'} selector={s => {
+                invariant(s);
+                return countryList.indexOf(s);
+            }}>
+            <Picker data={countryList.map((country, index) => ({key: index, value:`${country.name} (${country.dial_code})`}))}
+                    onChange={index => store.setState(countryList[index])} fontSize={20} width={'100%'}
             />
+            </StoreValue>
 
             <div style={{
                 position: 'absolute',
@@ -216,7 +220,7 @@ export const countryList: Country[] = [
         "code": "BR"
     },
     {
-        "name": "British Indian Ocean Territory",
+        "name": "British Indian Ocean",
         "dial_code": "+246",
         "code": "IO"
     },
@@ -526,7 +530,7 @@ export const countryList: Country[] = [
         "code": "HT"
     },
     {
-        "name": "Holy See (Vatican City State)",
+        "name": "Vatican City",
         "dial_code": "+379",
         "code": "VA"
     },

@@ -7,7 +7,7 @@ import {menus, products} from "../model/data";
 import invariant from "tiny-invariant";
 import {IoAdd, IoChevronDown, IoDisc, IoHeartOutline} from "react-icons/io5";
 import {Button} from "../components/page-components/Button";
-import {ButtonTheme} from "./Theme";
+import {ButtonTheme, veryLightRed} from "./Theme";
 import {MdPlace} from "react-icons/md";
 import {motion} from "framer-motion";
 import {CgProfile} from "react-icons/cg";
@@ -117,7 +117,7 @@ export function DeliveryPage(props: RouteProps) {
                                 zIndex: 0,
                                 boxSizing: 'border-box'
                             }}>
-                                <Button title={'Add'} style={{backgroundColor: '#FAD0CC'}} onTap={() => {
+                                <Button title={'Add'} style={{backgroundColor: veryLightRed}} onTap={() => {
                                 }} icon={IoAdd} theme={ButtonTheme.danger}/>
                             </div>
                         </div>

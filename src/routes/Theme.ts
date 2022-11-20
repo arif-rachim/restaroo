@@ -8,7 +8,7 @@ export const grey = '#465C58';
 export const yellow = '#E3CE06';
 export const darkYellow = '#DEB02E';
 export const white = 'rgba(255,255,255,1)';
-
+export const veryLightRed = '#FAD0CC';
 export enum ButtonTheme {
     promoted,
     danger

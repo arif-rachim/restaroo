@@ -9,8 +9,8 @@ export interface KeyValue {
 const ROW_HEIGHT = 50;
 const VISIBLE_ROW = 7;
 
-export function Picker(props: { value?: number, onChange?: (param: number) => void, data: KeyValue[], width?: number | string }) {
-    const {value, data, width, onChange} = props;
+export function Picker(props: { value?: number, onChange?: (param: number) => void, data: KeyValue[], width?: number | string,fontSize?:number|string }) {
+    const {value, data, width, onChange,fontSize} = props;
     const compKey = useId();
 
     useEffect(() => {
@@ -48,17 +48,18 @@ export function Picker(props: { value?: number, onChange?: (param: number) => vo
         {data.map((item, index) => {
 
             return <div key={index} style={{
-                fontSize: 35,
+                fontSize: fontSize ?? 35,
                 border: '1px solid rgba(0,0,0,0)',
                 justifyContent: 'center',
                 alignItems: 'center',
                 textAlign: 'center',
                 padding: '0px 5px',
                 boxSizing: 'border-box',
+                display:'flex',
                 height: ROW_HEIGHT,
                 scrollSnapAlign: 'start'
             }} id={`${compKey}container`}>
-                <div id={`${compKey}${item.key}`}>{item.value}</div>
+                <div id={`${compKey}${item.key}`} >{item.value}</div>
             </div>
         })}
         {Array.from({length: HALF_ROW}).map((_, index) => {
@@ -70,14 +71,15 @@ export function Picker(props: { value?: number, onChange?: (param: number) => vo
 
 
 function updateAnimation(compKey: string, selectedIndex: number, movementPercentage: number) {
-    const calculateStyle = (scale: number) => `transform : scale(${scale});opacity : ${scale}`;
     const step = 0.2;
     const halfList = (VISIBLE_ROW - 1) / 2;
     [0].map(val => document.getElementById(`${compKey}${selectedIndex + val}`)).forEach(element => {
         if (element === null) {
             return;
         }
-        element.setAttribute('style', calculateStyle(1 - (step * movementPercentage)));
+        const scale = 1 - (step * movementPercentage);
+        element.style.transform = `scale(${scale})`;
+        element.style.opacity = `${scale}`;
     });
     Array.from({length: (halfList + 2)}).map((_, index) => {
         index = index + 1;
@@ -92,9 +94,14 @@ function updateAnimation(compKey: string, selectedIndex: number, movementPercent
             }
             const absValIndex = Math.abs(index);
             if (index < 0) {
-                element.setAttribute('style', calculateStyle((1 - (step * absValIndex)) - (step * movementPercentage)));
+                const scale = (1 - (step * absValIndex)) - (step * movementPercentage);
+                element.style.transform = `scale(${scale})`;
+                element.style.opacity = `${scale}`;
+
             } else {
-                element.setAttribute('style', calculateStyle((1 - (step * absValIndex)) + (step * movementPercentage)));
+                const scale = (1 - (step * absValIndex)) + (step * movementPercentage);
+                element.style.transform = `scale(${scale})`;
+                element.style.opacity = `${scale}`;
             }
         });
     });

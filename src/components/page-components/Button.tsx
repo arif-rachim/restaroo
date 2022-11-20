@@ -19,7 +19,7 @@ export function Button(props: { onTap: () => void, title: string, icon: IconType
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background:'unset',
+        background:'rgba(0,0,0,0)',
         ...props.style
     }} disabled={isBusy}
                           whileTap={{scale: 0.98}}
