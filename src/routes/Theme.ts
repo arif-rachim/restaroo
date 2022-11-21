@@ -13,11 +13,13 @@ export const veryLightBlue = '#DEF0FC';
 
 export enum ButtonTheme {
     promoted,
-    danger
+    danger,
+    subtle
 }
 
 
 export const theme = {
     [ButtonTheme.promoted]: blue,
-    [ButtonTheme.danger]: red
+    [ButtonTheme.danger]: red,
+    [ButtonTheme.subtle]: grey,
 }

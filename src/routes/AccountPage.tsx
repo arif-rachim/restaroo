@@ -112,7 +112,9 @@ export function AccountPage(props: RouteProps) {
                     <CardTitle title={'Food Orders'}/>
                     <CardRow icon={IoBagHandleOutline} title={'Your orders'}/>
                     <CardRow icon={IoHeartOutline} title={'Favorite orders'}/>
-                    <CardRow icon={IoHomeOutline} title={'Address book'}/>
+                    <CardRow icon={IoHomeOutline} title={'Address book'} onTap={() => {
+                        navigate('address-book')
+                    }}/>
                     <CardRow icon={IoChatboxOutline} title={'Online ordering help'}/>
                 </Card>
                 <Card style={{padding: '15px 0px'}}>

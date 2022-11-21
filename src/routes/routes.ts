@@ -8,6 +8,8 @@ import {AccountPage} from "./AccountPage";
 import {LoginOrSignup} from "./LoginOrSignup";
 import {OtpPage} from "./OtpPage";
 import {ProfilePage} from "./profile/ProfilePage";
+import {AddressBookPage} from "./AddressBookPage";
+import {DeliveryLocationPage} from "./DeliveryLocationPage";
 
 
 export const routes: Routes = {
@@ -45,5 +47,13 @@ export const routes: Routes = {
     'profile/$profileId/$phoneNo': {
         component: ProfilePage,
         initial: 'right'
+    },
+    'address-book' : {
+        component : AddressBookPage,
+        initial : 'right'
+    },
+    'delivery-location' : {
+        component : DeliveryLocationPage,
+        initial : 'right'
     }
 }
