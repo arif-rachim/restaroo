@@ -4,7 +4,6 @@ import {Input} from "../components/page-components/Input";
 import {IoChevronDown, IoCloseCircleOutline, IoLogInOutline} from "react-icons/io5";
 import {motion} from "framer-motion";
 import {useAppContext} from "../components/useAppContext";
-import {countryList} from "../components/page-components/picker/CountryPicker";
 import {StoreValue, useStore} from "../components/store/useStore";
 import {Button} from "../components/page-components/Button";
 import {ButtonTheme} from "./Theme";
@@ -15,6 +14,8 @@ import {Image} from "../components/page-components/Image";
 import restaroo from "../assets/arif-rachim-restaroo.png";
 import {useNavigate} from "../components/useNavigate";
 import invariant from "tiny-invariant";
+import {countryList} from "../components/page-components/picker/dataprovider/CountryList";
+
 const defaultCountry = countryList.find(c => c.code === 'AE');
 
 export function LoginOrSignup(route: RouteProps) {
@@ -31,22 +32,48 @@ export function LoginOrSignup(route: RouteProps) {
     const navigate = useNavigate();
     return <Page>
 
-        <div style={{backgroundColor:'red',position:'absolute',top:0}}>
+        <div style={{backgroundColor: 'red', position: 'absolute', top: 0}}>
             <Image src={restaroo} height={appContext.appDimension.width} width={appContext.appDimension.width}/>
         </div>
-        <div style={{flexGrow:1}}/>
+        <div style={{flexGrow: 1}}/>
 
-        <div style={{display: 'flex', flexDirection: 'column', padding: 20,backgroundColor:'white',position:'relative'}}>
-            <div style={{position:'absolute',top:-60,color:'black',textAlign:'center',display:'flex',justifyContent:'center'}} >
-            <motion.div whileTap={{scale: 0.9}} style={{display:'flex',alignItems:'center',padding:'3px 10px',backgroundColor:'rgba(255,255,255,0.7)',borderRadius:20}}
-                        onTap={() => {
-                            window.history.back();
-                        }}>
-                <div style={{marginRight:5,fontSize:12}}>Skip</div>
-                <IoCloseCircleOutline style={{fontSize: 25}}/>
-            </motion.div>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 20,
+            backgroundColor: 'white',
+            position: 'relative'
+        }}>
+            <div style={{
+                position: 'absolute',
+                top: -60,
+                color: 'black',
+                textAlign: 'center',
+                display: 'flex',
+                justifyContent: 'center'
+            }}>
+                <motion.div whileTap={{scale: 0.9}} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '3px 10px',
+                    backgroundColor: 'rgba(255,255,255,0.7)',
+                    borderRadius: 20
+                }}
+                            onTap={() => {
+                                window.history.back();
+                            }}>
+                    <div style={{marginRight: 5, fontSize: 12}}>Skip</div>
+                    <IoCloseCircleOutline style={{fontSize: 25}}/>
+                </motion.div>
             </div>
-            <div style={{display: 'flex', flexDirection: 'column', fontSize: 25, textAlign: 'center', padding: '0px 50px',marginBottom:30}}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                fontSize: 25,
+                textAlign: 'center',
+                padding: '0px 50px',
+                marginBottom: 30
+            }}>
                 Dubai's Food Delivery and Dining App
             </div>
             <div style={{
@@ -80,7 +107,7 @@ export function LoginOrSignup(route: RouteProps) {
                             <StoreValue store={countryStore} selector={s => s?.dial_code} property={'value'}>
                                 <Title/>
                             </StoreValue>
-                        </motion.div>} placeholder={'Enter Phone Number'} titleWidth={70} titlePosition={'left'}
+                        </motion.div>} placeholder={'Enter Phone Number'} titleWidth={90} titlePosition={'left'}
                                style={{containerStyle: {borderBottom: 'unset'}}}
                                inputMode={"tel"}
                                type={'tel'}
@@ -109,7 +136,7 @@ export function LoginOrSignup(route: RouteProps) {
                 </div>
             </div>
 
-            <div style={{display: 'flex', justifyContent: 'center',marginBottom:50}}>
+            <div style={{display: 'flex', justifyContent: 'center', marginBottom: 50}}>
                 <motion.div style={{
                     fontSize: 30,
                     width: 30,

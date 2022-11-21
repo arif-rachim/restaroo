@@ -3,9 +3,9 @@ import {useFocusListener} from "../components/RouterPageContainer";
 import {adjustThemeColor} from "../components/page-components/adjustThemeColor";
 import {RouteProps} from "../components/useRoute";
 
-export function ReservationPage(props:RouteProps){
-    useFocusListener(props.path,(isFocus) => {
-        if(isFocus){
+export function ReservationPage(props: RouteProps) {
+    useFocusListener(props.path, (isFocus) => {
+        if (isFocus) {
             adjustThemeColor('#FFF');
         }
     });

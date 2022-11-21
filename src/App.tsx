@@ -17,11 +17,17 @@ function App() {
     const windowsSizeContextProviderValue = useMemo(() => ({width, height}), [height, width]);
     if (isSimulator) {
 
-        return <div style={{display: 'flex', height: '100%', overflow: 'hidden',alignItems:'center',boxSizing:'border-box'}}>
+        return <div style={{
+            display: 'flex',
+            height: '100%',
+            overflow: 'hidden',
+            alignItems: 'center',
+            boxSizing: 'border-box'
+        }}>
             <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center'}}>
                 <div style={{margin: 60, marginTop: 0, display: 'flex', flexDirection: 'column'}}>
                     <div style={{fontSize: 55}}>
-                        Restaroo
+
                     </div>
                     <div>
                         Design and Developed by Arif Rachim 2022
@@ -41,7 +47,7 @@ function App() {
                     overflow: 'auto',
                     boxShadow: '0 5px 5px 0 rgba(0,0,0,0.5)',
                     border: '10px solid rgba(0,0,0,1)',
-                    transform:`scale(${scale})`
+                    transform: `scale(${scale})`
                 }}>
                     <AppShell/>
                 </div>

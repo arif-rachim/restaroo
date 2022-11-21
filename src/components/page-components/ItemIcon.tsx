@@ -1,5 +1,4 @@
 import {CSSProperties} from "react";
-import {blue, white} from "../../routes/Theme";
 import {motion} from "framer-motion";
 import {Image} from "./Image";
 
@@ -23,7 +22,7 @@ export function ItemIcon<T extends { barcode: string, name: string }>(props: { i
                 padding: 0,
             }}>
                 <Image src={`/images/${item.barcode}/THUMB/default.png`}
-                       width={imageDimension - 10} height={imageDimension-10} alt={'Barcode ' + item.barcode}/>
+                       width={imageDimension - 10} height={imageDimension - 10} alt={'Barcode ' + item.barcode}/>
             </div>
             <div style={{fontSize: 14, textAlign: 'center', marginTop: 5}}>
                 {item.name}

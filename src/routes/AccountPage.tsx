@@ -10,36 +10,42 @@ import {
     IoChatboxOutline,
     IoHeartOutline,
     IoHomeOutline,
-    IoInformationCircleOutline, IoLogInOutline,
+    IoInformationCircleOutline,
+    IoLogInOutline,
+    IoLogOutOutline,
     IoSettingsOutline,
     IoStarOutline
 } from "react-icons/io5";
 import {RefObject, useRef} from "react";
 import invariant from "tiny-invariant";
 import {RiDraftLine} from "react-icons/ri";
-import {useSessionIsActive} from "../model/useUserProfile";
+import {useSessionIsActive, useUserProfile, useUserProfileSetter} from "../model/useUserProfile";
 import {Button} from "../components/page-components/Button";
 import {ButtonTheme} from "./Theme";
 import {Visible} from "../components/page-components/Visible";
 import {useNavigate} from "../components/useNavigate";
+import {GuestProfile} from "../model/Profile";
 
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     const isSessionActive = useSessionIsActive();
     const navigate = useNavigate();
+    const user = useUserProfile();
     return <Card style={{margin: 10, marginBottom: -10}} ref={props.containerRef}>
         <Visible if={!isSessionActive}>
-            <div style={{display:'flex',flexDirection:'column',padding:10}}>
-            <div style={{fontSize:20,marginBottom:5,fontWeight:'bold'}}>Your profile</div>
-            <div style={{marginBottom:15}}>Log in or sign up to view your complete profile</div>
-            <Button title={'Continue'} theme={ButtonTheme.danger} onTap={() => {navigate('login')}} icon={IoLogInOutline}></Button>
+            <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
+                <div style={{fontSize: 20, marginBottom: 5, fontWeight: 'bold'}}>Your profile</div>
+                <div style={{marginBottom: 15}}>Log in or sign up to view your complete profile</div>
+                <Button title={'Continue'} theme={ButtonTheme.danger} onTap={() => {
+                    navigate('login')
+                }} icon={IoLogInOutline}></Button>
             </div>
         </Visible>
         <Visible if={isSessionActive}>
-            <div style={{display: 'flex',padding:10}}>
+            <div style={{display: 'flex', padding: 10}}>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
-                    <div style={{fontSize: 23, fontWeight: 'bold', marginBottom: 10}}>Arif</div>
-                    <div style={{marginBottom: 5}}>a.arif.r@gmail.com</div>
-                    <div>+971509018075</div>
+                    <div style={{fontSize: 23, fontWeight: 'bold', marginBottom: 10}}>{user.name}</div>
+                    <div style={{marginBottom: 5}}>{user.email}</div>
+                    <div>{user.phoneNo}</div>
                 </div>
                 <div style={{width: 80, height: 80, backgroundColor: '#CCC', borderRadius: 13}}>
                 </div>
@@ -49,7 +55,6 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
 }
 
 
-
 export function AccountPage(props: RouteProps) {
     useFocusListener(props.path, (isFocus) => {
         if (isFocus) {
@@ -57,6 +62,9 @@ export function AccountPage(props: RouteProps) {
         }
     });
     const containerRef = useRef<HTMLDivElement>(null);
+    const isSessionActive = useSessionIsActive();
+    const setUserProfile = useUserProfileSetter();
+    const navigate = useNavigate();
     return <Page style={{padding: 0, background: '#F2F2F2'}}>
         <Header title={''}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto'}}>
@@ -112,6 +120,13 @@ export function AccountPage(props: RouteProps) {
                     <CardRow icon={IoInformationCircleOutline} title={'About'}/>
                     <CardRow icon={RiDraftLine} title={'Send feedback'}/>
                     <CardRow icon={IoStarOutline} title={'Rate us on play store'}/>
+                    {isSessionActive &&
+                        <CardRow icon={IoLogOutOutline} title={'Log out'} onTap={() => {
+                            // here we need to perform logout
+                            setUserProfile(GuestProfile);
+                            navigate('delivery');
+                        }}/>
+                    }
                 </Card>
             </div>
         </div>

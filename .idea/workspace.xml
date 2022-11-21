@@ -8,10 +8,36 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.test.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/RestarooIcon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/RestarooIcon.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/restaroo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/restaroo.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/page-components/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/Card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Card.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/Input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/ItemIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/ItemIcon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/OtpInput.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/OtpInput.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/OtpInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/OtpInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/adjustColor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/adjustColor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/picker/CountryPicker.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/picker/PickerProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/picker/PickerProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/useAfterInit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/useAfterInit.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/utils/dateToDdMmmYyyy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/utils/dateToDdMmmYyyy.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/store/useStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/store/useStore.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/useAppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useAppContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Account.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Profile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/useUserProfile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/useUserProfile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/reportWebVitals.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/reportWebVitals.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/AccountPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AccountPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/LoginOrSignup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/LoginOrSignup.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/OtpPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OtpPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/Theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/Theme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/setupTests.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setupTests.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +107,8 @@
       <workItem from="1668759649164" duration="25097000" />
       <workItem from="1668823282000" duration="39028000" />
       <workItem from="1668916419909" duration="527000" />
-      <workItem from="1668921947678" duration="25811000" />
+      <workItem from="1668921947678" duration="25854000" />
+      <workItem from="1669031606139" duration="447000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>

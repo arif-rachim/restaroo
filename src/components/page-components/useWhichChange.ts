@@ -12,7 +12,7 @@ export function useWhichChange(deps?: DependencyList | undefined) {
     });
     if (unMatchedValue.length > 0) {
         console.group('Use Which Change Deps Triggered');
-        unMatchedValue.forEach(function forEach(c){
+        unMatchedValue.forEach(function forEach(c) {
             console.trace('Index', c.index, 'originalValue', c.prevVal, 'nextValue', c.nextVal);
         });
         console.groupEnd();

@@ -9,8 +9,8 @@ export interface KeyValue {
 const ROW_HEIGHT = 50;
 const VISIBLE_ROW = 7;
 
-export function Picker(props: { value?: number, onChange?: (param: number) => void, data: KeyValue[], width?: number | string,fontSize?:number|string }) {
-    const {value, data, width, onChange,fontSize} = props;
+export function Picker(props: { value?: number, onChange?: (param: number) => void, data: KeyValue[], width?: number | string, fontSize?: number | string }) {
+    const {value, data, width, onChange, fontSize} = props;
     const compKey = useId();
 
     useEffect(() => {
@@ -55,11 +55,11 @@ export function Picker(props: { value?: number, onChange?: (param: number) => vo
                 textAlign: 'center',
                 padding: '0px 5px',
                 boxSizing: 'border-box',
-                display:'flex',
+                display: 'flex',
                 height: ROW_HEIGHT,
                 scrollSnapAlign: 'start'
             }} id={`${compKey}container`}>
-                <div id={`${compKey}${item.key}`} >{item.value}</div>
+                <div id={`${compKey}${item.key}`}>{item.value}</div>
             </div>
         })}
         {Array.from({length: HALF_ROW}).map((_, index) => {

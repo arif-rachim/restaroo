@@ -19,7 +19,6 @@ const shellStyle: CSSProperties = {
 }
 
 const modalStyle: CSSProperties = {
-
     backdropFilter: 'blur(5px)',
     background: 'rgba(255,255,255,0.8)',
     width: '100%',
@@ -36,7 +35,7 @@ const dialogPanelStyle: CSSProperties = {
     minHeight: 0,
 }
 
-function Modal(props:{modalPanel:ReactElement}) {
+function Modal(props: { modalPanel: ReactElement }) {
     return <motion.div style={modalStyle} initial={{opacity: 0}} animate={{opacity: 1}}
                        exit={{opacity: 0}} transition={{ease: "easeInOut", duration: 0.3}}
                        key={'modal'}>
@@ -51,16 +50,18 @@ export default function AppShell() {
     const [modalPanel, setModalPanel] = useState<ReactElement | false>(false);
     const showPickerRef = useRef<ShowPickerFunction>();
     const store = useStore<AppState>({
-        user : GuestProfile
+        user: GuestProfile
     });
 
     return <AppContextProvider setModalPanel={setModalPanel} store={store} showPickerRef={showPickerRef}>
         <div style={shellStyle}>
             <RouterPageContainer/>
             <AnimatePresence>
-                {modalPanel && <Modal modalPanel={modalPanel} />}
+                {modalPanel && <Modal modalPanel={modalPanel}/>}
             </AnimatePresence>
         </div>
-        <PickerProvider ref={instance => {showPickerRef.current = instance?.showPicker}} />
+        <PickerProvider ref={instance => {
+            showPickerRef.current = instance?.showPicker
+        }}/>
     </AppContextProvider>
 }

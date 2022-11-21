@@ -15,7 +15,7 @@ function dateToCalendar(value: Date) {
     return {day, month, year, date: value};
 }
 
-function calendarToDate(props: { day: number, month: number, year: number,date:Date }) {
+function calendarToDate(props: { day: number, month: number, year: number, date: Date }) {
     const newDate = new Date(props.date.getTime());
     newDate.setFullYear(currentYear - props.year);
     newDate.setMonth(props.month);

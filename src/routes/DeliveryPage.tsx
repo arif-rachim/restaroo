@@ -14,7 +14,7 @@ import {CgProfile} from "react-icons/cg";
 import {useAppContext} from "../components/useAppContext";
 import {useNavigate} from "../components/useNavigate";
 import {useId, useRef} from "react";
-import {useStore,StoreValue} from "../components/store/useStore";
+import {StoreValue, useStore} from "../components/store/useStore";
 
 export function DeliveryPage(props: RouteProps) {
     useFocusListener(props.path, (isFocus) => {
@@ -27,7 +27,7 @@ export function DeliveryPage(props: RouteProps) {
     const componentId = useId();
     const titleRef = useRef<{ title: string, offsetY: number }[]>([]);
     const selectedTitle = useStore('');
-    return <Page style={{paddingTop: 130,paddingBottom:80, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
+    return <Page style={{paddingTop: 130, paddingBottom: 80, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
         const target = event.target;
         const scrollTop = (target as HTMLDivElement).scrollTop;
         const titleDiv = document.getElementById(`${componentId}-title`);
@@ -40,7 +40,7 @@ export function DeliveryPage(props: RouteProps) {
         invariant(vegButton);
         const titleArray = titleRef.current.filter(title => title.offsetY <= scrollTop);
         const title = titleArray[titleArray.length - 1].title;
-        if(selectedTitle.stateRef.current !== title){
+        if (selectedTitle.stateRef.current !== title) {
             selectedTitle.setState(title);
         }
         if (scrollTop > 10) {
@@ -63,7 +63,7 @@ export function DeliveryPage(props: RouteProps) {
         {menus.map((menu) => {
             return <Card key={menu.id} style={{marginBottom: 20}}>
                 <CardTitle title={`${menu.name} (${menu.productId.length})`} onMounted={(param) => {
-                    const value = {title:param.title,offsetY:param.dimension.y - 200};
+                    const value = {title: param.title, offsetY: param.dimension.y - 200};
                     titleRef.current.push(value);
                     return () => {
                         titleRef.current = titleRef.current.filter(p => p !== value);
@@ -197,13 +197,13 @@ export function DeliveryPage(props: RouteProps) {
                 </div>
             </div>
             <div id={`${componentId}-title`} style={{
-                display:'none',
+                display: 'none',
                 flexDirection: 'column',
                 boxShadow: '0 7px 10px -5px rgba(0,0,0,0.3)',
                 background: 'white',
             }}>
-                <StoreValue store={selectedTitle} property={'title'} selector={s => s} >
-                    <CardTitle />
+                <StoreValue store={selectedTitle} property={'title'} selector={s => s}>
+                    <CardTitle/>
                 </StoreValue>
             </div>
         </div>

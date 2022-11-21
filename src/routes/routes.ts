@@ -7,6 +7,7 @@ import {Routes} from "../components/useRoute";
 import {AccountPage} from "./AccountPage";
 import {LoginOrSignup} from "./LoginOrSignup";
 import {OtpPage} from "./OtpPage";
+import {ProfilePage} from "./profile/ProfilePage";
 
 
 export const routes: Routes = {
@@ -39,6 +40,10 @@ export const routes: Routes = {
     },
     'otp/$phoneNo': {
         component: OtpPage,
+        initial: 'right'
+    },
+    'profile/$profileId/$phoneNo': {
+        component: ProfilePage,
         initial: 'right'
     }
 }

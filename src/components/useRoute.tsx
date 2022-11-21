@@ -140,11 +140,12 @@ const mapsAreEqual = (m1: Map<string, any>, m2: Map<string, any>) => m1.size ===
 
 export type RouteElement = ComponentType<RouteProps>;
 export type InitialPosition = 'left' | 'right' | 'top' | 'bottom';
+
 interface MotionRouteElement {
     headerComponent?: RouteElement,
     component: RouteElement,
     footerComponent?: RouteElement,
-    initial : InitialPosition
+    initial: InitialPosition
 }
 
 export interface Routes {

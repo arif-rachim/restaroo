@@ -19,7 +19,7 @@ body, html, #root {
     height: 100%;
     overflow: auto;
     box-sizing: border-box;
-    color : #333;
+    color: #333;
     font-size: 13px;
 }
 
@@ -31,17 +31,21 @@ code {
 input {
     color: rgba(0, 0, 0, 0.8);
 }
-input[disabled]{
-    color:rgba(0,0,0,0.3) !important;
-    border : 1px solid rgba(0,0,0,0.3) !important;
+
+input[disabled] {
+    color: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(0, 0, 0, 0.3) !important;
 }
-button[disabled]{
-    color:rgba(0,0,0,0.3) !important;
-    border : 1px solid rgba(0,0,0,0.3) !important;
+
+button[disabled] {
+    color: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(0, 0, 0, 0.3) !important;
 }
+
 input:focus {
     outline: none;
 }
+
 .background-css {
     background: linear-gradient(270deg, #38bd9b, #3887bd);
     background-size: 400% 400%;
@@ -52,17 +56,37 @@ input:focus {
 }
 
 @-webkit-keyframes background {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
 }
+
 @-moz-keyframes background {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
 }
+
 @keyframes background {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
 }

@@ -3,9 +3,9 @@ import {RouteProps} from "../components/useRoute";
 import {useFocusListener} from "../components/RouterPageContainer";
 import {adjustThemeColor} from "../components/page-components/adjustThemeColor";
 
-export function DiningPage(props:RouteProps){
-    useFocusListener(props.path,(isFocus) => {
-        if(isFocus){
+export function DiningPage(props: RouteProps) {
+    useFocusListener(props.path, (isFocus) => {
+        if (isFocus) {
             adjustThemeColor('#FFF');
         }
     });

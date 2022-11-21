@@ -6,7 +6,7 @@ import {
     ReactElement,
     useCallback,
     useContext,
-    useMemo, useRef
+    useMemo
 } from "react";
 import {createStoreInitValue, Store} from "./store/useStore";
 import {AppState} from "./AppState";

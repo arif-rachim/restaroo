@@ -6,7 +6,10 @@ import {motion} from "framer-motion";
 import {TimePicker} from "./TimePicker";
 import {IoCloseCircleOutline} from "react-icons/io5";
 import invariant from "tiny-invariant";
-import {CountryPicker} from "./CountryPicker";
+
+import {createPicker} from "./createPicker";
+import {Country, countryList} from "./dataprovider/CountryList";
+import {Gender, genderList} from "./dataprovider/GenderList";
 
 
 export type ShowPickerFunction = (control: PickerOptions, value: any) => Promise<any>;
@@ -15,11 +18,24 @@ const owner = (match: PickerOptions, control?: PickerOptions, param?: any) => {
     return control === match ? param : undefined
 }
 const NO_PICKER = {control: undefined, value: undefined, onChange: undefined};
+const CountryPicker = createPicker<Country>({
+    dataProvider: countryList,
+    dataToLabel: s => `${s?.name} (${s?.dial_code})`,
+    dataToValue: s => s.dial_code,
+    valueToData: (value, data) => data.dial_code === value
+});
+const GenderPicker = createPicker<Gender>({
+    dataProvider: genderList,
+    dataToLabel: s => `${s?.name}`,
+    dataToValue: d => d.name,
+    valueToData: (value, data) => data.name === value
+});
 
 export const PickerMap = {
     date: DatePicker,
     time: TimePicker,
-    country : CountryPicker
+    country: CountryPicker,
+    gender: GenderPicker
 }
 
 export type PickerOptions = keyof typeof PickerMap;
@@ -42,11 +58,13 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
         return {showPicker}
     }, [store]);
     const show = useStoreValue(store, param => param.control !== undefined)
-    function close(){
+
+    function close() {
         const current = store.stateRef.current;
         invariant(current.onChange);
         current.onChange(current.value);
     }
+
     return <motion.div style={{
         height: '100%',
         position: 'absolute',
@@ -66,17 +84,18 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
                     <StoreValue store={store} property={['value', 'onChange']} selector={[
                         s => owner(key as PickerOptions, s.control, s.value),
                         s => owner(key as PickerOptions, s.control, s.onChange),
-                    ]} >
+                    ]}>
                         <Picker/>
                     </StoreValue>
                 </PickerContainer>
             </StoreValue>
         })}
-        <motion.div style={{right:20,position:'absolute',fontSize:40,color:'white'
-        }} animate={{top:show ? 20 : -40}} initial={{top:-40}} whileTap={{scale:0.9}} onTap={() => {
+        <motion.div style={{
+            right: 20, position: 'absolute', fontSize: 40, color: 'white'
+        }} animate={{top: show ? 20 : -40}} initial={{top: -40}} whileTap={{scale: 0.9}} onTap={() => {
             close();
         }}>
-            <IoCloseCircleOutline />
+            <IoCloseCircleOutline/>
         </motion.div>
     </motion.div>
 })
@@ -87,7 +106,7 @@ function PickerContainer(props: PropsWithChildren<{ show: boolean }>) {
         display: 'flex',
         flexDirection: 'column',
         position: 'absolute'
-    }} initial={{bottom: '-100%'}} animate={{bottom: show ? 0 : '-100%'}} transition={{bounce:0}}>
+    }} initial={{bottom: '-100%'}} animate={{bottom: show ? 0 : '-100%'}} transition={{bounce: 0}}>
         {props.children}
     </motion.div>
 }

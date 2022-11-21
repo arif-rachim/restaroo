@@ -10,7 +10,7 @@ export type Props = {
     onChange: (value: string) => void;
 };
 
-export function OtpInput(props: { value: string, valueLength: number, onChange: (newVal: string) => void, disabled: boolean }) {
+export function OtpInput(props: { value: string, valueLength: number, onChange: (newVal: string) => void, disabled?: boolean }) {
     const {value, valueLength, onChange, disabled} = props;
     const valueItems = useMemo(() => {
         const valueArray = value.split('');

@@ -1,6 +1,5 @@
 import {
     cloneElement,
-    ComponentType,
     DependencyList,
     MutableRefObject,
     PropsWithChildren,
@@ -116,48 +115,12 @@ export function useStoreValue<T, S>(store: Store<T>, selector: (param: T) => S, 
     return value;
 }
 
-/**
- * LEGACY CODE USE STORE VALUE
- export function useStoreValue<T, S>(store: Store<T>, selector: (param: T) => S, deps?: DependencyList | undefined) {
-    const [value, setValue] = useState<S>(() => selector(store.stateRef.current));
-    const {addListener, stateRef} = store;
-    const propsRef = useRef({selector});
-    propsRef.current = {selector};
-    useEffect(() => {
-        return addListener((nextState: any) => {
-            const {selector} = propsRef.current;
-            setValue(selector(nextState));
-        });
-        // eslint-disable-next-line
-    }, deps);
-
-    // eslint-disable-next-line
-    useEffect(() => setValue(current => {
-        const next = propsRef.current.selector(stateRef.current);
-        if (isMatch(next, current)) {
-            return current;
-        }
-        return next;
-        // eslint-disable-next-line
-    }), deps);
-
-    return value;
-}
- */
 
 function isFunction(functionToCheck: any) {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
 
 type Selector<T, S> = (param: T) => S;
-
-interface StoreValueProps<T, S, PropsType> {
-    store: Store<T>,
-    selector: (Selector<T, S> | Selector<T, S>[]),
-    property: (string | string[]),
-    component: ComponentType<PropsType>
-}
-
 
 interface StoreValueInjectorProps<T, S> {
     store: Store<T>,

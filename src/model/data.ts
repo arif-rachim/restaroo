@@ -672,29 +672,29 @@ export const products: Product[] = [
         imageAddress: '/assets/product/bir-pletok-betawi.jpeg',
         config: [
             {
-                name : 'Hot or Cold',
-                maximumSelection : 1,
-                required : true,
-                options : [
+                name: 'Hot or Cold',
+                maximumSelection: 1,
+                required: true,
+                options: [
                     {
-                        name : 'Cold',
-                        isVegan : true,
-                        price : 0
+                        name: 'Cold',
+                        isVegan: true,
+                        price: 0
                     },
                     {
-                        name : 'Less Ice',
-                        isVegan : true,
-                        price : 0
+                        name: 'Less Ice',
+                        isVegan: true,
+                        price: 0
                     },
                     {
-                        name : 'No Ice',
-                        isVegan : true,
-                        price : 0
+                        name: 'No Ice',
+                        isVegan: true,
+                        price: 0
                     },
                     {
-                        name : 'Hot',
-                        isVegan : true,
-                        price : 0
+                        name: 'Hot',
+                        isVegan: true,
+                        price: 0
                     }
                 ]
             }
@@ -712,29 +712,29 @@ export const products: Product[] = [
         imageAddress: '/assets/product/es-teler-rempah.jpeg',
         config: [
             {
-                name : 'Hot or Cold',
-                maximumSelection : 1,
-                required : true,
-                options : [
+                name: 'Hot or Cold',
+                maximumSelection: 1,
+                required: true,
+                options: [
                     {
-                        name : 'Cold',
-                        isVegan : true,
-                        price : 0
+                        name: 'Cold',
+                        isVegan: true,
+                        price: 0
                     },
                     {
-                        name : 'Less Ice',
-                        isVegan : true,
-                        price : 0
+                        name: 'Less Ice',
+                        isVegan: true,
+                        price: 0
                     },
                     {
-                        name : 'No Ice',
-                        isVegan : true,
-                        price : 0
+                        name: 'No Ice',
+                        isVegan: true,
+                        price: 0
                     },
                     {
-                        name : 'Hot',
-                        isVegan : true,
-                        price : 0
+                        name: 'Hot',
+                        isVegan: true,
+                        price: 0
                     }
                 ]
             }
