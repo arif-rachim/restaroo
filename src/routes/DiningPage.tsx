@@ -4,10 +4,8 @@ import {useFocusListener} from "../components/RouterPageContainer";
 import {adjustThemeColor} from "../components/page-components/adjustThemeColor";
 
 export function DiningPage(props: RouteProps) {
-    useFocusListener(props.path, (isFocus) => {
-        if (isFocus) {
-            adjustThemeColor('#FFF');
-        }
+    useFocusListener(props.path, () => {
+        adjustThemeColor('#FFF');
     });
     return <Page>
         <div style={{fontSize: 20, fontWeight: 'bold'}}>

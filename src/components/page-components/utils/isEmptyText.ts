@@ -12,10 +12,8 @@ export function isEmptyText(text: any) {
         if (text === '') {
             return true;
         }
-        if (text.trim() === '') {
-            return true;
-        }
-        return false;
+        return text.trim() === '';
+
     }
     return true;
 }

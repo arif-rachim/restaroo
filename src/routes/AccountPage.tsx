@@ -56,10 +56,8 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
 
 
 export function AccountPage(props: RouteProps) {
-    useFocusListener(props.path, (isFocus) => {
-        if (isFocus) {
-            adjustThemeColor('#F2F2F2');
-        }
+    useFocusListener(props.path, () => {
+        adjustThemeColor('#F2F2F2');
     });
     const containerRef = useRef<HTMLDivElement>(null);
     const isSessionActive = useSessionIsActive();
@@ -68,9 +66,7 @@ export function AccountPage(props: RouteProps) {
     return <Page style={{padding: 0, background: '#F2F2F2'}}>
         <Header title={''}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto'}}>
-
             <ProfilePanel containerRef={containerRef}/>
-
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -88,7 +84,6 @@ export function AccountPage(props: RouteProps) {
                     containerRef.current.style.zIndex = '1';
                     containerRef.current.style.transition = 'box-shadow 300ms ease-in-out';
                 }
-
             }}>
                 <div style={{display: 'flex', marginBottom: 20}}>
                     <Card style={{marginRight: 10, flexGrow: 1, alignItems: 'center'}}>

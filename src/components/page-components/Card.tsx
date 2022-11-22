@@ -22,15 +22,12 @@ export const Card = forwardRef(function Card(props: PropsWithChildren<{ style?: 
 
 export function CardRow(props: { icon: IconType, title: string, onTap?: () => void }) {
     const {icon: Icon, title, onTap} = props;
-    return <div style={{display: 'flex', alignItems: 'center', margin: '10px 0px'}}>
+    return <motion.div style={{display: 'flex', alignItems: 'center', margin: '10px 0px'}} whileTap={{scale: 0.95}}
+                       onTap={onTap}>
         <div style={{fontSize: 30, marginLeft: 20}}>
             <Icon/>
         </div>
-        <motion.div
-            style={{fontSize: 16, marginBottom: 3, marginLeft: 10, flexGrow: 1, position: 'relative', display: 'flex'}}
-            whileTap={{scale: 0.95}}
-            onTap={onTap}
-        >
+        <div style={{fontSize: 16, marginBottom: 3, marginLeft: 10, flexGrow: 1, position: 'relative', display: 'flex'}}>
             <div style={{flexGrow: 1}}>
                 {title}
             </div>
@@ -38,8 +35,8 @@ export function CardRow(props: { icon: IconType, title: string, onTap?: () => vo
                 <IoChevronForward/>
             </div>
             <div style={{position: 'absolute', bottom: -15, width: '100%', borderBottom: '1px solid rgba(0,0,0,0.1)'}}/>
-        </motion.div>
-    </div>;
+        </div>
+    </motion.div>;
 }
 
 export function CardTitle(props: { title?: string, onMounted?: (params: { title: string, dimension: DOMRect }) => () => void }) {

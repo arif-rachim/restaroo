@@ -4,12 +4,6 @@ import './OtpInput.css';
 
 const RE_DIGIT = new RegExp(/^\d+$/);
 
-export type Props = {
-    value: string;
-    valueLength: number;
-    onChange: (value: string) => void;
-};
-
 export function OtpInput(props: { value: string, valueLength: number, onChange: (newVal: string) => void, disabled?: boolean }) {
     const {value, valueLength, onChange, disabled} = props;
     const valueItems = useMemo(() => {

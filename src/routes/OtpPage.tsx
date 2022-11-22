@@ -22,13 +22,11 @@ export function OtpPage(route: RouteProps) {
     const navigate = useNavigate();
     const [isBusy, setIsBusy] = useState(false);
     const setUserProfile = useUserProfileSetter();
-    useFocusListener(route.path, (isFocus) => {
-        if (isFocus) {
-            store.setState(old => ({
-                otp: '', countdown: 20, errorMessage: ''
-            }));
-            setIsBusy(false);
-        }
+    useFocusListener(route.path, () => {
+        store.setState(old => ({
+            otp: '', countdown: 20, errorMessage: ''
+        }));
+        return () => setIsBusy(false);
     });
 
     useStoreListener(store, s => s.otp, async (next, prev) => {

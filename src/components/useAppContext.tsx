@@ -1,6 +1,5 @@
 import {
     createContext,
-    Dispatch,
     MutableRefObject,
     PropsWithChildren,
     ReactElement,
@@ -28,6 +27,7 @@ interface AppContextType {
     appDimension: Dimension,
     appType: AppType,
     showModal: <T>(factoryFunction: FactoryFunction<T>) => Promise<T>,
+    showSlidePanel: <T>(factoryFunction: FactoryFunction<T>) => Promise<T>,
     showPicker: PickerFunction,
     store: Store<AppState>,
 }
@@ -48,38 +48,51 @@ const AppContext = createContext<AppContextType>({
         appType: AppType.Mobile,
         showModal: Nothing,
         showPicker: Nothing,
+        showSlidePanel:Nothing,
         store: createStoreInitValue({user: GuestProfile})
     }
 );
 
-type FactoryFunction<T> = (closePanel: (val: T) => void) => ReactElement;
-type PickerFunction = <T>(props: { picker: PickerOptions, value: T }) => Promise<T>;
+export type FactoryFunction<T> = (closePanel: (val: T) => void) => ReactElement;
+export type PickerFunction = <T>(props: { picker: PickerOptions, value: T }) => Promise<T>;
 
 
 export function AppContextProvider<State extends AppState>(props: PropsWithChildren<{
-    setModalPanel: Dispatch<ReactElement | false>,
+    panelStore:Store<{modalPanel:ReactElement | false,slidePanel:ReactElement | false}>
     store: Store<State>,
     showPickerRef: MutableRefObject<ShowPickerFunction | undefined>
 }>) {
 
     const window = useContext(WindowSizeContext);
-    const {setModalPanel, store, showPickerRef} = props;
+    const {panelStore, store, showPickerRef} = props;
 
     const showModal = useCallback((factory: FactoryFunction<any>) => {
         return new Promise<any>(resolve => {
             const closePanel = (value: any) => {
-                setModalPanel(false);
+                panelStore.setState(old => ({...old,modalPanel:false}))
                 resolve(value);
             }
             const element = factory(closePanel);
-            setModalPanel(element)
+            panelStore.setState(old => ({...old,modalPanel:element}))
         })
-    }, [setModalPanel]);
+    }, [panelStore]);
+
+    const showSlidePanel = useCallback((factory: FactoryFunction<any>) => {
+        return new Promise<any>(resolve => {
+            const closePanel = (value: any) => {
+                panelStore.setState(old => ({...old,slidePanel:false}))
+                resolve(value);
+            }
+            const element = factory(closePanel);
+            panelStore.setState(old => ({...old,slidePanel:element}))
+        })
+    }, [panelStore]);
 
     const showPicker: PickerFunction = useCallback((props: { picker: PickerOptions, value: any }) => {
         invariant(showPickerRef.current);
         return showPickerRef.current.call(null, props.picker, props.value);
     }, [showPickerRef]);
+
     const contextValue = useMemo(() => {
         const appDimension: Dimension = window;
 
@@ -96,8 +109,8 @@ export function AppContextProvider<State extends AppState>(props: PropsWithChild
             appType = AppType.Laptop
         }
 
-        return {appDimension, appType, showModal, store, showPicker}
-    }, [showModal, showPicker, store, window]);
+        return {appDimension, appType, showModal, store, showPicker,showSlidePanel}
+    }, [showModal,showSlidePanel, showPicker, store, window]);
 
     return <AppContext.Provider value={(contextValue as any)}>
         {props.children}

@@ -1,6 +1,8 @@
 import {RouteProps, useRoute} from "./useRoute";
 import {createContext, FunctionComponent, useContext, useEffect, useMemo, useRef} from "react";
 import {motion, Variants} from "framer-motion";
+import {isFunction} from "./page-components/utils/isFunction";
+import {isPromise} from "./page-components/utils/isPromise";
 
 
 const variants: Variants = {
@@ -123,15 +125,31 @@ interface PathAbleComponent {
 }
 
 const CurrentActivePathContext = createContext('');
-
-export function useFocusListener(path: string, callback: (isFocus: boolean) => void) {
+type nothing = () => void;
+export function useFocusListener(path: string, callback: () => (Promise<nothing|void>|nothing|void) ) {
     const currentActivePath = useContext(CurrentActivePathContext);
     const isFocused = currentActivePath === path;
     useEffect(() => {
-        callback(isFocused);
+        let result:any;
+        if(isFocused){
+            result = callback();
+        }
+        return () => {
+            if(isPromise(result)){
+                result.then((callback:any) => {
+                    if(isFunction(callback)){
+                        callback();
+                    }
+                })
+            }
+            if(isFunction(result)){
+                result();
+            }
+        }
         // eslint-disable-next-line
     }, [isFocused])
 
 }
+
 
 

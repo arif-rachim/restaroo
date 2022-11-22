@@ -17,10 +17,8 @@ import {useId, useRef} from "react";
 import {StoreValue, useStore} from "../components/store/useStore";
 
 export function DeliveryPage(props: RouteProps) {
-    useFocusListener(props.path, (isFocus) => {
-        if (isFocus) {
-            adjustThemeColor('#F2F2F2');
-        }
+    useFocusListener(props.path, () => {
+        adjustThemeColor('#F2F2F2');
     });
     const {appDimension} = useAppContext();
     const navigate = useNavigate();

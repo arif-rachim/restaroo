@@ -7,7 +7,7 @@ import {Routes} from "../components/useRoute";
 import {AccountPage} from "./AccountPage";
 import {LoginOrSignup} from "./LoginOrSignup";
 import {OtpPage} from "./OtpPage";
-import {ProfilePage} from "./profile/ProfilePage";
+import {ProfilePage} from "./ProfilePage";
 import {AddressBookPage} from "./AddressBookPage";
 import {DeliveryLocationPage} from "./DeliveryLocationPage";
 

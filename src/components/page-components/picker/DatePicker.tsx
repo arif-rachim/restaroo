@@ -4,7 +4,7 @@ import {Button} from "../Button";
 import {IoCalendar} from "react-icons/io5";
 import {ButtonTheme} from "../../../routes/Theme";
 import {KeyValue, Picker} from "./Picker";
-import {useAfterInit} from "../useAfterInit";
+import {useAfterInit} from "../utils/useAfterInit";
 
 const currentYear = new Date().getFullYear();
 

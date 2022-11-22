@@ -1,5 +1,5 @@
 import {StoreValue, useStore} from "../../store/useStore";
-import {useAfterInit} from "../useAfterInit";
+import {useAfterInit} from "../utils/useAfterInit";
 import {useAppContext} from "../../useAppContext";
 import {Picker} from "./Picker";
 import {Button} from "../Button";
