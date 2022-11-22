@@ -24,6 +24,7 @@ import produce from "immer";
 import {isEmptyText} from "../components/page-components/utils/isEmptyText";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
 import {Address} from "../model/Address";
+import {SkeletonBox} from "../components/page-components/SkeletonBox";
 
 export const EMPTY_ADDRESS: Address = {
     areaOrStreetName: '',
@@ -329,8 +330,12 @@ export function DeliveryLocationPage(props: RouteProps) {
             <div style={{display: 'flex', flexGrow:1}}>
                 <IoLocation fontSize={25} style={{marginRight: 10}}/>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
-                    <div style={{fontSize: 16, fontWeight: 'bold', marginBottom: 5}}>{buildingName}</div>
-                    <div>{addressName}</div>
+                    <SkeletonBox skeletonVisible={buildingName === ''} style={{height:13,marginBottom:5,marginRight:10}}>
+                        <div style={{fontSize: 16, fontWeight: 'bold', marginBottom: 5}}>{buildingName}</div>
+                    </SkeletonBox>
+                    <SkeletonBox skeletonVisible={addressName === ''} style={{height:13,marginRight:10}}>
+                        <div>{addressName}</div>
+                    </SkeletonBox>
                 </div>
                 <div>
                     Change

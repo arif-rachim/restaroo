@@ -10,6 +10,7 @@ import {OtpPage} from "./OtpPage";
 import {ProfilePage} from "./ProfilePage";
 import {AddressBookPage} from "./AddressBookPage";
 import {DeliveryLocationPage} from "./DeliveryLocationPage";
+import {HomePage} from "./HomePage";
 
 
 export const routes: Routes = {
@@ -54,6 +55,10 @@ export const routes: Routes = {
     },
     'delivery-location' : {
         component : DeliveryLocationPage,
+        initial : 'right'
+    },
+    'home':{
+        component : HomePage,
         initial : 'right'
     }
 }

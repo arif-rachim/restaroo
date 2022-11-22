@@ -14,13 +14,11 @@ import {Image} from "../components/page-components/Image";
 import restaroo from "../assets/arif-rachim-restaroo.png";
 import {useNavigate} from "../components/useNavigate";
 import invariant from "tiny-invariant";
-import {countryList} from "../components/page-components/picker/dataprovider/CountryList";
 
-const defaultCountry = countryList.find(c => c.code === 'AE');
 
 export function LoginOrSignup(route: RouteProps) {
     const appContext = useAppContext();
-    const countryStore = useStore(defaultCountry);
+    const countryStore = useStore('+971');
     const phoneNumberStore = useStore({value: '', error: ''});
     const storeValid = useCallback(() => {
         if (phoneNumberStore.stateRef.current.value === '') {
@@ -104,7 +102,7 @@ export function LoginOrSignup(route: RouteProps) {
                                                       countryStore.setState(country);
                                                   }}>
                             <div style={{marginTop: 2, marginRight: 5}}><IoChevronDown/></div>
-                            <StoreValue store={countryStore} selector={s => s?.dial_code} property={'value'}>
+                            <StoreValue store={countryStore} selector={s => s} property={'value'}>
                                 <Title/>
                             </StoreValue>
                         </motion.div>} placeholder={'Enter Phone Number'} titleWidth={90} titlePosition={'left'}
@@ -123,7 +121,7 @@ export function LoginOrSignup(route: RouteProps) {
                     // lets continue validate phone here
                     // first we are sending the otp to user
                     invariant(countryStore.stateRef.current);
-                    navigate(`otp/${countryStore.stateRef.current.dial_code}${phoneNumberStore.stateRef.current.value}`)
+                    navigate(`otp/${countryStore.stateRef.current}${phoneNumberStore.stateRef.current.value}`)
                 }
             }} theme={ButtonTheme.danger} icon={IoLogInOutline} style={{marginBottom: 30}}/>
             <div style={{
