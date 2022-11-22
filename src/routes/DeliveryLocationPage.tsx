@@ -15,7 +15,7 @@ import {isNullOrUndefined} from "../components/page-components/utils/isNullOrUnd
 import {IoLocation, IoSaveOutline} from "react-icons/io5";
 import {AnimatePresence, motion} from "framer-motion";
 import {Visible} from "../components/page-components/Visible";
-import {useCurrentPosition} from "../components/page-components/utils/useCurrentPosition";
+import {getLocationAddress, useCurrentPosition} from "../components/page-components/utils/useCurrentPosition";
 import {Button} from "../components/page-components/Button";
 import {Input} from "../components/page-components/Input";
 import {MdCancel} from "react-icons/md";
@@ -23,19 +23,9 @@ import {useStore, StoreValue} from "../components/store/useStore";
 import produce from "immer";
 import {isEmptyText} from "../components/page-components/utils/isEmptyText";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
+import {Address} from "../model/Address";
 
-interface Address {
-    id: string,
-    location: 'Home' | 'Work' | 'Hotel' | string,
-    houseOrFlatNo: string,
-    buildingOrPremiseName: string,
-    areaOrStreetName: string,
-    landmark: string,
-    lat: number,
-    lng: number
-}
-
-const EMPTY_ADDRESS: Address = {
+export const EMPTY_ADDRESS: Address = {
     areaOrStreetName: '',
     buildingOrPremiseName: '',
     houseOrFlatNo: '',
@@ -108,8 +98,9 @@ function LocationSelector(props: { value?: string, onChange: (value: string) => 
     </div></AnimatePresence>;
 }
 
-function AddressSlidePanel(props: { closePanel: (val: Address|false) => void,lat?:number, lng?:number }) {
-    const {closePanel,lat,lng} = props;
+function AddressSlidePanel(props: { closePanel: (val: Address|false) => void,address?:Address }) {
+    let {closePanel,address} = props;
+    address = address ?? EMPTY_ADDRESS;
     const store = useStore<Address & {
         errors: {
             areaOrStreetName: string,
@@ -117,7 +108,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address|false) => void,lat
             houseOrFlatNo: string,
             location: string,
         }
-    }>({...EMPTY_ADDRESS,lat:lat??0,lng:lng??0, errors: {areaOrStreetName: '', buildingOrPremiseName: '', houseOrFlatNo: '', location: ''}});
+    }>({...address, errors: {areaOrStreetName: '', buildingOrPremiseName: '', houseOrFlatNo: '', location: ''}});
     const isValid = useCallback(() => {
         store.setState(produce(s => {
             s.errors.areaOrStreetName = isEmptyText(s.areaOrStreetName) ? 'Area or Street name is required' : '';
@@ -219,7 +210,11 @@ export function DeliveryLocationPage(props: RouteProps) {
     const mapPopupId = `${id}-popup`;
 
     const {appDimension, showSlidePanel} = useAppContext();
-    const [geolocationPosition, setGeoLocationPosition] = useState<GeolocationPosition | undefined>();
+    const mapIdHeightRef = useRef(appDimension.height - 37 - 122);
+    const [address, setAddress] = useState<Address | undefined>();
+    useEffect(() => {
+        mapIdHeightRef.current = document.getElementById(mapId)?.offsetHeight ?? mapIdHeightRef.current;
+    },[mapId]);
     const mapRef = useRef<Map>();
     usePatchBugInLeaflet();
     useEffect(() => {
@@ -243,22 +238,29 @@ export function DeliveryLocationPage(props: RouteProps) {
             }
         }
 
-        function onDragMoveEnd() {
+        async function onDragMoveEnd() {
             const popup = document.getElementById(mapPopupId);
             if (popup) {
                 popup.style.opacity = '1';
+                const latLon = map.getCenter();
+                const address = await getLocationAddress(latLon);
+                setAddress(produce((s:Address|undefined) => {
+                    if(s){
+                        s.lat = latLon.lat;
+                        s.lng = latLon.lng;
+                        s.buildingOrPremiseName = address.name;
+                        s.areaOrStreetName = address.displayName.replace(address.name+', ','');
+                    }
+                }));
             }
-
         }
-
         map.addEventListener('dragend', onDragEnd);
         map.addEventListener('move', onDragMove);
         map.addEventListener('moveend', onDragMoveEnd)
         const tileLayer = createTile('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+
         });
         tileLayer.addTo(map);
-
         return () => {
             map.removeEventListener('dragend', onDragEnd);
             map.removeEventListener('move', onDragMove);
@@ -270,15 +272,17 @@ export function DeliveryLocationPage(props: RouteProps) {
     }, [id]);
     const getCurrentPosition = useCurrentPosition();
     useFocusListener(props.path, async () => {
-        if (isNullOrUndefined(geolocationPosition)) {
+        if (isNullOrUndefined(address)) {
             const {position, error} = await getCurrentPosition(mapRef.current);
             if (error) {
                 console.warn(error);
                 return;
             }
-            setGeoLocationPosition(position);
+            setAddress(position);
         }
-    })
+    });
+    const buildingName = ((address?.buildingOrPremiseName??'').substring(0,25)+((address?.buildingOrPremiseName ?? '').length > 25 ? '...':''));
+    const addressName = ((address?.areaOrStreetName??'').substring(0,65)+((address?.areaOrStreetName??'').length > 65 ?'...':''));
     return <Page>
         <Header title={'Choose delivery location'}/>
         <div style={{
@@ -290,13 +294,13 @@ export function DeliveryLocationPage(props: RouteProps) {
         }}>
             <div id={mapId}
                  style={{height: '100%', width: appDimension.width, display: 'flex', flexDirection: 'column'}}/>
-            <Visible if={!isNullOrUndefined(geolocationPosition)}>
+            <Visible if={!isNullOrUndefined(address)}>
                 <motion.div style={{
                     width: 40,
                     height: 40,
                     position: 'absolute',
                     left: (appDimension.width / 2) - 20,
-                    top: ((appDimension.height - 37.5) / 2) - 40,
+                    top: ((mapIdHeightRef.current) / 2) - 40,
                 }} initial={{y: -100}} animate={{y: 0}} transition={{duration: 2}}>
                     <IoLocation style={{fontSize: 40, color: blue}}/>
                     <div style={{
@@ -321,22 +325,22 @@ export function DeliveryLocationPage(props: RouteProps) {
                 </motion.div>
             </Visible>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', padding: '10px 20px'}}>
-            <div style={{display: 'flex', marginBottom: 20}}>
+        <div style={{display: 'flex', flexDirection: 'column', padding: '10px 20px',height:122,flexGrow:0,flexShrink:0,boxSizing:'border-box'}}>
+            <div style={{display: 'flex', flexGrow:1}}>
                 <IoLocation fontSize={25} style={{marginRight: 10}}/>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
-                    <div style={{fontSize: 16, fontWeight: 'bold', marginBottom: 5}}>Zayed Military City</div>
-                    <div>Al Ajban</div>
+                    <div style={{fontSize: 16, fontWeight: 'bold', marginBottom: 5}}>{buildingName}</div>
+                    <div>{addressName}</div>
                 </div>
                 <div>
                     Change
                 </div>
             </div>
             <Button title={'Enter complete address'} onTap={async () => {
-                let address = await showSlidePanel(closePanel => {
-                    return <AddressSlidePanel closePanel={closePanel} lat={geolocationPosition?.coords.latitude} lng={geolocationPosition?.coords.longitude}/>
+                let completeAddress = await showSlidePanel(closePanel => {
+                    return <AddressSlidePanel closePanel={closePanel} address={address}/>
                 });
-                if(address === false){
+                if(completeAddress === false){
                     return;
                 }
                 window.history.back();

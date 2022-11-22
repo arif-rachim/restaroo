@@ -1,5 +1,5 @@
 import React, {createContext, useMemo} from 'react';
-
+import RestarooIcon from "./assets/RestarooIcon.svg";
 
 import AppShell from "./components/AppShell";
 
@@ -27,7 +27,7 @@ function App() {
             <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center'}}>
                 <div style={{margin: 60, marginTop: 0, display: 'flex', flexDirection: 'column'}}>
                     <div style={{fontSize: 55}}>
-
+                        <img src={RestarooIcon} alt={'Restaroo logo'} width={200}/>
                     </div>
                     <div>
                         Design and Developed by Arif Rachim 2022

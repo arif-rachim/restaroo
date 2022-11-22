@@ -13,8 +13,38 @@ import {motion} from "framer-motion";
 import {CgProfile} from "react-icons/cg";
 import {useAppContext} from "../components/useAppContext";
 import {useNavigate} from "../components/useNavigate";
-import {useId, useRef} from "react";
+import {useEffect, useId, useRef} from "react";
 import {StoreValue, useStore} from "../components/store/useStore";
+import {useCurrentPosition} from "../components/page-components/utils/useCurrentPosition";
+import {Address} from "../model/Address";
+import {EMPTY_ADDRESS} from "./DeliveryLocationPage";
+import {SkeletonBox} from "../components/page-components/SkeletonBox";
+
+function AddressHeader(props: { address?: Address }) {
+    let {address} = props;
+    address = address ?? EMPTY_ADDRESS;
+    let addressText = address.areaOrStreetName;
+    addressText = addressText.substring(0, 40) + (addressText.length > 40 ? '...' : '');
+    return <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto', width: '100%'}}>
+        <div style={{display: 'flex', alignItems: 'flex-end'}}>
+            <SkeletonBox skeletonVisible={address.buildingOrPremiseName === ''} style={{height:13,width:100,marginBottom:3}}>
+                <div style={{fontWeight: 'bold', fontSize: 16, marginBottom: 3}}>{address.buildingOrPremiseName}</div>
+            </SkeletonBox>
+            <div style={{marginLeft: 3, marginBottom: 2}}>
+                <IoChevronDown/>
+            </div>
+        </div>
+        <SkeletonBox skeletonVisible={addressText === ''} style={{height:15}}>
+            <div style={{
+                textOverflow: 'ellipsis',
+                width: '100%',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden'
+            }}>{addressText}
+            </div>
+        </SkeletonBox>
+    </div>
+}
 
 export function DeliveryPage(props: RouteProps) {
     useFocusListener(props.path, () => {
@@ -25,6 +55,17 @@ export function DeliveryPage(props: RouteProps) {
     const componentId = useId();
     const titleRef = useRef<{ title: string, offsetY: number }[]>([]);
     const selectedTitle = useStore('');
+    const getCurrentPosition = useCurrentPosition();
+    const positionStore = useStore<Address>(EMPTY_ADDRESS);
+    useEffect(() => {
+        (async () => {
+            const {position} = await getCurrentPosition();
+            if (position) {
+                positionStore.setState(position);
+            }
+        })();
+        // eslint-disable-next-line
+    }, [])
     return <Page style={{paddingTop: 130, paddingBottom: 80, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
         const target = event.target;
         const scrollTop = (target as HTMLDivElement).scrollTop;
@@ -143,21 +184,9 @@ export function DeliveryPage(props: RouteProps) {
                 <div style={{fontSize: 30, marginRight: 5}}>
                     <MdPlace/>
                 </div>
-                <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto', width: '100%'}}>
-                    <div style={{display: 'flex', alignItems: 'flex-end'}}>
-                        <div style={{fontWeight: 'bold', fontSize: 16, marginBottom: 3}}>Home</div>
-                        <div style={{marginLeft: 3, marginBottom: 2}}>
-                            <IoChevronDown/>
-                        </div>
-                    </div>
-                    <div style={{
-                        textOverflow: 'ellipsis',
-                        width: '100%',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden'
-                    }}>Marina Diamond 5, Flat 806, Dubai Marina, Dubai Marina
-                    </div>
-                </div>
+                <StoreValue store={positionStore} selector={p => p} property={'address'}>
+                    <AddressHeader/>
+                </StoreValue>
                 <motion.div style={{fontSize: 35, width: 35, flexShrink: 0, marginLeft: 5}} whileTap={{scale: 0.9}}
                             onTap={() => {
                                 navigate('account');

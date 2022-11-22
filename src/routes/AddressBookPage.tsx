@@ -8,6 +8,7 @@ import {red} from "./Theme";
 import {motion} from "framer-motion";
 import {MdDelete, MdEdit} from "react-icons/md";
 import {useNavigate} from "../components/useNavigate";
+import {nanoid} from "nanoid";
 
 export function AddressBookPage() {
     const {isLoading, result: addresses} = useAddresses();
@@ -33,14 +34,14 @@ export function AddressBookPage() {
                 {addresses.map(address => {
                     return <div
                         style={{display: 'flex', alignItems: 'center', borderBottom: '1px solid rgba(0,0,0,0.1)'}}
-                        key={address.name}>
+                        key={address.id}>
                         <div style={{padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                             <IoHomeOutline style={{fontSize: 20}}/>
                             <div style={{whiteSpace: 'nowrap', fontSize: 11}}>38 m</div>
                         </div>
                         <div style={{display: 'flex', flexDirection: 'column'}}>
-                            <div style={{lineHeight: 2}}>{address.name}</div>
-                            <div style={{lineHeight: 1.3}}>{address.address}</div>
+                            <div style={{lineHeight: 2}}>{address.buildingOrPremiseName}</div>
+                            <div style={{lineHeight: 1.3}}>{address.areaOrStreetName}</div>
                             <div style={{display: 'flex', margin: '10px 0px'}}>
                                 <motion.div style={{display: 'flex', alignItems: 'center'}} whileTap={{scale: 0.95}}>
                                     <MdEdit style={{color: red, marginRight: 5}}/>
@@ -78,11 +79,14 @@ function fetchAddresses(): Promise<Address[]> {
         setTimeout(() => {
             resolve([
                 {
-                    name: 'Home',
-                    address: 'Marina Diamond 5, Flat 806, Dubai Marina, Dubai Marina',
+                    location: 'Home',
+                    areaOrStreetName: 'Al Marsa Street',
+                    buildingOrPremiseName : 'Marina Diamond 5',
+                    landmark : '',
                     lat: 0,
-                    lon: 0,
-                    type: "Home"
+                    lng: 0,
+                    houseOrFlatNo : '806',
+                    id : nanoid()
                 }
             ]);
         }, 300)
