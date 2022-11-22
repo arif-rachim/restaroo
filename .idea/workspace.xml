@@ -5,53 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="update the picker">
-      <change afterPath="$PROJECT_DIR$/docs/asset-manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/ayam-bakar-kalasan.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/ayam-bakar-taliwang.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/ayam-penyet.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/gado-gado.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/gorengan-bakwan-jagung.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/gorengan-bakwan-sayur.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/gorengan-mix.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/gorengan-tahu-isi.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/gorengan-tempe-mendoan.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/internet.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/konro-bakar-makasar.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/martabak-telor.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/mie-ayam-jamur.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/mie-dukduk.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/nasi-goreng-spesial.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/nasi-padang.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/pempek-palembang.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/sate-ayam-madura.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/sate-kambing-khas-solo.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/sate-padang.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/seafood-bakar-platter.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/siomay-bandung.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/sup-buntut-rempah.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/product/tahu-gejrot-cirebon.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/images/icons/icon-128x128.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/images/icons/icon-144x144.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/images/icons/icon-152x152.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/images/icons/icon-192x192.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/images/icons/icon-384x384.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/images/icons/icon-512x512.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/images/icons/icon-72x72.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/images/icons/icon-96x96.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/robots.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/static/css/main.46611b66.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/static/css/main.46611b66.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/static/js/main.96b5239d.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/static/js/main.96b5239d.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/static/js/main.96b5239d.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/static/media/RestarooIcon.a88ac0e72bb26d521c08a9d1d9009c51.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/static/media/arif-rachim-restaroo.ce65ca940f018bfbf384.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/static/media/restaroo.9c05d97c7e6e9bde3d6b6e6ebf4c8630.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/utils/dateToHhMm.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/utils/dateToHhMm.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +55,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -127,7 +84,7 @@
       <workItem from="1669033429975" duration="15955000" />
       <workItem from="1669124570813" duration="413000" />
       <workItem from="1669125063718" duration="5593000" />
-      <workItem from="1669132788138" duration="6024000" />
+      <workItem from="1669132788138" duration="7248000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
