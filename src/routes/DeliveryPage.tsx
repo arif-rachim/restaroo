@@ -1,6 +1,4 @@
 import {Page} from "./Page";
-import {useFocusListener} from "../components/RouterPageContainer";
-import {adjustThemeColor} from "../components/page-components/adjustThemeColor";
 import {RouteProps} from "../components/useRoute";
 import {Card, CardTitle} from "../components/page-components/Card";
 import {menus, products} from "../model/data";
@@ -47,10 +45,7 @@ function AddressHeader(props: { address?: Address }) {
 }
 
 export function DeliveryPage(props: RouteProps) {
-    useFocusListener(props.path, () => {
-        adjustThemeColor('#F2F2F2');
-    });
-    console.log('OH NO');
+
     const {appDimension} = useAppContext();
     const navigate = useNavigate();
     const componentId = useId();
@@ -68,6 +63,7 @@ export function DeliveryPage(props: RouteProps) {
         // eslint-disable-next-line
     }, [])
     return <Page style={{paddingTop: 130, paddingBottom: 80, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
+
         const target = event.target;
         const scrollTop = (target as HTMLDivElement).scrollTop;
         const titleDiv = document.getElementById(`${componentId}-title`);

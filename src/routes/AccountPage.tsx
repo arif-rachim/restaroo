@@ -56,9 +56,7 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
 
 
 export function AccountPage(props: RouteProps) {
-    useFocusListener(props.path, () => {
-        adjustThemeColor('#F2F2F2');
-    });
+
     const containerRef = useRef<HTMLDivElement>(null);
     const isSessionActive = useSessionIsActive();
     const setUserProfile = useUserProfileSetter();

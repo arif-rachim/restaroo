@@ -1,8 +1,10 @@
 import {RouteProps, useRoute} from "./useRoute";
-import {createContext, FunctionComponent, useContext, useEffect, useMemo, useRef} from "react";
+import {createContext, FunctionComponent, useContext, useMemo, useRef} from "react";
 import {motion, Variants} from "framer-motion";
 import {isFunction} from "./page-components/utils/isFunction";
 import {isPromise} from "./page-components/utils/isPromise";
+import {createStoreInitValue, Store, useStore, useStoreListener} from "./store/useStore";
+import {useAfterInit} from "./page-components/utils/useAfterInit";
 
 const variants: Variants = {
     left: {
@@ -60,7 +62,8 @@ export function RouterPageContainer() {
         routeHeaderComponent: RouterHeaderComponent
     } = useRoute();
 
-
+    const pathStore = useStore(path);
+    useAfterInit(() => pathStore.setState(path),[path])
 
     const Component = useMemo(() => function RouteComponentContainer(props: { isFocused: boolean } & RouteProps) {
         const {isFocused} = props;
@@ -89,7 +92,7 @@ export function RouterPageContainer() {
     } else {
         componentsRef.current[componentIndex].params = params;
     }
-    return <CurrentActivePathContext.Provider value={path}>
+    return <CurrentActivePathContext.Provider value={pathStore}>
         <div style={{
             height: '100%',
             width: '100%',
@@ -122,31 +125,56 @@ interface PathAbleComponent {
     params: Map<string, string>
 }
 
-const CurrentActivePathContext = createContext<string>('');
+const CurrentActivePathContext = createContext<Store<string>>(createStoreInitValue(''));
 type nothing = () => void;
 export function useFocusListener(path: string, callback: () => (Promise<nothing|void>|nothing|void) ) {
-    const currentPath = useContext(CurrentActivePathContext);
-    const isFocused = currentPath === path;
+    const currentStorePath = useContext(CurrentActivePathContext);
+    const lastFocusStateRef = useRef(false);
+    const lastFocusResultCallback = useRef<(Promise<nothing|void> | nothing | void)>();
+    useStoreListener(currentStorePath,currentPath => currentPath,(next, prev) => {
+        const isFocused = next === path;
+        if(lastFocusStateRef.current !== isFocused){
+            if(isFocused){
+                lastFocusResultCallback.current = callback();
+            }else{
+                if(isFunction(lastFocusResultCallback.current)){
+                    (lastFocusResultCallback.current as nothing)();
+                    lastFocusResultCallback.current = undefined;
+                }
+                if(isPromise(lastFocusResultCallback.current)){
+                    (lastFocusResultCallback.current as Promise<nothing|void>).then(result => {
+                        if(isFunction(result)){
+                            (result as nothing)();
+                            lastFocusResultCallback.current = undefined;
+                        }
+                    });
+                }
+            }
+            lastFocusStateRef.current = isFocused;
+        }
 
-    useEffect(() => {
-        let result:any;
-        if(isFocused){
-            result = callback();
-        }
-        return () => {
-            if(isPromise(result)){
-                result.then((callback:any) => {
-                    if(isFunction(callback)){
-                        callback();
-                    }
-                })
-            }
-            if(isFunction(result)){
-                result();
-            }
-        }
-        // eslint-disable-next-line
-    }, [isFocused])
+    },[]);
+    //
+    //
+    // useEffect(() => {
+    //     let result:any;
+    //     if(isFocused){
+    //         result = callback();
+    //     }
+    //     return () => {
+    //         if(isPromise(result)){
+    //             result.then((callback:any) => {
+    //                 if(isFunction(callback)){
+    //                     callback();
+    //                 }
+    //             })
+    //         }
+    //         if(isFunction(result)){
+    //             result();
+    //         }
+    //     }
+    //     // eslint-disable-next-line
+    // }, [isFocused])
 
 }
 

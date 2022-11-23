@@ -188,10 +188,6 @@ export function ReservationPage(props: RouteProps) {
         }));
     },[user,store])
 
-    useFocusListener(props.path, () => {
-        adjustThemeColor('#FFF');
-    });
-
     return <Page>
         <Header title={'Book a Table'} size={"big"}></Header>
         <div style={{
