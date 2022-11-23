@@ -110,9 +110,26 @@ export function useStoreListener<T, S>(store: Store<T>, selector: (param: T) => 
 export function useStoreValue<T, S>(store: Store<T>, selector: (param: T) => S, deps?: DependencyList | undefined) {
     const [value, setValue] = useState<S>(() => selector(store.stateRef.current));
     useStoreListener(store, selector, (next, prev) => {
-        setValue(next)
+        setValue(old => {
+            if(arrayIsMatch(old,next)){
+                return old;
+            }
+            return next;
+        })
     }, deps);
     return value;
+}
+
+function arrayIsMatch(next:any,prev:any){
+    if(Array.isArray(next) && Array.isArray(prev) && next.length === prev.length){
+        for (let i = 0; i < next.length; i++) {
+            if(next[i] !== prev[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
 }
 
 
