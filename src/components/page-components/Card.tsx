@@ -19,7 +19,6 @@ export const Card = forwardRef(function Card(props: PropsWithChildren<{ style?: 
     </div>
 })
 
-
 export function CardRow(props: { icon: IconType, title: string, onTap?: () => void }) {
     const {icon: Icon, title, onTap} = props;
     return <motion.div style={{display: 'flex', alignItems: 'center', margin: '10px 0px'}} whileTap={{scale: 0.95}}
@@ -38,6 +37,9 @@ export function CardRow(props: { icon: IconType, title: string, onTap?: () => vo
         </div>
     </motion.div>;
 }
+
+
+
 
 export function CardTitle(props: { title?: string, onMounted?: (params: { title: string, dimension: DOMRect }) => () => void }) {
     const {title, onMounted} = props;

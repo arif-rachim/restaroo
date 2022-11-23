@@ -50,6 +50,7 @@ export function DeliveryPage(props: RouteProps) {
     useFocusListener(props.path, () => {
         adjustThemeColor('#F2F2F2');
     });
+    console.log('OH NO');
     const {appDimension} = useAppContext();
     const navigate = useNavigate();
     const componentId = useId();

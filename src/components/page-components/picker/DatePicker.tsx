@@ -50,7 +50,6 @@ const nothing = () => {
 };
 
 export function DatePicker(props: { value?: Date, onChange?: (value: Date) => void }) {
-
     const value = props.value ?? defaultDate;
     const onChange = props.onChange ?? nothing;
 

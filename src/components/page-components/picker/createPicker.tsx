@@ -13,19 +13,34 @@ import {useMemo} from "react";
 const nothing = () => {
 };
 
-export function createPicker<T>(props: { dataProvider: T[], dataToLabel: (param?: T) => any, valueToData: (value: any, data: T) => boolean, dataToValue: (data: T) => any }) {
-    const {dataProvider, dataToLabel, valueToData, dataToValue} = props;
-    return function InputPicker(props: { value?: any, onChange?: (value: T) => void }) {
+export interface PickerProperties<T> {
+    dataProvider: T[],
+    dataToLabel: (param?: T) => any,
+    valueToData: (value: any, data: T) => boolean,
+    dataToValue: (data: T) => any
+}
+
+export interface ValueOnChangeProperties<T> {
+    value?: any,
+    onChange?: (value: T) => void
+}
+
+export function createPicker<T>(props: PickerProperties<T>) {
+    let {dataProvider, dataToLabel, valueToData, dataToValue} = props;
+    dataProvider = dataProvider ?? [];
+    dataToLabel = dataToLabel ?? nothing;
+    valueToData = valueToData ?? nothing;
+    dataToValue = dataToValue ?? nothing;
+    return function InputPicker(props: ValueOnChangeProperties<T>) {
         let {value, onChange} = props;
         const data = useMemo(() => dataProvider.find((data) => valueToData(value, data)), [value]);
-        //const value = props.value ?? dataProvider.find(c => dataKey(c) === dataKey(props.value));
+
         onChange = onChange ?? nothing;
 
         const store = useStore(data);
         useAfterInit(() => {
             store.setState(data);
         }, [data, store]);
-
 
         const {appDimension} = useAppContext();
         return <div style={{
@@ -72,3 +87,4 @@ export function createPicker<T>(props: { dataProvider: T[], dataToLabel: (param?
         </div>
     }
 }
+

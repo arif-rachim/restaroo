@@ -4,7 +4,6 @@ import {motion, Variants} from "framer-motion";
 import {isFunction} from "./page-components/utils/isFunction";
 import {isPromise} from "./page-components/utils/isPromise";
 
-
 const variants: Variants = {
     left: {
         top: 0,
@@ -61,6 +60,8 @@ export function RouterPageContainer() {
         routeHeaderComponent: RouterHeaderComponent
     } = useRoute();
 
+
+
     const Component = useMemo(() => function RouteComponentContainer(props: { isFocused: boolean } & RouteProps) {
         const {isFocused} = props;
         return <motion.div
@@ -88,10 +89,7 @@ export function RouterPageContainer() {
     } else {
         componentsRef.current[componentIndex].params = params;
     }
-
-
     return <CurrentActivePathContext.Provider value={path}>
-
         <div style={{
             height: '100%',
             width: '100%',
@@ -124,11 +122,12 @@ interface PathAbleComponent {
     params: Map<string, string>
 }
 
-const CurrentActivePathContext = createContext('');
+const CurrentActivePathContext = createContext<string>('');
 type nothing = () => void;
 export function useFocusListener(path: string, callback: () => (Promise<nothing|void>|nothing|void) ) {
-    const currentActivePath = useContext(CurrentActivePathContext);
-    const isFocused = currentActivePath === path;
+    const currentPath = useContext(CurrentActivePathContext);
+    const isFocused = currentPath === path;
+
     useEffect(() => {
         let result:any;
         if(isFocused){

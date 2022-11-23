@@ -1,29 +1,36 @@
 import {useAppContext} from "../../useAppContext";
 import {DatePicker} from "./DatePicker";
-import {ForwardedRef, forwardRef, PropsWithChildren, useImperativeHandle} from "react";
+import {ForwardedRef, forwardRef, PropsWithChildren, useImperativeHandle, useMemo,memo} from "react";
 import {StoreValue, useStore, useStoreValue} from "../../store/useStore";
 import {motion} from "framer-motion";
 import {TimePicker} from "./TimePicker";
 import {IoCloseCircleOutline} from "react-icons/io5";
 import invariant from "tiny-invariant";
-
-import {createPicker} from "./createPicker";
+import {createPicker, PickerProperties, ValueOnChangeProperties} from "./createPicker";
 import {Country, countryList} from "./dataprovider/CountryList";
 import {Gender, genderList} from "./dataprovider/GenderList";
+
 
 
 export type ShowPickerFunction = (control: PickerOptions, value: any) => Promise<any>;
 
 const owner = (match: PickerOptions, control?: PickerOptions, param?: any) => {
-    return control === match ? param : undefined
+    if (typeof control === 'string') {
+        return control === match ? param : undefined
+    } else if(typeof control === 'object' && match as string === 'custom') {
+        return param
+    }
 }
+
 const NO_PICKER = {control: undefined, value: undefined, onChange: undefined};
+
 const CountryPicker = createPicker<Country>({
     dataProvider: countryList,
     dataToLabel: s => `${s?.name} (${s?.dial_code})`,
     dataToValue: s => s.dial_code,
     valueToData: (value, data) => data.dial_code === value
 });
+
 const GenderPicker = createPicker<Gender>({
     dataProvider: genderList,
     dataToLabel: s => `${s?.name}`,
@@ -32,19 +39,28 @@ const GenderPicker = createPicker<Gender>({
 });
 
 export const PickerMap = {
-    date: DatePicker,
-    time: TimePicker,
-    country: CountryPicker,
-    gender: GenderPicker
+    date: memo(DatePicker),
+    time: memo(TimePicker),
+    country: memo(CountryPicker),
+    gender: memo(GenderPicker)
 }
 
-export type PickerOptions = keyof typeof PickerMap;
+const CustomPickerComponent = memo(function CustomPickerComponent(props: (ValueOnChangeProperties<any> & PickerProperties<any>)) {
+    let {value, onChange, dataToValue, dataToLabel, valueToData, dataProvider} = props;
+    const InputPicker = useMemo(() => createPicker({
+        dataProvider,
+        dataToLabel,
+        valueToData,
+        dataToValue
+    }), [dataProvider, dataToLabel, valueToData, dataToValue]);
+    return <InputPicker onChange={onChange} value={value}/>
+})
+
+export type PickerOptions = keyof typeof PickerMap | PickerProperties<any>;
 
 export const PickerProvider = forwardRef(function PickerProvider(props, ref: ForwardedRef<{ showPicker: ShowPickerFunction }>) {
     const store = useStore<{ control?: PickerOptions, value?: any, onChange?: (param: any) => void }>(NO_PICKER);
-
     const {appDimension} = useAppContext();
-
     useImperativeHandle(ref, () => {
         const showPicker: ShowPickerFunction = (control: PickerOptions, value: any) => {
             return new Promise(resolve => {
@@ -77,14 +93,26 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
                            backgroundColor: show ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0)',
                            zIndex: show ? 0 : -1
                        }}>
-        {Object.keys(PickerMap).map((key) => {
-            const Picker = (PickerMap as any)[key];
-            return <StoreValue store={store} property={'show'} selector={s => s.control === key} key={key}>
+        {Object.keys(PickerMap).concat('custom').map((key) => {
+            let Picker = CustomPickerComponent as any;
+            if (key in PickerMap) {
+                Picker = (PickerMap as any)[key];
+            }
+            return <StoreValue store={store} property={'show'} selector={s => {
+                const result = (typeof s.control === 'string' ? s.control === key : key === 'custom' && s.control !== undefined);
+                return result;
+            }} key={key}>
                 <PickerContainer show={false}>
-                    <StoreValue store={store} property={['value', 'onChange']} selector={[
-                        s => owner(key as PickerOptions, s.control, s.value),
-                        s => owner(key as PickerOptions, s.control, s.onChange),
-                    ]}>
+                    <StoreValue store={store}
+                                property={['value', 'onChange', 'dataProvider', 'dataToLabel', 'valueToData', 'dataToValue']}
+                                selector={[
+                                    s => owner(key as PickerOptions, s.control, s.value),
+                                    s => owner(key as PickerOptions, s.control, s.onChange),
+                                    s => owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'dataProvider' in s.control ? s.control.dataProvider : undefined),
+                                    s => owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'dataToLabel' in s.control ? s.control.dataToLabel : undefined),
+                                    s => owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'valueToData' in s.control ? s.control.valueToData : undefined),
+                                    s => owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'dataToValue' in s.control ? s.control.dataToValue : undefined),
+                                ]}>
                         <Picker/>
                     </StoreValue>
                 </PickerContainer>
