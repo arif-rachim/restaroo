@@ -4,7 +4,7 @@ import {motion, MotionStyle} from "framer-motion";
 import {AiOutlineLoading3Quarters} from "react-icons/ai";
 import {CSSProperties} from "react";
 
-export function Button(props: { onTap: () => void, title: string, icon: IconType, theme: ButtonTheme, style?: MotionStyle, iconStyle?: CSSProperties, isBusy?: boolean, disabled?: boolean }) {
+export function Button(props: { onTap: () => void, title: string|JSX.Element, icon: IconType, theme: ButtonTheme, style?: MotionStyle, iconStyle?: CSSProperties, isBusy?: boolean, disabled?: boolean }) {
     const isBusy = props.isBusy;
     const disabled = props.disabled;
     const Icon: IconType = isBusy ? AiOutlineLoading3Quarters : props.icon;

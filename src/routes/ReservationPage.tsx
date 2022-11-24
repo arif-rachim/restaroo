@@ -1,9 +1,5 @@
 import {Page} from "./Page";
-import {useFocusListener} from "../components/RouterPageContainer";
-import {adjustThemeColor} from "../components/page-components/adjustThemeColor";
 import {RouteProps} from "../components/useRoute";
-
-import {Header} from "../components/page-components/Header";
 import {dateToDdd, dateToDdMmm, dateToDdMmmYyyy} from "../components/page-components/utils/dateToDdMmmYyyy";
 import {dateAdd} from "../components/page-components/utils/dateAdd";
 import {dateToHhMm, hhMmToDate} from "../components/page-components/utils/dateToHhMm";
@@ -12,13 +8,15 @@ import {useAppContext} from "../components/useAppContext";
 import {StoreValue, useStore} from "../components/store/useStore";
 import {motion} from "framer-motion";
 import {ValueOnChangeProperties} from "../components/page-components/picker/createPicker";
-import {blue, ButtonTheme, white} from "./Theme";
+import {blue, ButtonTheme, red, white} from "./Theme";
 import produce from "immer";
 import {Input} from "../components/page-components/Input";
 import {MdCancel} from "react-icons/md";
 import {useUserProfile} from "../model/useUserProfile";
 import {Button} from "../components/page-components/Button";
 import {IoSaveOutline} from "react-icons/io5";
+import {isEmptyText} from "../components/page-components/utils/isEmptyText";
+import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
 
 
 const THIRTY_MINUTES = 1000 * 60 * 30;
@@ -41,7 +39,6 @@ function DateSelector(props: ValueOnChangeProperties<Date>) {
         display: 'flex',
         overflowY: 'hidden',
         overflowX: 'auto',
-        scrollSnapType: 'x mandatory',
         paddingBottom: 20
     }}>
         {Array.from({length: 8}).map((_, index) => {
@@ -57,7 +54,6 @@ function DateSelector(props: ValueOnChangeProperties<Date>) {
                 padding: '10px 30px',
                 marginRight: 10,
                 alignItems: 'center',
-                scrollSnapAlign: 'center',
                 backgroundColor: isSelected ? blue : white,
                 color: isSelected ? white : 'unset'
             }} key={index} whileTap={{scale: 0.95}} onTap={() => onChange ? onChange(date) : ''}>
@@ -93,7 +89,6 @@ function TimeSelector(props: ({ openingTime: string, closingTime: string } & Val
         display: 'flex',
         overflowY: 'hidden',
         overflowX: 'auto',
-        scrollSnapType: 'x mandatory',
         paddingBottom: 20
     }}>
         {times.map((time, index) => {
@@ -105,23 +100,21 @@ function TimeSelector(props: ({ openingTime: string, closingTime: string } & Val
                 padding: '20px 30px',
                 marginRight: 10,
                 alignItems: 'center',
-                scrollSnapAlign: 'center',
                 backgroundColor: isSelected ? blue : white,
                 color: isSelected ? white : 'unset'
-            }} key={index} whileTap={{scale:0.95}} onTap={() => onChange ? onChange(time) : ''}>
+            }} key={index} whileTap={{scale: 0.95}} onTap={() => onChange ? onChange(time) : ''}>
                 <div style={{fontSize: 16}}>{dateToHhMm(time)}</div>
             </motion.div>
         })}
     </div>;
 }
 
-function NumberOfPeopleSelector(props:ValueOnChangeProperties<number>) {
-    const {value,onChange} = props;
+function NumberOfPeopleSelector(props: ValueOnChangeProperties<number>) {
+    const {value, onChange} = props;
     return <div style={{
         display: 'flex',
         overflowY: 'hidden',
         overflowX: 'auto',
-        scrollSnapType: 'x mandatory',
         paddingBottom: 20
     }}>
         {Array.from({length: 21}).map((_, index) => {
@@ -134,13 +127,96 @@ function NumberOfPeopleSelector(props:ValueOnChangeProperties<number>) {
                 padding: '20px 30px',
                 marginRight: 10,
                 alignItems: 'center',
-                scrollSnapAlign: 'center',
                 backgroundColor: isSelected ? blue : white,
                 color: isSelected ? white : 'unset'
-            }} key={index} whileTap={{scale:0.95}} onTap={() => onChange ? onChange(total) : ''}>
+            }} key={index} whileTap={{scale: 0.95}} onTap={() => onChange ? onChange(total) : ''}>
                 <div style={{fontSize: 16}}>{total}</div>
             </motion.div>
         })}
+    </div>;
+}
+
+function PersonalDetailForm<T>(props: {
+    closePanel: (result: any) => void,
+    firstName: string, lastName: string, email: string, phoneNo: string
+}) {
+    const {firstName, lastName, phoneNo, email} = props;
+    const store = useStore({
+        firstName,
+        lastName,
+        phoneNo,
+        email,
+        errors: {firstName: '', lastName: '', phoneNo: '', email: ''}
+    });
+    const validate = () => {
+        store.setState(produce(s => {
+            s.errors.email = isEmptyText(s.email) ? 'Email is required' : '';
+            s.errors.phoneNo = isEmptyText(s.phoneNo) ? 'Phone is required' : '';
+            s.errors.firstName = isEmptyText(s.firstName) ? 'First name is required' : '';
+            s.errors.lastName = isEmptyText(s.lastName) ? 'Last name is required' : '';
+        }));
+        return isEmptyObject(store.stateRef.current.errors);
+    }
+    return <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        borderTopRightRadius: 15,
+        borderTopLeftRadius: 15,
+        padding: 10
+    }}>
+        <div style={{display: 'flex', justifyContent: 'center', marginTop: -60, paddingBottom: 20}}>
+            <motion.div onTap={() => {
+                props.closePanel(false)
+            }} whileTap={{scale: 0.95}}>
+                <MdCancel fontSize={40} style={{color: "white"}}/>
+            </motion.div>
+        </div>
+        <StoreValue store={store} selector={[s => s.firstName, s => s.errors.firstName]} property={['value', 'error']}>
+            <Input title={'First name'} placeholder={'enter your first name'}
+                   onChange={(e) => {
+                       store.setState(produce(s => {
+                           s.firstName = e.target.value;
+                           s.errors.firstName = '';
+                       }));
+                   }}/>
+        </StoreValue>
+        <StoreValue store={store} selector={[s => s.lastName, s => s.errors.lastName]} property={['value', 'error']}>
+            <Input title={'Last name'} placeholder={'enter your first name'}
+                   onChange={(e) => {
+                       store.setState(produce(s => {
+                           s.lastName = e.target.value;
+                           s.errors.lastName = '';
+                       }));
+                   }}/>
+        </StoreValue>
+        <StoreValue store={store} selector={[s => s.email, s => s.errors.email]} property={['value', 'error']}>
+            <Input title={'Email'} placeholder={'enter your email'} onChange={(e) => {
+                store.setState(produce(s => {
+                    s.email = e.target.value;
+                    s.errors.email = '';
+                }));
+            }}/>
+        </StoreValue>
+        <StoreValue store={store} selector={[s => s.phoneNo, s => s.errors.phoneNo]} property={['value', 'error']}>
+            <Input title={'Phone'} placeholder={'enter your phone number'} onChange={(e) => {
+                store.setState(produce(s => {
+                    s.phoneNo = e.target.value;
+                    s.errors.phoneNo = '';
+                }));
+            }}/>
+        </StoreValue>
+        <Button onTap={() => {
+            if (validate()) {
+                const data = {
+                    firstName:store.stateRef.current.firstName,
+                    lastName:store.stateRef.current.lastName,
+                    phoneNo:store.stateRef.current.phoneNo,
+                    email:store.stateRef.current.email,
+                };
+                props.closePanel(data);
+            }
+        }} title={'Save Changes'} icon={IoSaveOutline} theme={ButtonTheme.danger}/>
     </div>;
 }
 
@@ -186,15 +262,14 @@ export function ReservationPage(props: RouteProps) {
             s.email = user.email;
             s.phoneNo = user.phoneNo;
         }));
-    },[user,store])
+    }, [user, store])
 
     return <Page>
-        <Header title={'Book a Table'} size={"big"}></Header>
         <div style={{
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
-            padding: '30px 15px 100px 15px',
+            padding: '15px 15px 65px 15px',
             overflow: 'auto'
         }}>
             <div style={{display: 'flex', flexDirection: 'column', marginBottom: 10}}>
@@ -235,7 +310,7 @@ export function ReservationPage(props: RouteProps) {
                 <div style={{display: 'flex'}}>
                     <div style={{flexGrow: 1, fontSize: 16}}>
                         <StoreValue store={store} property={'value'} selector={s => s.seatingPreferences}>
-                            <Title />
+                            <Title/>
                         </StoreValue>
                     </div>
                     <motion.div style={{color: 'red', marginLeft: 10}} onTap={async () => {
@@ -255,46 +330,57 @@ export function ReservationPage(props: RouteProps) {
                 </div>
             </div>
 
-            <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{display: 'flex', flexDirection: 'column', marginBottom: 20}}>
                 <div style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>Personal Details</div>
                 <div style={{display: 'flex'}}>
                     <div style={{display: 'flex', flexDirection: 'column', fontSize: 16, flexGrow: 1}}>
-                        <StoreValue store={store} selector={s => `${s.firstName} ${s.lastName}, ${s.phoneNo}`} property={'value'}>
+                        <StoreValue store={store} selector={s => `${s.firstName} ${s.lastName}, ${s.phoneNo}`}
+                                    property={'value'}>
                             <Title/>
                         </StoreValue>
-
                         <StoreValue store={store} selector={s => `${s.email}`} property={'value'}>
                             <Title/>
                         </StoreValue>
                     </div>
                     <motion.div style={{color: 'red', marginLeft: 10}} onTap={async () => {
-                        await context.showSlidePanel(closePanel => {
-                            return <div style={{display:'flex',flexDirection:'column',backgroundColor:'white',borderTopRightRadius:15,borderTopLeftRadius:15,padding:10}}>
-                                <div style={{display: 'flex', justifyContent: 'center', marginTop: -60, paddingBottom: 20}}>
-                                    <motion.div onTap={() => {
-                                        closePanel(false)
-                                    }} whileTap={{scale: 0.95}}>
-                                        <MdCancel fontSize={40} style={{color: "white"}}/>
-                                    </motion.div>
-                                </div>
-                                <Input title={'First name'} placeholder={'enter your first name'} defaultValue={store.stateRef.current.firstName}/>
-                                <Input title={'Last name'} placeholder={'enter your first name'} defaultValue={store.stateRef.current.lastName}/>
-                                <Input title={'Email'} placeholder={'enter your email'} defaultValue={store.stateRef.current.email}/>
-                                <Input title={'Phone'} placeholder={'enter your phone number'} defaultValue={store.stateRef.current.phoneNo}/>
-                                <Button onTap={() => {
-                                    // TODO
-                                    closePanel({});
-                                }} title={'Save Changes'} icon={IoSaveOutline} theme={ButtonTheme.danger} />
-                            </div>
-                        })
+                        const result:any = await context.showSlidePanel(closePanel => {
+                            return <PersonalDetailForm closePanel={closePanel}
+                                                       firstName={store.stateRef.current.firstName}
+                                                       lastName={store.stateRef.current.lastName}
+                                                       phoneNo={store.stateRef.current.phoneNo}
+                                                       email={store.stateRef.current.email}
+                            />
+                        });
+
+                        store.setState(old => ({...old,...result}))
+
                     }} whileTap={{scale: 0.9}}>Change
                     </motion.div>
                 </div>
             </div>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                <div style={{display:'flex',alignItems:'center',marginBottom:20}}>
+                    <div style={{flexGrow:1}} >Receive booking updates on WhatsApp</div>
+                    <div style={{width:40,display:'flex',flexDirection:'column'}}>
+                    <motion.div style={{display:'flex',flexDirection:'row',width:40,borderRadius:20,height:20,border:'1px solid rgba(0,0,0,0.1)'}}>
+                        <motion.div layout style={{width:20,height:20,background:red,borderRadius:10}}/>
+                    </motion.div>
+                    </div>
+                </div>
+
+                <Button onTap={() => {
+                }} title={<div style={{display: 'flex', flexDirection: 'column', fontSize: 12}}>
+                    <div style={{fontSize: 14, fontWeight: 'bold'}}>Book Table</div>
+                    <div>IT MAY TAKE UP TO 3 MINS</div>
+                </div>} icon={IoSaveOutline} theme={ButtonTheme.danger} style={{padding: '5px 10px'}}
+                        iconStyle={{fontSize: 25, marginTop: -5, marginLeft: 10}}/>
+            </div>
         </div>
+
     </Page>
 }
 
-function Title(props:{value?:string}){
+
+function Title(props: { value?: string }) {
     return <div>{props.value}</div>
 }
