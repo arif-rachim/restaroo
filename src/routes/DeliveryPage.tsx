@@ -3,9 +3,8 @@ import {RouteProps} from "../components/useRoute";
 import {Card, CardTitle} from "../components/page-components/Card";
 import {menus, products} from "../model/data";
 import invariant from "tiny-invariant";
-import {IoAdd, IoChevronDown, IoDisc, IoHeartOutline} from "react-icons/io5";
-import {Button} from "../components/page-components/Button";
-import {ButtonTheme, veryLightRed} from "./Theme";
+import {IoChevronDown, IoDisc, IoHeartOutline} from "react-icons/io5";
+import {blue, red, white} from "./Theme";
 import {MdPlace} from "react-icons/md";
 import {motion} from "framer-motion";
 import {CgProfile} from "react-icons/cg";
@@ -17,6 +16,10 @@ import {useCurrentPosition} from "../components/page-components/utils/useCurrent
 import {Address} from "../model/Address";
 import {EMPTY_ADDRESS} from "./DeliveryLocationPage";
 import {SkeletonBox} from "../components/page-components/SkeletonBox";
+import {Product} from "../model/Product";
+import {IoMdAdd, IoMdRemove} from "react-icons/io";
+import {ValueOnChangeProperties} from "../components/page-components/picker/createPicker";
+import produce from "immer";
 
 function AddressHeader(props: { address?: Address }) {
     let {address} = props;
@@ -25,14 +28,15 @@ function AddressHeader(props: { address?: Address }) {
     addressText = addressText.substring(0, 40) + (addressText.length > 40 ? '...' : '');
     return <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto', width: '100%'}}>
         <div style={{display: 'flex', alignItems: 'flex-end'}}>
-            <SkeletonBox skeletonVisible={address.buildingOrPremiseName === ''} style={{height:13,width:100,marginBottom:3}}>
+            <SkeletonBox skeletonVisible={address.buildingOrPremiseName === ''}
+                         style={{height: 13, width: 100, marginBottom: 3}}>
                 <div style={{fontWeight: 'bold', fontSize: 16, marginBottom: 3}}>{address.buildingOrPremiseName}</div>
             </SkeletonBox>
             <div style={{marginLeft: 3, marginBottom: 2}}>
                 <IoChevronDown/>
             </div>
         </div>
-        <SkeletonBox skeletonVisible={addressText === ''} style={{height:15}}>
+        <SkeletonBox skeletonVisible={addressText === ''} style={{height: 15}}>
             <div style={{
                 textOverflow: 'ellipsis',
                 width: '100%',
@@ -44,6 +48,65 @@ function AddressHeader(props: { address?: Address }) {
     </div>
 }
 
+function AddProductToCart(props: ValueOnChangeProperties<number>) {
+    const {value,onChange} = props;
+    invariant(onChange);
+    const hasValue = value > 0;
+    return <div style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: -20,
+        zIndex: 0,
+        boxSizing: 'border-box'
+    }}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: 100,
+            height: 35,
+            backgroundColor: red,
+            color: white,
+            borderRadius: 10,
+            alignItems: 'center'
+        }}>
+            <div style={{display: 'flex',width:'100%',height:'100%',position:"relative"}}>
+                <motion.div style={{width:'50%',padding:5}} whileTap={{scale:0.9}} onTap={() => {
+                    onChange(hasValue?value-1:1);
+                }} animate={{opacity:hasValue?1:0}}>
+                    <IoMdRemove fontSize={20}/>
+                </motion.div>
+                <div style={{
+                    position:'absolute',
+                    fontSize: 16,
+                    lineHeight: 1,
+                    textAlign:'center',
+                    fontWeight: 'bold',
+                    width: 50,
+                    left:24,
+                    top : 8
+                }} onClick={() => {
+                    if(!hasValue){
+                        onChange(hasValue?value+1:1);
+                    }
+                }}>{hasValue ? value : 'ADD'}
+                </div>
+                <motion.div style={{width:'50%',textAlign:'right',padding:5}} whileTap={{scale:0.9}} onTap={() => {
+                    onChange(hasValue?value+1:1);
+                }} animate={{opacity:hasValue?1:0}}>
+                    <IoMdAdd fontSize={20}/>
+                </motion.div>
+            </div>
+        </div>
+        {/*<Button title={'Add'} style={{backgroundColor: veryLightRed}} onTap={() => {*/}
+        {/*}} icon={IoAdd} theme={ButtonTheme.danger}/>*/}
+    </div>;
+}
+interface CartItem{
+    productId:string,
+    total:number
+}
+
 export function DeliveryPage(props: RouteProps) {
 
     const {appDimension} = useAppContext();
@@ -53,6 +116,7 @@ export function DeliveryPage(props: RouteProps) {
     const selectedTitle = useStore('');
     const getCurrentPosition = useCurrentPosition();
     const positionStore = useStore<Address>(EMPTY_ADDRESS);
+    const shoppingCart = useStore<CartItem[]>([]);
     useEffect(() => {
         (async () => {
             const {position} = await getCurrentPosition();
@@ -135,27 +199,31 @@ export function DeliveryPage(props: RouteProps) {
                                 flexDirection: 'column',
                                 overflow: 'hidden'
                             }}>
-                                <img src={process.env.PUBLIC_URL+product.imageAddress} width={130} height={130} style={{
-                                    width: 130,
-                                    height: 130,
-                                    marginBottom: -5,
-                                    flexShrink: 0,
-                                    flexGrow: 0,
-                                    backgroundColor: 'rgba(0,0,0,0.1)'
-                                }} alt={'product'}/>
+                                <img src={process.env.PUBLIC_URL + product.imageAddress} width={130} height={130}
+                                     style={{
+                                         width: 130,
+                                         height: 130,
+                                         marginBottom: -5,
+                                         flexShrink: 0,
+                                         flexGrow: 0,
+                                         backgroundColor: 'rgba(0,0,0,0.1)'
+                                     }} alt={'product'}/>
+                            </div>
+                            <StoreValue store={shoppingCart} selector={s => {
+                                return s.find(t => t.productId === productId)?.total ?? 0;
+                            }} property={'value'}>
+                                <AddProductToCart onChange={(value) => {
+                                    shoppingCart.setState(produce(s => {
+                                        const currentIndex = s.findIndex(s => s.productId === productId);
+                                        if(currentIndex >= 0){
+                                            s[currentIndex].total = value;
+                                        }else{
+                                            s.push({productId,total:value})
+                                        }
+                                    }));
+                                }}/>
+                            </StoreValue>
 
-                            </div>
-                            <div style={{
-                                width: '100%',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                marginTop: -20,
-                                zIndex: 0,
-                                boxSizing: 'border-box'
-                            }}>
-                                <Button title={'Add'} style={{backgroundColor: veryLightRed}} onTap={() => {
-                                }} icon={IoAdd} theme={ButtonTheme.danger}/>
-                            </div>
                         </div>
 
                     </div>

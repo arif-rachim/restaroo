@@ -46,7 +46,8 @@ export function createPicker<T>(props: PickerProperties<T>) {
         return <div style={{
             display: 'flex', flexDirection: 'column',
             width: appDimension.width,
-            backgroundColor: 'white'
+            backgroundColor: 'white',
+            borderTopRightRadius:20,borderTopLeftRadius:20
         }}>
 
             <div style={{

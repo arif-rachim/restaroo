@@ -4,11 +4,11 @@ import {ForwardedRef, forwardRef, PropsWithChildren, useImperativeHandle, useMem
 import {StoreValue, useStore, useStoreValue} from "../../store/useStore";
 import {motion} from "framer-motion";
 import {TimePicker} from "./TimePicker";
-import {IoCloseCircleOutline} from "react-icons/io5";
 import invariant from "tiny-invariant";
 import {createPicker, PickerProperties, ValueOnChangeProperties} from "./createPicker";
 import {Country, countryList} from "./dataprovider/CountryList";
 import {Gender, genderList} from "./dataprovider/GenderList";
+import {IoMdCloseCircle} from "react-icons/io";
 
 
 
@@ -119,11 +119,11 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
             </StoreValue>
         })}
         <motion.div style={{
-            right: 20, position: 'absolute', fontSize: 40, color: 'white'
-        }} animate={{top: show ? 20 : -40}} initial={{top: -40}} whileTap={{scale: 0.9}} onTap={() => {
+            left: (appDimension.width / 2) - 20, position: 'absolute', fontSize: 40, color: 'white'
+        }} animate={{bottom: show ? 405 : -40}} initial={{bottom: -40}} whileTap={{scale: 0.9}} onTap={() => {
             close();
-        }}>
-            <IoCloseCircleOutline/>
+        }} transition={{bounce:0}}>
+            <IoMdCloseCircle/>
         </motion.div>
     </motion.div>
 })

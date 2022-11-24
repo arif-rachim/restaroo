@@ -8,13 +8,13 @@ import {useAppContext} from "../components/useAppContext";
 import {StoreValue, useStore} from "../components/store/useStore";
 import {motion} from "framer-motion";
 import {ValueOnChangeProperties} from "../components/page-components/picker/createPicker";
-import {blue, ButtonTheme, red, white} from "./Theme";
+import {blue, ButtonTheme, grey, red, white} from "./Theme";
 import produce from "immer";
 import {Input} from "../components/page-components/Input";
 import {MdCancel} from "react-icons/md";
 import {useUserProfile} from "../model/useUserProfile";
 import {Button} from "../components/page-components/Button";
-import {IoSaveOutline} from "react-icons/io5";
+import {IoCheckmark, IoSaveOutline} from "react-icons/io5";
 import {isEmptyText} from "../components/page-components/utils/isEmptyText";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
 
@@ -29,7 +29,8 @@ interface Reservation {
     firstName: string,
     lastName: string,
     email: string,
-    phoneNo: string
+    phoneNo: string,
+    updateOnWhatsapp : boolean
 }
 
 function DateSelector(props: ValueOnChangeProperties<Date>) {
@@ -220,6 +221,29 @@ function PersonalDetailForm<T>(props: {
     </div>;
 }
 
+function Switch(props:ValueOnChangeProperties<boolean>) {
+    let {value,onChange} = props;
+    value = value === true;
+    return <div style={{width: 40, display: 'flex', flexDirection: 'column'}}>
+        <motion.div style={{
+            display: 'flex',
+            flexDirection: !value?'row':'row-reverse',
+            width: 40,
+            borderRadius: 20,
+            height: 20,
+            border: '1px solid rgba(0,0,0,0.1)'
+        }} onTap={() => {
+            if(onChange !== undefined){
+                onChange(!value)
+            }
+        }}>
+            <motion.div layout style={{width: 20, height: 20, background: value === true ?red:grey, borderRadius: 10}}>
+
+            </motion.div>
+        </motion.div>
+    </div>;
+}
+
 export function ReservationPage(props: RouteProps) {
 
     const openingTime: string = '11:00';
@@ -248,6 +272,7 @@ export function ReservationPage(props: RouteProps) {
         lastName: '',
         phoneNo: user.phoneNo,
         id: '',
+        updateOnWhatsapp : true,
         errors: {
             firstName: '',
             lastName: '',
@@ -343,7 +368,7 @@ export function ReservationPage(props: RouteProps) {
                         </StoreValue>
                     </div>
                     <motion.div style={{color: 'red', marginLeft: 10}} onTap={async () => {
-                        const result:any = await context.showSlidePanel(closePanel => {
+                        const result: any = await context.showSlidePanel(closePanel => {
                             return <PersonalDetailForm closePanel={closePanel}
                                                        firstName={store.stateRef.current.firstName}
                                                        lastName={store.stateRef.current.lastName}
@@ -352,20 +377,23 @@ export function ReservationPage(props: RouteProps) {
                             />
                         });
 
-                        store.setState(old => ({...old,...result}))
+                        store.setState(old => ({...old, ...result}))
 
                     }} whileTap={{scale: 0.9}}>Change
                     </motion.div>
                 </div>
             </div>
             <div style={{display: 'flex', flexDirection: 'column'}}>
-                <div style={{display:'flex',alignItems:'center',marginBottom:20}}>
-                    <div style={{flexGrow:1}} >Receive booking updates on WhatsApp</div>
-                    <div style={{width:40,display:'flex',flexDirection:'column'}}>
-                    <motion.div style={{display:'flex',flexDirection:'row',width:40,borderRadius:20,height:20,border:'1px solid rgba(0,0,0,0.1)'}}>
-                        <motion.div layout style={{width:20,height:20,background:red,borderRadius:10}}/>
-                    </motion.div>
-                    </div>
+                <div style={{display: 'flex', alignItems: 'center', marginBottom: 20}}>
+                    <div style={{flexGrow: 1}}>Receive booking updates on SMS</div>
+                    <StoreValue store={store} selector={s => s.updateOnWhatsapp === true} property={'value'}>
+                        <Switch onChange={value => {
+                            store.setState(produce(s => {
+                                s.updateOnWhatsapp = value;
+                            }));
+                        }}/>
+                    </StoreValue>
+
                 </div>
 
                 <Button onTap={() => {
