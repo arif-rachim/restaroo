@@ -49,12 +49,12 @@ const menus: Menu[] = [{
     icon: MdOutlineDeliveryDining,
     iconSelected: MdDeliveryDining
 },
-    {
-        path: 'dining',
-        title: 'Dining',
-        icon: MdOutlineDining,
-        iconSelected: MdDining
-    },
+    // {
+    //     path: 'dining',
+    //     title: 'Dining',
+    //     icon: MdOutlineDining,
+    //     iconSelected: MdDining
+    // },
     {
         path: 'reservation',
         title: 'Reservation',

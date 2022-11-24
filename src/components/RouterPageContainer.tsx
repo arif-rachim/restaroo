@@ -1,5 +1,5 @@
 import {RouteProps, useRoute} from "./useRoute";
-import {createContext, FunctionComponent, useContext, useMemo, useRef} from "react";
+import {createContext, FunctionComponent, memo, useContext, useMemo, useRef} from "react";
 import {motion, Variants} from "framer-motion";
 import {isFunction} from "./page-components/utils/isFunction";
 import {isPromise} from "./page-components/utils/isPromise";
@@ -65,7 +65,7 @@ export function RouterPageContainer() {
     const pathStore = useStore(path);
     useAfterInit(() => pathStore.setState(path),[path])
 
-    const Component = useMemo(() => function RouteComponentContainer(props: { isFocused: boolean } & RouteProps) {
+    const Component = useMemo(() => memo(function RouteComponentContainer(props: { isFocused: boolean } & RouteProps) {
         const {isFocused} = props;
         return <motion.div
             initial={initial}
@@ -84,7 +84,7 @@ export function RouterPageContainer() {
             <RouteComponent params={props.params} path={props.path}/>
         </motion.div>
         // eslint-disable-next-line
-    }, [RouteComponent]);
+    },(old,next) => old.isFocused === next.isFocused), [RouteComponent]);
 
     const componentIndex = componentsRef.current.findIndex(c => c.path === path);
     if (componentIndex < 0) {
