@@ -25,6 +25,7 @@ import {isEmptyText} from "../components/page-components/utils/isEmptyText";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
 import {Address} from "../model/Address";
 import {SkeletonBox} from "../components/page-components/SkeletonBox";
+import {SlideDetail} from "./SlideDetail";
 
 export const EMPTY_ADDRESS: Address = {
     areaOrStreetName: '',
@@ -120,21 +121,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address|false) => void,add
         return isEmptyObject(store.stateRef.current.errors);
     },[store]);
     const [busy,setBusy] = useState(false);
-    return <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        borderTopRightRadius: 15,
-        borderTopLeftRadius: 15,
-        padding: 10
-    }}>
-        <div style={{display: 'flex', justifyContent: 'center', marginTop: -60, paddingBottom: 20}}>
-            <motion.div onTap={() => {
-                closePanel(false)
-            }} whileTap={{scale: 0.95}}>
-                <MdCancel fontSize={40} style={{color: "white"}}/>
-            </motion.div>
-        </div>
+    return <SlideDetail closePanel={closePanel}>
         <div style={{
             fontSize: 20,
             fontWeight: 20,
@@ -200,7 +187,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address|false) => void,add
                 })();
             }
         }} theme={ButtonTheme.danger} icon={IoSaveOutline} isBusy={busy}/>
-    </div>;
+    </SlideDetail>;
 }
 
 export function DeliveryLocationPage(props: RouteProps) {

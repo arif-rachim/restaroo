@@ -3,8 +3,8 @@ import {RouteProps} from "../components/useRoute";
 import {Card, CardTitle} from "../components/page-components/Card";
 import {menus, products} from "../model/data";
 import invariant from "tiny-invariant";
-import {IoChevronDown, IoDisc, IoHeartOutline} from "react-icons/io5";
-import {blue, red, white} from "./Theme";
+import {IoCartOutline, IoChevronDown, IoDisc, IoHeartOutline} from "react-icons/io5";
+import {ButtonTheme, red, white} from "./Theme";
 import {MdPlace} from "react-icons/md";
 import {motion} from "framer-motion";
 import {CgProfile} from "react-icons/cg";
@@ -20,6 +20,9 @@ import {Product} from "../model/Product";
 import {IoMdAdd, IoMdRemove} from "react-icons/io";
 import {ValueOnChangeProperties} from "../components/page-components/picker/createPicker";
 import produce from "immer";
+import {Image} from "../components/page-components/Image";
+import {SlideDetail} from "./SlideDetail";
+import {Button} from "../components/page-components/Button";
 
 function AddressHeader(props: { address?: Address }) {
     let {address} = props;
@@ -49,7 +52,7 @@ function AddressHeader(props: { address?: Address }) {
 }
 
 function AddProductToCart(props: ValueOnChangeProperties<number>) {
-    const {value,onChange} = props;
+    const {value, onChange} = props;
     invariant(onChange);
     const hasValue = value > 0;
     return <div style={{
@@ -70,46 +73,47 @@ function AddProductToCart(props: ValueOnChangeProperties<number>) {
             borderRadius: 10,
             alignItems: 'center'
         }}>
-            <div style={{display: 'flex',width:'100%',height:'100%',position:"relative"}}>
-                <motion.div style={{width:'50%',padding:5}} whileTap={{scale:0.9}} onTap={() => {
-                    onChange(hasValue?value-1:1);
-                }} animate={{opacity:hasValue?1:0}}>
+            <div style={{display: 'flex', width: '100%', height: '100%', position: "relative"}}>
+                <motion.div style={{width: '50%', padding: 5}} whileTap={{scale: 0.9}} onTap={() => {
+                    onChange(hasValue ? value - 1 : 1);
+                }} animate={{opacity: hasValue ? 1 : 0}}>
                     <IoMdRemove fontSize={20}/>
                 </motion.div>
                 <div style={{
-                    position:'absolute',
+                    position: 'absolute',
                     fontSize: 16,
                     lineHeight: 1,
-                    textAlign:'center',
+                    textAlign: 'center',
                     fontWeight: 'bold',
                     width: 50,
-                    left:24,
-                    top : 8
+                    left: 24,
+                    top: 8
                 }} onClick={() => {
-                    if(!hasValue){
-                        onChange(hasValue?value+1:1);
+                    if (!hasValue) {
+                        onChange(hasValue ? value + 1 : 1);
                     }
                 }}>{hasValue ? value : 'ADD'}
                 </div>
-                <motion.div style={{width:'50%',textAlign:'right',padding:5}} whileTap={{scale:0.9}} onTap={() => {
-                    onChange(hasValue?value+1:1);
-                }} animate={{opacity:hasValue?1:0}}>
+                <motion.div style={{width: '50%', textAlign: 'right', padding: 5}} whileTap={{scale: 0.9}}
+                            onTap={() => {
+                                onChange(hasValue ? value + 1 : 1);
+                            }} animate={{opacity: hasValue ? 1 : 0}}>
                     <IoMdAdd fontSize={20}/>
                 </motion.div>
             </div>
         </div>
-        {/*<Button title={'Add'} style={{backgroundColor: veryLightRed}} onTap={() => {*/}
-        {/*}} icon={IoAdd} theme={ButtonTheme.danger}/>*/}
+
     </div>;
 }
-interface CartItem{
-    productId:string,
-    total:number
+
+interface CartItem {
+    productId: string,
+    total: number
 }
 
 export function DeliveryPage(props: RouteProps) {
 
-    const {appDimension} = useAppContext();
+    const {appDimension, showSlidePanel} = useAppContext();
     const navigate = useNavigate();
     const componentId = useId();
     const titleRef = useRef<{ title: string, offsetY: number }[]>([]);
@@ -178,6 +182,11 @@ export function DeliveryPage(props: RouteProps) {
                         padding: 10,
                         marginBottom: 20,
                         borderBottom: '1px dashed rgba(0,0,0,0.1)'
+                    }} onClick={async () => {
+                        const result = await showSlidePanel(closePanel => {
+                            // WE NEED TO DISPLAY THE PRODUCT HERE
+                            return <ProductDetail product={product} closePanel={closePanel} total={1}/>
+                        })
                     }}>
                         <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{fontSize: 20, marginBottom: 5}}><IoDisc/></div>
@@ -215,10 +224,10 @@ export function DeliveryPage(props: RouteProps) {
                                 <AddProductToCart onChange={(value) => {
                                     shoppingCart.setState(produce(s => {
                                         const currentIndex = s.findIndex(s => s.productId === productId);
-                                        if(currentIndex >= 0){
+                                        if (currentIndex >= 0) {
                                             s[currentIndex].total = value;
-                                        }else{
-                                            s.push({productId,total:value})
+                                        } else {
+                                            s.push({productId, total: value})
                                         }
                                     }));
                                 }}/>
@@ -300,4 +309,82 @@ export function DeliveryPage(props: RouteProps) {
             </div>
         </div>
     </Page>
+}
+
+function ProductDetail(props: { product: Product, closePanel: (result: any) => void, total: number }) {
+    const {appDimension} = useAppContext();
+    const {product, closePanel} = props;
+    const store = useStore({productId: product.id, total: props.total || 1});
+
+    return <SlideDetail closePanel={closePanel} style={{backgroundColor: '#F2F2F2', padding: 0}}>
+        <div style={{flexGrow: 1, overflow: 'auto',display:'flex',flexDirection:'column'}}>
+            <Card style={{padding: 0, margin: 10}}>
+                <div style={{marginBottom: 10}}>
+                    <Image src={process.env.PUBLIC_URL + product.imageAddress} height={appDimension.width - 20}
+                           width={appDimension.width - 20}
+                           style={{borderRadius: 10}}
+                    />
+                </div>
+                <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
+                    <IoDisc style={{fontSize: 20, marginRight: 5, color: red, marginBottom: 5}}/>
+
+                    <div style={{fontSize: 20, fontWeight: 'bold', marginBottom: 20}}>{product.name}</div>
+                    <div style={{fontSize: 16}}>{product.description}</div>
+                </div>
+            </Card>
+
+            {product.config.map(config => {
+                return <Card key={config.name} style={{margin: 10}}>
+                    <CardTitle title={config.name}/>
+                </Card>
+            })}
+
+
+
+        </div>
+        <div style={{display: 'flex', padding: 10, background: white}}>
+            <motion.div style={{
+                display: 'flex',
+                border: `1px solid ${red}`,
+                color: red,
+                borderRadius: 10,
+                marginRight: 10,
+                alignItems: 'center'
+            }} whileTap={{scale: 0.98}}>
+                <motion.div style={{padding: 10}} whileTap={{scale: 0.95}} onTap={() => {
+                    if (store.stateRef.current.total === 1) {
+                        closePanel(false);
+                        return;
+                    }
+                    store.setState(produce(s => {
+                        s.total = s.total > 1 ? s.total - 1 : 1;
+                    }))
+                }}>
+                    <IoMdRemove style={{fontSize: 20}}/>
+                </motion.div>
+                <StoreValue store={store} selector={s => s.total} property={'value'}>
+                    <Title/>
+                </StoreValue>
+                <motion.div style={{padding: 10}} onTap={() => {
+                    store.setState(produce(s => {
+                        s.total = s.total > 0 ? s.total + 1 : 1;
+                    }))
+                }}>
+                    <IoMdAdd style={{fontSize: 20}}/>
+                </motion.div>
+            </motion.div>
+            <StoreValue store={store} property={'title'}
+                        selector={s => `Add item - ${product.currency} ${s.total * product.price}`}>
+                <Button onTap={() => {
+                }} style={{flexGrow: 1, backgroundColor: red, color: 'white'}} title={''} icon={IoCartOutline}
+                        theme={ButtonTheme.danger} iconStyle={{fontSize: 19}}/>
+            </StoreValue>
+        </div>
+    </SlideDetail>
+}
+
+function Title(props: { value?: number }) {
+    return <div style={{fontSize: 18, paddingBottom: 3, width: 30, textAlign: 'center', fontWeight: 'bold'}}>
+        {props.value}
+    </div>
 }
