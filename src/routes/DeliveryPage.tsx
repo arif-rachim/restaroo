@@ -173,7 +173,8 @@ export function DeliveryPage(props: RouteProps) {
                         titleRef.current = titleRef.current.filter(p => p !== value);
                     }
                 }}/>
-                {menu.productId.map((productId) => {
+                {menu.productId.map((productId,index,source) => {
+                    const isLastIndex = index === source.length - 1;
                     const product = products.find(p => p.id === productId);
                     invariant(product);
                     const description = product.description.substring(0, 75);
@@ -181,7 +182,7 @@ export function DeliveryPage(props: RouteProps) {
                         display: 'flex',
                         padding: 10,
                         marginBottom: 20,
-                        borderBottom: '1px dashed rgba(0,0,0,0.1)'
+                        borderBottom: `1px dashed rgba(0,0,0,${isLastIndex?'0':'0.1'})`
                     }} onClick={async () => {
                         const result = await showSlidePanel(closePanel => {
                             // WE NEED TO DISPLAY THE PRODUCT HERE
@@ -311,41 +312,41 @@ export function DeliveryPage(props: RouteProps) {
     </Page>
 }
 
-function ProductConfigItem(props:{product:Product,option: ProductConfigOption,config: ProductConfig,store:Store<{productId:string,total:number,options:string[]}>}) {
+function ProductConfigItem(props:{product:Product,option: ProductConfigOption,config: ProductConfig,store:Store<{productId:string,total:number,options:ProductConfigOption[]}>}) {
     const {option,store,config,product} = props;
-    const isSelected = useStoreValue(store,s => s.options.includes(option.name),[option.name]);
+    const isSelected = useStoreValue(store,s => s.options.findIndex(o => o.name === option.name) >= 0,[option.name]);
 
     return <motion.div key={option.name}
                 style={{display: 'flex', padding: '5px 10px 10px 10px'}}
                 whileTap={{scale:0.95}}
                        onTap={() => {
-                           store.setState(produce((s:{productId:string,total:number,options:string[]}) => {
+                           store.setState(produce((s:{productId:string,total:number,options:ProductConfigOption[]}) => {
                                const {required,maximumSelection,options} = config;
-                               const index = s.options.indexOf(option.name);
+                               const index = s.options.findIndex(o => o.name === option.name);
                                const alreadySelected = index >= 0;
                                const toBeSelected = !alreadySelected;
                                const toBeRemoved = alreadySelected;
-                               const allOptions = config.options.map(s => s.name);
+                               const allOptions = config.options;
 
                                const currentTotalSelected = s.options.reduce((total,optionName) => {
-                                   return total + (allOptions.includes(optionName) ? 1 : 0);
+                                   return total + (allOptions.findIndex(o => o.name === optionName.name) >= 0 ? 1 : 0);
                                },0);
                                if(toBeSelected && currentTotalSelected < maximumSelection){
-                                   s.options.push(option.name);
+                                   s.options.push(option);
                                }
                                if(toBeSelected && currentTotalSelected === maximumSelection && maximumSelection === 1){
                                    allOptions.forEach(e => {
-                                       const index = s.options.indexOf(e);
+                                       const index = s.options.findIndex(o => o.name === e.name);
                                        if(index >= 0){
                                            s.options.splice(index,1);
                                        }
                                    })
-                                   s.options.push(option.name);
+                                   s.options.push(option);
                                }
                                if(toBeRemoved && (!required) && currentTotalSelected > 0){
                                    s.options.splice(index,1);
                                }
-                               if(toBeRemoved && required && currentTotalSelected > 1){
+                               if(toBeRemoved && required && currentTotalSelected > 0){
                                    s.options.splice(index,1);
                                }
                            }))
@@ -358,23 +359,25 @@ function ProductConfigItem(props:{product:Product,option: ProductConfigOption,co
     </motion.div>
 }
 
-function ProductConfigCard(props:{config: ProductConfig,product:Product,store:Store<{productId:string,total:number,options:string[]}>}) {
+function ProductConfigCard(props:{config: ProductConfig,product:Product,store:Store<{productId:string,total:number,options:ProductConfigOption[]}>}) {
     const {config,store,product} = props;
     return <Card key={config.name} style={{margin: 10}}>
         <CardTitle title={config.name}/>
         {config.maximumSelection > 1 &&
-            <div>Select up to {config.maximumSelection} option</div>
+            <div style={{marginLeft:15,marginBottom:10,marginTop:-5}}>Select up to {config.maximumSelection} option</div>
         }
+        <div style={{display:'flex',flexDirection:'column',borderTop:'1px solid rgba(0,0,0,0.1)',paddingTop:10}}>
         {config.options.map((option) => {
             return <ProductConfigItem option={option} key={option.name} store={store} config={config} product={product}/>
         })}
+        </div>
     </Card>;
 }
 
 function ProductDetail(props: { product: Product, closePanel: (result: any) => void, total: number }) {
     const {appDimension} = useAppContext();
     const {product, closePanel} = props;
-    const store = useStore<{productId:string,total:number,options:string[]}>({
+    const store = useStore<{productId:string,total:number,options:ProductConfigOption[]}>({
         productId: product.id, 
         total: props.total || 1,
         options : []
@@ -431,7 +434,7 @@ function ProductDetail(props: { product: Product, closePanel: (result: any) => v
                 </motion.div>
             </motion.div>
             <StoreValue store={store} property={'title'}
-                        selector={s => `Add item - ${product.currency} ${s.total * product.price}`}>
+                        selector={s => `Add item - ${product.currency} ${s.total * (product.price + (s.options.reduce((total,option) => (total + option.price),0)))}`}>
                 <Button onTap={() => {
                     closePanel({product,total:store.stateRef.current.total});
                 }} style={{flexGrow: 1, backgroundColor: red, color: 'white'}} title={''} icon={IoCartOutline}
