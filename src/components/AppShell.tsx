@@ -72,8 +72,8 @@ function SlideAndModalPanel(props: { panelStore: Store<{ modalPanel: ReactElemen
     const panelStore = props.panelStore;
     const {modalPanel, slidePanel} = useStoreValue(panelStore, param => param);
     return <AnimatePresence>
-        {slidePanel !== false && <SlidePanel panel={slidePanel}/>}
-        {modalPanel !== false && <Modal modalPanel={modalPanel}/>}
+        {slidePanel !== false && <SlidePanel panel={slidePanel} key={'slide-panel'}/>}
+        {modalPanel !== false && <Modal modalPanel={modalPanel} key={'modal-panel'}/>}
     </AnimatePresence>;
 }
 

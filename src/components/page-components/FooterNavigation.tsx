@@ -1,15 +1,13 @@
 import {useNavigate} from "../useNavigate";
 import {useAppContext} from "../useAppContext";
 import {motion} from "framer-motion";
-import {yellow} from "../../routes/Theme";
+import {red, yellow} from "../../routes/Theme";
 import {RouteProps} from "../useRoute";
 import {
     MdDeliveryDining,
-    MdDining,
     MdOutlineAccessTime,
     MdOutlineAccessTimeFilled,
     MdOutlineDeliveryDining,
-    MdOutlineDining
 } from "react-icons/md";
 import {IconType} from "react-icons";
 
@@ -23,7 +21,6 @@ function NavigationButton(props: { path: string, link: string, title: string, ic
                            display: 'flex',
                            flexDirection: 'column',
                            fontSize: 28,
-                           color: path === 'cart' ? yellow : 'unset',
                            width: width,
                            flexShrink: 0,
                            flexGrow: 0
@@ -31,8 +28,8 @@ function NavigationButton(props: { path: string, link: string, title: string, ic
                        onTap={() => {
                            navigate(link);
                        }}>
-        {path === link ? <IconSelected/> : <Icon/>}
-        <div style={{fontSize: 12}}>{title}</div>
+        {path === link ? <IconSelected style={{color:red}}/> : <Icon/>}
+        <div style={{fontSize: 12,color:path===link?red:'unset'}}>{title}</div>
     </motion.div>;
 }
 
@@ -82,7 +79,7 @@ export function FooterNavigation(props: RouteProps) {
         <div style={{height: 5, marginBottom: 5, position: 'relative'}}>
             <motion.div style={{
                 width,
-                background: '#333',
+                background: red,
                 borderBottomLeftRadius: 5,
                 borderBottomRightRadius: 5,
                 height: '100%',
