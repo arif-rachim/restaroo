@@ -149,7 +149,7 @@ export function DeliveryPage(props: RouteProps) {
         // eslint-disable-next-line
     }, []);
 
-    return <Page style={{paddingTop: 110, paddingBottom: 80, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
+    return <Page style={{paddingTop: 110, paddingBottom: 110, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
 
         const target = event.target;
         const scrollTop = (target as HTMLDivElement).scrollTop;
@@ -181,6 +181,12 @@ export function DeliveryPage(props: RouteProps) {
         } else {
             titleDiv.style.display = 'none';
         }
+        if(scrollTop >= 400){
+            header.style.transform = `translateY(-110px)`;
+        }else{
+            header.style.transform = 'translateY(0px)';
+        }
+
     }}>
 
         {menus.map((menu) => {
@@ -270,7 +276,7 @@ export function DeliveryPage(props: RouteProps) {
             top: 0,
             width: appDimension.width,
             backgroundColor: '#F2F2F2',
-            transition: 'background-color 200ms cubic-bezier(0,0,0.7,0.9)'
+            transition: 'background-color 200ms cubic-bezier(0,0,0.7,0.9),transform 200ms cubic-bezier(0,0,0.7,0.9)'
         }} id={`${componentId}-header`}>
             <div style={{
                 display: 'flex',
@@ -336,11 +342,11 @@ export function DeliveryPage(props: RouteProps) {
             display: 'flex',
             flexDirection: 'column',
             position: 'absolute',
-            top: appDimension.height - 114,
+            top: appDimension.height - 124,
             width: appDimension.width,
             background:white
         }}>
-            <div style={{display:'flex',backgroundColor:red,color:white,padding:'5px 20px',margin:'5px 10px',borderRadius:10}}>
+            <div style={{display:'flex',backgroundColor:red,color:white,padding:'10px 20px',margin:'5px 10px',borderRadius:10}}>
                 <div style={{display:'flex',flexDirection:'column'}}>
                 <div>1 item</div>
                 <div style={{display:'flex',alignItems:'flex-end'}}>
