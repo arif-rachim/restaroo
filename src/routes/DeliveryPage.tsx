@@ -5,25 +5,25 @@ import {menus, products} from "../model/data";
 import invariant from "tiny-invariant";
 import {IoCartOutline, IoChevronDown, IoDisc, IoHeartOutline} from "react-icons/io5";
 import {ButtonTheme, red, white} from "./Theme";
-import {MdPlace} from "react-icons/md";
+import {MdCheckBox, MdPlace} from "react-icons/md";
 import {motion} from "framer-motion";
 import {CgProfile} from "react-icons/cg";
 import {useAppContext} from "../components/useAppContext";
 import {useNavigate} from "../components/useNavigate";
 import {useEffect, useId, useRef} from "react";
-import {StoreValue, useStore} from "../components/store/useStore";
+import {Store, StoreValue, useStore, useStoreValue} from "../components/store/useStore";
 import {useCurrentPosition} from "../components/page-components/utils/useCurrentPosition";
 import {Address} from "../model/Address";
 import {EMPTY_ADDRESS} from "./DeliveryLocationPage";
 import {SkeletonBox} from "../components/page-components/SkeletonBox";
-import {Product} from "../model/Product";
+import {Product, ProductConfig, ProductConfigOption} from "../model/Product";
 import {IoMdAdd, IoMdRemove} from "react-icons/io";
 import {ValueOnChangeProperties} from "../components/page-components/picker/createPicker";
 import produce from "immer";
 import {Image} from "../components/page-components/Image";
 import {SlideDetail} from "./SlideDetail";
 import {Button} from "../components/page-components/Button";
-
+import {MdCheckBoxOutlineBlank} from "react-icons/md";
 function AddressHeader(props: { address?: Address }) {
     let {address} = props;
     address = address ?? EMPTY_ADDRESS;
@@ -311,10 +311,74 @@ export function DeliveryPage(props: RouteProps) {
     </Page>
 }
 
+function ProductConfigItem(props:{product:Product,option: ProductConfigOption,config: ProductConfig,store:Store<{productId:string,total:number,options:string[]}>}) {
+    const {option,store,config,product} = props;
+    const isSelected = useStoreValue(store,s => s.options.includes(option.name),[option.name]);
+
+    return <motion.div key={option.name}
+                style={{display: 'flex', padding: '5px 10px 10px 10px'}}
+                whileTap={{scale:0.95}}
+                       onTap={() => {
+                           store.setState(produce((s:{productId:string,total:number,options:string[]}) => {
+                               const {required,maximumSelection,options} = config;
+                               const index = s.options.indexOf(option.name);
+                               const alreadySelected = index >= 0;
+                               const toBeSelected = !alreadySelected;
+                               const toBeRemoved = alreadySelected;
+                               const allOptions = config.options.map(s => s.name);
+
+                               const currentTotalSelected = s.options.reduce((total,optionName) => {
+                                   return total + (allOptions.includes(optionName) ? 1 : 0);
+                               },0);
+                               if(toBeSelected && currentTotalSelected < maximumSelection){
+                                   s.options.push(option.name);
+                               }
+                               if(toBeSelected && currentTotalSelected === maximumSelection && maximumSelection === 1){
+                                   allOptions.forEach(e => {
+                                       const index = s.options.indexOf(e);
+                                       if(index >= 0){
+                                           s.options.splice(index,1);
+                                       }
+                                   })
+                                   s.options.push(option.name);
+                               }
+                               if(toBeRemoved && (!required) && currentTotalSelected > 0){
+                                   s.options.splice(index,1);
+                               }
+                               if(toBeRemoved && required && currentTotalSelected > 1){
+                                   s.options.splice(index,1);
+                               }
+                           }))
+                       }}>
+        <div style={{fontSize: 16, flexGrow: 1,marginLeft:5}}>{option.name}</div>
+        {option.price > 0 &&
+            <div style={{fontSize:16,fontWeight:'bold'}}>{product.currency} {option.price}</div>
+        }
+        <div style={{fontSize: 25, color: red,marginLeft:10,marginTop:-3}}>{isSelected ? <MdCheckBox/> : <MdCheckBoxOutlineBlank/>}</div>
+    </motion.div>
+}
+
+function ProductConfigCard(props:{config: ProductConfig,product:Product,store:Store<{productId:string,total:number,options:string[]}>}) {
+    const {config,store,product} = props;
+    return <Card key={config.name} style={{margin: 10}}>
+        <CardTitle title={config.name}/>
+        {config.maximumSelection > 1 &&
+            <div>Select up to {config.maximumSelection} option</div>
+        }
+        {config.options.map((option) => {
+            return <ProductConfigItem option={option} key={option.name} store={store} config={config} product={product}/>
+        })}
+    </Card>;
+}
+
 function ProductDetail(props: { product: Product, closePanel: (result: any) => void, total: number }) {
     const {appDimension} = useAppContext();
     const {product, closePanel} = props;
-    const store = useStore({productId: product.id, total: props.total || 1});
+    const store = useStore<{productId:string,total:number,options:string[]}>({
+        productId: product.id, 
+        total: props.total || 1,
+        options : []
+    });
 
     return <SlideDetail closePanel={closePanel} style={{backgroundColor: '#F2F2F2', padding: 0}}>
         <div style={{flexGrow: 1, overflow: 'auto',display:'flex',flexDirection:'column'}}>
@@ -325,22 +389,15 @@ function ProductDetail(props: { product: Product, closePanel: (result: any) => v
                            style={{borderRadius: 10}}
                     />
                 </div>
-                <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
+                <div style={{display: 'flex', flexDirection: 'column', padding: '10px 10px 10px 10px'}}>
                     <IoDisc style={{fontSize: 20, marginRight: 5, color: red, marginBottom: 5}}/>
-
                     <div style={{fontSize: 20, fontWeight: 'bold', marginBottom: 20}}>{product.name}</div>
-                    <div style={{fontSize: 16}}>{product.description}</div>
+                    <div style={{fontSize: 16,marginBottom:20}}>{product.description}</div>
                 </div>
             </Card>
-
             {product.config.map(config => {
-                return <Card key={config.name} style={{margin: 10}}>
-                    <CardTitle title={config.name}/>
-                </Card>
+                return <ProductConfigCard config={config} key={config.name} store={store} product={product} />
             })}
-
-
-
         </div>
         <div style={{display: 'flex', padding: 10, background: white}}>
             <motion.div style={{
@@ -376,6 +433,7 @@ function ProductDetail(props: { product: Product, closePanel: (result: any) => v
             <StoreValue store={store} property={'title'}
                         selector={s => `Add item - ${product.currency} ${s.total * product.price}`}>
                 <Button onTap={() => {
+                    closePanel({product,total:store.stateRef.current.total});
                 }} style={{flexGrow: 1, backgroundColor: red, color: 'white'}} title={''} icon={IoCartOutline}
                         theme={ButtonTheme.danger} iconStyle={{fontSize: 19}}/>
             </StoreValue>

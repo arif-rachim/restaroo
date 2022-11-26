@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="update the picker">
-      <change afterPath="$PROJECT_DIR$/src/routes/SlideDetail.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,7 +48,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -88,6 +86,9 @@
       <workItem from="1669142869854" duration="448000" />
       <workItem from="1669143338623" duration="90000" />
       <workItem from="1669227062562" duration="338000" />
+      <workItem from="1669371164731" duration="3643000" />
+      <workItem from="1669395399050" duration="4091000" />
+      <workItem from="1669446009430" duration="1506000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
