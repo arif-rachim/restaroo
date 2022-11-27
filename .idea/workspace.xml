@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
-      <change afterPath="$PROJECT_DIR$/src/components/page-components/AddToCartButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/page-components/Value.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/store/useStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/store/useStore.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/useAppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useAppContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +88,7 @@
       <workItem from="1669371164731" duration="3643000" />
       <workItem from="1669395399050" duration="4091000" />
       <workItem from="1669446009430" duration="15246000" />
-      <workItem from="1669549129035" duration="5871000" />
+      <workItem from="1669549129035" duration="5914000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
