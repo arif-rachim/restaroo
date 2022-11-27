@@ -72,6 +72,7 @@ export function AppContextProvider<State extends AppState>(props: PropsWithChild
 
     const window = useContext(WindowSizeContext);
     const {panelStore, store, showPickerRef} = props;
+
     const footerVisibleStore = useStore(true);
     const headerVisibleStore = useStore(true);
 

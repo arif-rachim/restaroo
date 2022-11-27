@@ -11,6 +11,7 @@ import {ProfilePage} from "./ProfilePage";
 import {AddressBookPage} from "./AddressBookPage";
 import {DeliveryLocationPage} from "./DeliveryLocationPage";
 import {HomePage} from "./HomePage";
+import OrderDetailPage from "./OrderDetailPage";
 
 
 export const routes: Routes = {
@@ -59,6 +60,10 @@ export const routes: Routes = {
     },
     'home':{
         component : HomePage,
+        initial : 'right'
+    },
+    'order-detail':{
+        component : OrderDetailPage,
         initial : 'right'
     }
 }

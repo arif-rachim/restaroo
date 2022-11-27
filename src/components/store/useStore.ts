@@ -9,6 +9,7 @@ import {
     useRef,
     useState
 } from "react";
+import {useAfterInit} from "../page-components/utils/useAfterInit";
 
 type Listener = (next: any, prev: any) => void
 
@@ -167,6 +168,10 @@ export function StoreValue<T, S>(props: PropsWithChildren<StoreValueInjectorProp
     }, [selector]);
     const cp = (children as any).props;
     const childrenProps: any = {...cp};
+
+    useAfterInit(() => {
+        console.log('OWH THIS SHOULD NOT HAPPEN',store.stateRef.current);
+    },[Math.random()]);
     if (Array.isArray(property)) {
         property.forEach((props, index) => {
             childrenProps[props] = value[index];
