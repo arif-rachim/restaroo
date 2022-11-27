@@ -81,13 +81,20 @@ function AddProductToCart(props: (ValueOnChangeProperties<number> & { mustOpenDe
             alignItems: 'center'
         }}>
             <div style={{display: 'flex', width: '100%', height: '100%', position: "relative"}}>
-                {!mustOpenDetail &&
-                    <motion.div style={{width: '50%', padding: 5}} whileTap={{scale: 0.9}} onClick={() => {
-                        onChange(hasValue ? value - 1 : 1);
+
+                    <motion.div style={{width: '50%', padding: 5}} whileTap={{scale: 0.9}} onClick={(event) => {
+                        if(!mustOpenDetail){
+                            onChange(hasValue ? value - 1 : 1);
+                        }else if(mustOpenDetail && hasValue){
+                            event.preventDefault();
+                            event.stopPropagation();
+                            throw new Error('WE NEED TO THINK HOW TO ENABLE THIS');
+                        }
+
                     }} animate={{opacity: hasValue ? 1 : 0}}>
                         <IoMdRemove fontSize={20}/>
                     </motion.div>
-                }
+
                 <div style={{
                     position: 'absolute',
                     fontSize: 16,
@@ -107,15 +114,17 @@ function AddProductToCart(props: (ValueOnChangeProperties<number> & { mustOpenDe
                     }
                 }}>{hasValue ? value : 'ADD'}
                 </div>
-                {!mustOpenDetail &&
+
                     <motion.div style={{width: '50%', textAlign: 'right', padding: 5}} whileTap={{scale: 0.9}}
                                 onClick={() => {
+                                    if(!mustOpenDetail){
+                                        onChange(hasValue ? value + 1 : 1);
+                                    }
 
-                                    onChange(hasValue ? value + 1 : 1);
                                 }} animate={{opacity: hasValue ? 1 : 0}}>
                         <IoMdAdd fontSize={20}/>
                     </motion.div>
-                }
+
             </div>
         </div>
         {mustOpenDetail && <div style={{fontSize: 10, color: 'rgba(0,0,0,0.8)', marginTop: 5}}>{'customizable'}</div>}
@@ -265,10 +274,12 @@ export function DeliveryPage(props: RouteProps) {
                                         selector={s => (s.filter(t => t.product.id === productId)?.reduce((total, item) => total + item.total, 0) ?? 0)}
                                         property={'value'}>
                                 <AddProductToCart onChange={(value) => {
+                                    console.log('We got value ',value);
                                     shoppingCart.setState(produce(s => {
                                         const currentIndex = s.findIndex(s => s.product.id === productId);
                                         if (currentIndex >= 0) {
                                             s[currentIndex].total = value;
+                                            s[currentIndex].totalPrice = value * product.price
                                         } else {
                                             s.push({
                                                 product,
@@ -356,14 +367,17 @@ export function DeliveryPage(props: RouteProps) {
                 </StoreValue>
             </div>
         </div>
-        <StoreValue store={pushDownShoppingCartButton} selector={s => ({bottom: s ? 0 : 63})} property={'animate'}>
+        <StoreValue store={pushDownShoppingCartButton} selector={s => {
+            const hidden = shoppingCart.stateRef.current.reduce((total,c) => (total + c.total),0) === 0
+            return {bottom: hidden ? - 100 : s ? 0 : 63}
+        }} property={'animate'}>
             <motion.div style={{
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'absolute',
                 width: appDimension.width,
                 background: white
-            }} initial={{bottom: 63}} transition={{bounce:0}}>
+            }} initial={{bottom: -100}} transition={{bounce:0}}>
                 <div style={{
                     display: 'flex',
                     backgroundColor: red,
@@ -374,9 +388,23 @@ export function DeliveryPage(props: RouteProps) {
                     borderRadius: 10
                 }}>
                     <div style={{display: 'flex', flexDirection: 'column',flexGrow:1}}>
-                        <div style={{marginBottom:5}}>1 item</div>
+                        <div style={{marginBottom:5}}>
+                            <StoreValue store={shoppingCart} selector={s => {
+                                const total = s.reduce((total,cartItem:CartItem) => (total + cartItem.total) , 0);
+                                return total + ' item'+(total>1 ? 's':'')
+                            }} property={'value'} >
+                                <Value/>
+                            </StoreValue>
+                        </div>
                         <div style={{display: 'flex', alignItems: 'flex-end'}}>
-                            <div style={{fontWeight:'bold',fontSize:16}}>AED 29.50</div>
+                            <div style={{fontWeight:'bold',fontSize:16}}>
+                                <StoreValue store={shoppingCart} selector={s => {
+                                    const total = s.reduce((total,cartItem:CartItem) => (total + cartItem.totalPrice) , 0);
+                                    return 'AED '+total
+                                }} property={'value'} >
+                                    <Value/>
+                                </StoreValue>
+                            </div>
                             <div style={{fontSize: 10, marginLeft: 5, marginBottom: 2}}>inclusive of taxes</div>
                         </div>
                     </div>
@@ -516,9 +544,11 @@ function ProductDetail(props: { product: Product, closePanel: (result: any) => v
                 }}>
                     <IoMdRemove style={{fontSize: 20}}/>
                 </motion.div>
+                <div style={{fontSize: 18, paddingBottom: 3, width: 30, textAlign: 'center', fontWeight: 'bold'}}>
                 <StoreValue store={store} selector={s => s.total} property={'value'}>
-                    <Title/>
+                    <Value/>
                 </StoreValue>
+                </div>
                 <motion.div style={{padding: 10}} onTap={() => {
                     store.setState(produce(s => {
                         s.total = s.total > 0 ? s.total + 1 : 1;
@@ -566,8 +596,6 @@ function ProductDetail(props: { product: Product, closePanel: (result: any) => v
     </SlideDetail>
 }
 
-function Title(props: { value?: number }) {
-    return <div style={{fontSize: 18, paddingBottom: 3, width: 30, textAlign: 'center', fontWeight: 'bold'}}>
-        {props.value}
-    </div>
+function Value(props:{value?:any}){
+    return <>{props?.value}</>
 }

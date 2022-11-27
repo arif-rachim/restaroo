@@ -137,7 +137,7 @@ function NumberOfPeopleSelector(props: ValueOnChangeProperties<number>) {
     </div>;
 }
 
-function PersonalDetailForm<T>(props: {
+function PersonalDetailForm(props: {
     closePanel: (result: any) => void,
     firstName: string, lastName: string, email: string, phoneNo: string
 }) {
