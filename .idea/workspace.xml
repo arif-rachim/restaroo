@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="update the picker">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/FooterNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/FooterNavigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/useAppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useAppContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +38,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2HiEk6meaMeJjz3wBkg9iZDR0i8" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

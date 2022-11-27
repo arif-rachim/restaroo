@@ -1,13 +1,15 @@
 import {
     createContext,
+    Dispatch,
     MutableRefObject,
     PropsWithChildren,
     ReactElement,
+    SetStateAction,
     useCallback,
     useContext,
     useMemo
 } from "react";
-import {createStoreInitValue, Store} from "./store/useStore";
+import {createStoreInitValue, Store, useStore, useStoreValue} from "./store/useStore";
 import {AppState} from "./AppState";
 import {WindowSizeContext} from "../App";
 import {GuestProfile} from "../model/Profile";
@@ -30,6 +32,8 @@ interface AppContextType {
     showSlidePanel: <T>(factoryFunction: FactoryFunction<T>) => Promise<T>,
     showPicker: PickerFunction,
     store: Store<AppState>,
+    showHeader: Dispatch<SetStateAction<boolean>>,
+    showFooter: Dispatch<SetStateAction<boolean>>,
 }
 
 
@@ -48,43 +52,48 @@ const AppContext = createContext<AppContextType>({
         appType: AppType.Mobile,
         showModal: Nothing,
         showPicker: Nothing,
-        showSlidePanel:Nothing,
+        showSlidePanel: Nothing,
+        showHeader: Nothing,
+        showFooter: Nothing,
         store: createStoreInitValue({user: GuestProfile})
     }
 );
+const HeaderFooterVisibilityContext = createContext<{ footerVisibleStore?: Store<boolean>, headerVisibleStore?: Store<boolean> }>({});
 
 export type FactoryFunction<T> = (closePanel: (val: T) => void) => ReactElement;
 export type PickerFunction = <T>(props: { picker: PickerOptions, value: T }) => Promise<T>;
 
 
 export function AppContextProvider<State extends AppState>(props: PropsWithChildren<{
-    panelStore:Store<{modalPanel:ReactElement | false,slidePanel:ReactElement | false}>
+    panelStore: Store<{ modalPanel: ReactElement | false, slidePanel: ReactElement | false }>
     store: Store<State>,
     showPickerRef: MutableRefObject<ShowPickerFunction | undefined>
 }>) {
 
     const window = useContext(WindowSizeContext);
     const {panelStore, store, showPickerRef} = props;
+    const footerVisibleStore = useStore(true);
+    const headerVisibleStore = useStore(true);
 
     const showModal = useCallback((factory: FactoryFunction<any>) => {
         return new Promise<any>(resolve => {
             const closePanel = (value: any) => {
-                panelStore.setState(old => ({...old,modalPanel:false}))
+                panelStore.setState(old => ({...old, modalPanel: false}))
                 resolve(value);
             }
             const element = factory(closePanel);
-            panelStore.setState(old => ({...old,modalPanel:element}))
+            panelStore.setState(old => ({...old, modalPanel: element}))
         })
     }, [panelStore]);
 
     const showSlidePanel = useCallback((factory: FactoryFunction<any>) => {
         return new Promise<any>(resolve => {
             const closePanel = (value: any) => {
-                panelStore.setState(old => ({...old,slidePanel:false}))
+                panelStore.setState(old => ({...old, slidePanel: false}))
                 resolve(value);
             }
             const element = factory(closePanel);
-            panelStore.setState(old => ({...old,slidePanel:element}))
+            panelStore.setState(old => ({...old, slidePanel: element}))
         })
     }, [panelStore]);
 
@@ -108,11 +117,26 @@ export function AppContextProvider<State extends AppState>(props: PropsWithChild
         if (appDimension.width < 1024) {
             appType = AppType.Laptop
         }
-
-        return {appDimension, appType, showModal, store, showPicker,showSlidePanel}
-    }, [showModal,showSlidePanel, showPicker, store, window]);
+        const showHeader = headerVisibleStore.setState;
+        const showFooter = footerVisibleStore.setState;
+        return {appDimension, appType, showModal, store, showPicker, showSlidePanel, showHeader, showFooter}
+    }, [showModal, showSlidePanel, showPicker, store, window]);
 
     return <AppContext.Provider value={(contextValue as any)}>
-        {props.children}
+        <HeaderFooterVisibilityContext.Provider value={{headerVisibleStore, footerVisibleStore}}>
+            {props.children}
+        </HeaderFooterVisibilityContext.Provider>
     </AppContext.Provider>
+}
+
+export function useFooterVisible(){
+    const store = useContext(HeaderFooterVisibilityContext).footerVisibleStore;
+    invariant(store)
+    return useStoreValue(store,s => s,[]);
+}
+
+export function useHeaderVisible(){
+    const store = useContext(HeaderFooterVisibilityContext).headerVisibleStore;
+    invariant(store)
+    return useStoreValue(store,s => s,[]);
 }

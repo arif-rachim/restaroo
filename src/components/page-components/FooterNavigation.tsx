@@ -1,7 +1,7 @@
 import {useNavigate} from "../useNavigate";
-import {useAppContext} from "../useAppContext";
+import {useAppContext, useFooterVisible} from "../useAppContext";
 import {motion} from "framer-motion";
-import {red, yellow} from "../../routes/Theme";
+import {red} from "../../routes/Theme";
 import {RouteProps} from "../useRoute";
 import {
     MdDeliveryDining,
@@ -66,6 +66,7 @@ export function FooterNavigation(props: RouteProps) {
     const {appDimension} = useAppContext();
     const width = (100 / menus.length).toFixed(2) + '%';
     const selectedIndex = menus.findIndex(m => m.path === path);
+    const visible = useFooterVisible();
     return <motion.div style={{
         display: 'flex',
         flexDirection: 'column',
@@ -75,7 +76,7 @@ export function FooterNavigation(props: RouteProps) {
         boxSizing: 'border-box',
         borderTop: '1px solid rgba(0,0,0,0.05)',
         backgroundColor: 'white'
-    }} initial={{y: 100}} animate={{y: 0}} exit={{y: 100}}>
+    }} initial={{y: 100}} animate={{y: visible? 0:100}} exit={{y: 100}} transition={{bounce:0}}>
         <div style={{height: 5, marginBottom: 5, position: 'relative'}}>
             <motion.div style={{
                 width,

@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/restaroo/static/css/main.46611b66.css",
-    "main.js": "/restaroo/static/js/main.739d4116.js",
+    "main.js": "/restaroo/static/js/main.c2ab1031.js",
     "static/media/arif-rachim-restaroo.png": "/restaroo/static/media/arif-rachim-restaroo.ce65ca940f018bfbf384.png",
     "static/media/restaroo.svg": "/restaroo/static/media/restaroo.9c05d97c7e6e9bde3d6b6e6ebf4c8630.svg",
     "static/media/RestarooIcon.svg": "/restaroo/static/media/RestarooIcon.a88ac0e72bb26d521c08a9d1d9009c51.svg",
     "index.html": "/restaroo/index.html",
     "main.46611b66.css.map": "/restaroo/static/css/main.46611b66.css.map",
-    "main.739d4116.js.map": "/restaroo/static/js/main.739d4116.js.map"
+    "main.c2ab1031.js.map": "/restaroo/static/js/main.c2ab1031.js.map"
   },
   "entrypoints": [
     "static/css/main.46611b66.css",
-    "static/js/main.739d4116.js"
+    "static/js/main.c2ab1031.js"
   ]
 }
