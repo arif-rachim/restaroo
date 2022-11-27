@@ -88,7 +88,7 @@ function AddProductToCart(props: (ValueOnChangeProperties<number> & { mustOpenDe
                         }else if(mustOpenDetail && hasValue){
                             event.preventDefault();
                             event.stopPropagation();
-                            throw new Error('WE NEED TO THINK HOW TO ENABLE THIS');
+                            onChange(-1);
                         }
 
                     }} animate={{opacity: hasValue ? 1 : 0}}>
@@ -274,7 +274,17 @@ export function DeliveryPage(props: RouteProps) {
                                         selector={s => (s.filter(t => t.product.id === productId)?.reduce((total, item) => total + item.total, 0) ?? 0)}
                                         property={'value'}>
                                 <AddProductToCart onChange={(value) => {
-                                    console.log('We got value ',value);
+                                    if(isCustomizable){
+                                        if(value === -1){
+                                            shoppingCart.setState(produce(s => {
+                                                const currentIndex = s.findIndex(s => s.product.id === productId);
+                                                if (currentIndex >= 0) {
+                                                    s.splice(currentIndex,1)
+                                                }
+                                            }));
+                                        }
+                                        return;
+                                    }
                                     shoppingCart.setState(produce(s => {
                                         const currentIndex = s.findIndex(s => s.product.id === productId);
                                         if (currentIndex >= 0) {
