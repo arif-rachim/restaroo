@@ -1,4 +1,3 @@
-import {ValueOnChangeProperties} from "./picker/createPicker";
 import invariant from "tiny-invariant";
 import {ButtonTheme, red, white} from "../../routes/Theme";
 import {motion} from "framer-motion";
@@ -7,8 +6,8 @@ import {Store, StoreValue, useStore, useStoreValue} from "../store/useStore";
 import {Product, ProductConfig, ProductConfigOption} from "../../model/Product";
 import produce from "immer";
 import {CartItem} from "../../routes/DeliveryPage";
-import {FactoryFunction, useAppContext} from "../useAppContext";
-import {useCallback} from "react";
+import {useAppContext} from "../useAppContext";
+import {CSSProperties, useCallback, useEffect} from "react";
 import {SlideDetail} from "../../routes/SlideDetail";
 import {Card, CardTitle} from "./Card";
 import {Image} from "./Image";
@@ -16,11 +15,12 @@ import {IoCartOutline, IoClose, IoDisc} from "react-icons/io5";
 import {Button} from "./Button";
 import {MdCheckBox, MdCheckBoxOutlineBlank} from "react-icons/md";
 import {Value} from "./Value";
+import {CardItemDetail} from "../../routes/OrderDetailPage";
 
-export function AddRemoveItemButton(props: (ValueOnChangeProperties<number> & { mustOpenDetail?: boolean, size?: 'small' | 'normal' })) {
-    const {value, onChange, mustOpenDetail, size} = props;
-    invariant(onChange);
-    const hasValue = value > 0;
+export function AddRemoveItemButton(props: ({ size?: 'small' | 'normal', style?: CSSProperties,value?:number,onAddClick:() =>void,onRemoveClick:() => void })) {
+    const {value, onAddClick,onRemoveClick, size, style} = props;
+
+    const hasValue = (value ?? 0)> 0;
     const isSmall = size === 'small';
     return <div style={{
         width: '100%',
@@ -28,39 +28,21 @@ export function AddRemoveItemButton(props: (ValueOnChangeProperties<number> & { 
         flexDirection: 'column',
         alignItems: 'center',
         zIndex: 0,
-        boxSizing: 'border-box'
-    }} onClick={(event) => {
-        if (!mustOpenDetail) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    }}>
+        boxSizing: 'border-box',
+        ...style
+    }} >
         <div style={{
             display: 'flex',
             flexDirection: 'row',
             width: isSmall ? 80 : 100,
-            backgroundColor: hasValue ?  red : white,
-            color: hasValue ?  white : red,
+            backgroundColor: hasValue ? red : white,
+            color: hasValue ? white : red,
             borderRadius: isSmall ? 5 : 10,
             border: `1px solid ${red}`,
             alignItems: 'center'
         }}>
             <div style={{display: 'flex', width: '100%', height: '100%', position: "relative"}}>
-
-                <motion.div style={{width: '50%', padding: 5}} whileTap={{scale: 0.9}} onClick={(event) => {
-                    if (!mustOpenDetail && value > 1) {
-                        onChange(hasValue ? value - 1 : 1);
-                    } else if(!mustOpenDetail && value === 1){
-                        event.preventDefault();
-                        event.stopPropagation();
-                        onChange(-1);
-                    } else if (mustOpenDetail && hasValue) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        onChange(-1);
-                    }
-
-                }} animate={{opacity: hasValue ? 1 : 0}}>
+                <motion.div style={{width: '50%', padding: 5}} whileTap={{scale: 0.9}} onClick={(event) => onRemoveClick()} animate={{opacity: hasValue ? 1 : 0}}>
                     <IoMdRemove fontSize={isSmall ? 14 : 20}/>
                 </motion.div>
 
@@ -73,96 +55,168 @@ export function AddRemoveItemButton(props: (ValueOnChangeProperties<number> & { 
                     width: isSmall ? 30 : 50,
                     left: isSmall ? 27 : 24,
                     top: isSmall ? 5 : 8
-                }} onClick={() => {
-                    if (mustOpenDetail) {
-                        return;
-                    }
-                    if (!hasValue) {
-                        onChange(hasValue ? value + 1 : 1);
-                    }
-                }}>{hasValue ? value : 'ADD'}
+                }} >{hasValue ? value : 'ADD'}
                 </div>
 
                 <motion.div style={{width: '50%', textAlign: 'right', padding: 5}} whileTap={{scale: 0.9}}
-                            onClick={() => {
-                                if (!mustOpenDetail) {
-                                    onChange(hasValue ? value + 1 : 1);
-                                }
-                            }} animate={{opacity: hasValue ? 1 : 0}}>
+                            onClick={() => onAddClick()} animate={{opacity: hasValue ? 1 : 0}}>
                     <IoMdAdd fontSize={isSmall ? 14 : 20}/>
                 </motion.div>
             </div>
         </div>
-        {!isSmall && mustOpenDetail && <div style={{
-            fontSize: 10,
-            color: 'rgba(0,0,0,0.8)',
-            display: 'flex',
-            marginTop: 5,
-            flexDirection: 'column'
-        }}>{'customizable'}</div>}
+
     </div>;
 }
 
-export function openDetailPage<T>(showSlidePanel: <T>(factoryFunction: FactoryFunction<T>) => Promise<T>, product: Product, shoppingCart: Store<CartItem[]>) {
-    return async () => {
-        const result = await showSlidePanel(closePanel => {
-            return <ProductDetail product={product} closePanel={closePanel} total={1}/>
+export function useDetailPage() :(product: Product) => Promise<CartItem|false>{
+    const {showSlidePanel} = useAppContext();
+    return (product: Product) => new Promise(resolve => {
+            (async () => {
+                const result = await showSlidePanel(closePanel => {
+                    return <ProductDetail product={product} closePanel={closePanel} total={1}/>
+                });
+                if (result === false) {
+                    resolve(false);
+                    return;
+                }
+                const cartItem = (result as { product: Product, total: number, totalPrice: number, options: ProductConfigOption[] });
+                resolve(cartItem)
+            })()
         });
-        if (result === false) {
-            return;
-        }
-        const cartItem = (result as { product: Product, total: number, totalPrice: number, options: ProductConfigOption[] });
-        shoppingCart.setState(items => [...items, cartItem]);
-    };
 }
 
-export function AddToCartButton(props: { shoppingCart: Store<CartItem[]>, product: Product, size?: 'small' | 'normal' }) {
-    const {shoppingCart, product, size} = props;
-    const isCustomizable = product.config.length > 0
+function optionsToString(options?: ProductConfigOption[]) {
+    if(options === undefined){
+        return '';
+    }
+    return options.map(o => o.name).sort().join(';')
+}
+
+function CartItemSlidePanel(props:{shoppingCart: Store<CartItem[]>, product: Product, closePanel: (val: any) => void}) {
+    const {shoppingCart,product,closePanel} = props;
+    const cartItems: CartItem[] = useStoreValue(shoppingCart,s => s.filter(s => s.product.id === product.id),[product.id]);
+    const totalCartItems = cartItems.length;
+    useEffect(() => {
+        if(totalCartItems === 0){
+            closePanel(false);
+        }
+    },[totalCartItems,closePanel]);
+    return <SlideDetail closePanel={closePanel} style={{backgroundColor: '#F2F2F2',padding:0}}>
+        <Card >
+            <CardTitle title={product.name}/>
+            {
+                cartItems.map((cart, index) => {
+                    return <CardItemDetail cart={cart} shoppingCart={shoppingCart} key={index}/>
+                })
+            }
+        </Card>
+    </SlideDetail>
+}
+
+async function onAddClickedCallback(options: ProductConfigOption[], product: Product, openDetail: (product: Product) => Promise<CartItem | false>, shoppingCart: Store<CartItem[]>) {
+    if (options.length === 0) {
+        if (product.config.length > 0) {
+            const cartItem = await openDetail(product);
+            if (cartItem === false) {
+                return;
+            }
+            shoppingCart.setState(produce((cartItems: CartItem[]) => {
+                const existingCartItem = cartItems.find(c => c.product.id === cartItem.product.id && optionsToString(c.options) === optionsToString(cartItem.options));
+                if (existingCartItem) {
+                    existingCartItem.total = existingCartItem.total + cartItem.total;
+                    existingCartItem.totalPrice = existingCartItem.totalPrice + cartItem.totalPrice;
+                } else {
+                    cartItems.push(cartItem);
+                }
+            }));
+
+        } else {
+            shoppingCart.setState(produce((cartItems: CartItem[]) => {
+                const existingCartItem = cartItems.find(c => c.product.id === product.id);
+                if (existingCartItem) {
+                    existingCartItem.total = existingCartItem.total + 1;
+                    existingCartItem.totalPrice = existingCartItem.total * product.price;
+                } else {
+                    cartItems.push({
+                        product,
+                        total: 1,
+                        options: [],
+                        totalPrice: product.price
+                    })
+                }
+            }));
+        }
+    } else {
+        shoppingCart.setState(produce((cartItems: CartItem[]) => {
+            const existingCartItem = cartItems.find(c => c.product.id === product.id && optionsToString(c.options) === optionsToString(options));
+            if (existingCartItem) {
+                existingCartItem.totalPrice = (existingCartItem.totalPrice / existingCartItem.total) * (existingCartItem.total + 1);
+                existingCartItem.total = existingCartItem.total + 1;
+            }
+        }));
+    }
+}
+
+export function AddToCartButton(props: { shoppingCart: Store<CartItem[]>, product: Product, size?: 'small' | 'normal', style?: CSSProperties,options:ProductConfigOption[] }) {
+    const {shoppingCart, product, size, style,options} = props;
+    const openDetail = useDetailPage();
     const {showSlidePanel} = useAppContext();
-    return <div onClick={openDetailPage(showSlidePanel, product, shoppingCart)}>
+    return <div onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    }}>
         <StoreValue store={shoppingCart}
-                    selector={s => (s.filter(t => t.product.id === product.id)?.reduce((total, item) => total + item.total, 0) ?? 0)}
-                    property={'value'}>
-            <AddRemoveItemButton size={size} onChange={(value) => {
-
-                if(isCustomizable){
-                    if (value === -1) {
-                        shoppingCart.setState(produce(s => {
-                            const currentIndex = s.findIndex(s => s.product.id === product.id);
-                            if (currentIndex >= 0) {
-                                s.splice(currentIndex, 1)
-                            }
-                        }));
-                    }
-                    return;
-                }
-
-                if (value === -1) {
-                    shoppingCart.setState(produce(s => {
-                        const currentIndex = s.findIndex(s => s.product.id === product.id);
-                        if (currentIndex >= 0) {
-                            s.splice(currentIndex, 1)
+                    selector={s => {
+                        if(options.length > 0){
+                            return (s.filter(t => t.product.id === product.id && optionsToString(options) === optionsToString(t.options))?.reduce((total, item) => total + item.total, 0) ?? 0)
+                        }else{
+                            return (s.filter(t => t.product.id === product.id)?.reduce((total, item) => total + item.total, 0) ?? 0);
                         }
-                    }));
-                    return;
-                }
+                    }}
+                    property={'value'}>
+            <AddRemoveItemButton style={style} size={size}
+                                 onAddClick={async () => {
+                                     await onAddClickedCallback(options, product, openDetail, shoppingCart);
+                                 }}
+                                 onRemoveClick={async () => {
 
-                shoppingCart.setState(produce(s => {
-                    const currentIndex = s.findIndex(s => s.product.id === product.id);
-                    if (currentIndex >= 0) {
-                        s[currentIndex].total = value;
-                        s[currentIndex].totalPrice = value * product.price
-                    } else {
-                        s.push({
-                            product,
-                            total: value,
-                            totalPrice: value * product.price,
-                            options: []
-                        });
-                    }
-                }));
-            }} mustOpenDetail={isCustomizable}/>
+                                     if(options.length === 0){
+                                         const index = shoppingCart.stateRef.current.findIndex(c => c.product.id === product.id);
+                                         if(index < 0){
+                                             await onAddClickedCallback(options, product, openDetail, shoppingCart);
+                                             return;
+                                         }
+                                         if(product.config.length > 0){
+                                             await showSlidePanel(closePanel => {
+                                                 return <CartItemSlidePanel shoppingCart={shoppingCart} product={product} closePanel={closePanel} />;
+                                             })
+                                         }else{
+                                             shoppingCart.setState(produce((cartItems:CartItem[]) => {
+                                                 const index = cartItems.findIndex(c => c.product.id === product.id);
+                                                 const existingCartItem = cartItems[index];
+                                                 invariant(existingCartItem);
+                                                 if(existingCartItem.total > 1){
+                                                     existingCartItem.total = existingCartItem.total - 1;
+                                                     existingCartItem.totalPrice  = existingCartItem.total * product.price;
+                                                 }else{
+                                                     cartItems.splice(index,1);
+                                                 }
+                                             }));
+                                         }
+                                     }else{
+                                         shoppingCart.setState(produce((cartItems:CartItem[]) => {
+                                             const index = cartItems.findIndex(c => c.product.id === product.id && optionsToString(c.options) === optionsToString(options));
+                                             const existingCartItem = cartItems[index];
+                                             if(existingCartItem.total > 1){
+                                                 existingCartItem.totalPrice = (existingCartItem.totalPrice / existingCartItem.total ) *  (existingCartItem.total - 1);
+                                                 existingCartItem.total = existingCartItem.total - 1;
+                                             }else{
+                                                 cartItems.splice(index,1);
+                                             }
+                                         }));
+                                     }
+                                 }}
+            />
         </StoreValue>
     </div>
 }

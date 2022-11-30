@@ -2,7 +2,7 @@ import {CSSProperties, ReactElement, useRef} from "react";
 import {AppContextProvider} from "./useAppContext";
 import {AnimatePresence, motion} from "framer-motion";
 import {RouterPageContainer} from "./RouterPageContainer";
-import {useStore, Store, useStoreValue} from "./store/useStore";
+import {Store, useStore, useStoreValue} from "./store/useStore";
 import {AppState} from "./AppState";
 import {GuestProfile} from "../model/Profile";
 import {PickerProvider, ShowPickerFunction} from "./page-components/picker/PickerProvider";

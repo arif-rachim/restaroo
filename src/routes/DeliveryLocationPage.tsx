@@ -19,7 +19,7 @@ import {getLocationAddress, useCurrentPosition} from "../components/page-compone
 import {Button} from "../components/page-components/Button";
 import {Input} from "../components/page-components/Input";
 import {MdCancel} from "react-icons/md";
-import {useStore, StoreValue} from "../components/store/useStore";
+import {StoreValue, useStore} from "../components/store/useStore";
 import produce from "immer";
 import {isEmptyText} from "../components/page-components/utils/isEmptyText";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";

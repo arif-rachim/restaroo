@@ -3,27 +3,21 @@ import {RouteProps} from "../components/useRoute";
 import {Card, CardTitle} from "../components/page-components/Card";
 import {menus, products} from "../model/data";
 import invariant from "tiny-invariant";
-import {IoCartOutline, IoChevronDown, IoChevronForward, IoClose, IoDisc, IoHeartOutline} from "react-icons/io5";
-import {ButtonTheme, red, white} from "./Theme";
-import {MdCheckBox, MdCheckBoxOutlineBlank, MdPlace} from "react-icons/md";
+import {IoChevronDown, IoChevronForward, IoDisc, IoHeartOutline} from "react-icons/io5";
+import {red, white} from "./Theme";
+import {MdPlace} from "react-icons/md";
 import {motion} from "framer-motion";
 import {CgProfile} from "react-icons/cg";
 import {useAppContext} from "../components/useAppContext";
 import {useNavigate} from "../components/useNavigate";
-import {useCallback, useEffect, useId, useRef} from "react";
-import {Store, StoreValue, useStore, useStoreValue} from "../components/store/useStore";
+import {useEffect, useId, useRef} from "react";
+import {StoreValue, useStore} from "../components/store/useStore";
 import {useCurrentPosition} from "../components/page-components/utils/useCurrentPosition";
 import {Address} from "../model/Address";
 import {EMPTY_ADDRESS} from "./DeliveryLocationPage";
 import {SkeletonBox} from "../components/page-components/SkeletonBox";
-import {Product, ProductConfig, ProductConfigOption} from "../model/Product";
-import {IoMdAdd, IoMdRemove} from "react-icons/io";
-import {ValueOnChangeProperties} from "../components/page-components/picker/createPicker";
-import produce from "immer";
-import {Image} from "../components/page-components/Image";
-import {SlideDetail} from "./SlideDetail";
-import {Button} from "../components/page-components/Button";
-import {AddRemoveItemButton, AddToCartButton, openDetailPage} from "../components/page-components/AddToCartButton";
+import {Product, ProductConfigOption} from "../model/Product";
+import {AddToCartButton, useDetailPage} from "../components/page-components/AddToCartButton";
 import {Value} from "../components/page-components/Value";
 
 function AddressHeader(props: { address?: Address }) {
@@ -73,7 +67,7 @@ const cartButtonPosition = {
 
 export function DeliveryPage(props: RouteProps) {
 
-    const {appDimension, showSlidePanel, showFooter, showHeader} = useAppContext();
+    const {appDimension, showFooter} = useAppContext();
     const navigate = useNavigate();
     const componentId = useId();
     const titleRef = useRef<{ title: string, offsetY: number }[]>([]);
@@ -91,7 +85,7 @@ export function DeliveryPage(props: RouteProps) {
         })();
         // eslint-disable-next-line
     }, []);
-
+    const openDetailPage = useDetailPage();
     return <Page style={{paddingTop: 110, paddingBottom: 110, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
         const target = event.target;
         const scrollTop = (target as HTMLDivElement).scrollTop;
@@ -161,7 +155,13 @@ export function DeliveryPage(props: RouteProps) {
                         padding: 10,
                         marginBottom: 20,
                         borderBottom: `1px dashed rgba(0,0,0,${isLastIndex ? '0' : '0.1'})`
-                    }} onClick={openDetailPage(showSlidePanel, product, shoppingCart)}>
+                    }} onClick={async () => {
+                        const cartItem = await openDetailPage(product);
+                        if(cartItem === false){
+                            return;
+                        }
+                        shoppingCart.setState(old => [...old,cartItem]);
+                    }}>
                         <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{fontSize: 20, marginBottom: 5}}><IoDisc/></div>
                             <div style={{fontSize: 16, fontWeight: 'bold', marginBottom: 15}}>{product.name}</div>
@@ -192,7 +192,7 @@ export function DeliveryPage(props: RouteProps) {
                                          backgroundColor: 'rgba(0,0,0,0.1)'
                                      }} alt={'product'}/>
                             </div>
-                            <AddToCartButton shoppingCart={shoppingCart} product={product} />
+                            <AddToCartButton shoppingCart={shoppingCart} options={[]} product={product} style={{marginTop:-15}} />
                         </div>
 
                     </div>

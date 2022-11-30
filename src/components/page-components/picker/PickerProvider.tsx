@@ -1,6 +1,6 @@
 import {useAppContext} from "../../useAppContext";
 import {DatePicker} from "./DatePicker";
-import {ForwardedRef, forwardRef, PropsWithChildren, useImperativeHandle, useMemo,memo} from "react";
+import {ForwardedRef, forwardRef, memo, PropsWithChildren, useImperativeHandle, useMemo} from "react";
 import {StoreValue, useStore, useStoreValue} from "../../store/useStore";
 import {motion} from "framer-motion";
 import {TimePicker} from "./TimePicker";
@@ -9,7 +9,6 @@ import {createPicker, PickerProperties, ValueOnChangeProperties} from "./createP
 import {Country, countryList} from "./dataprovider/CountryList";
 import {Gender, genderList} from "./dataprovider/GenderList";
 import {IoMdCloseCircle} from "react-icons/io";
-
 
 
 export type ShowPickerFunction = (control: PickerOptions, value: any) => Promise<any>;

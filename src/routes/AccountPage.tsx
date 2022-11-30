@@ -1,8 +1,6 @@
 import {Page} from "./Page";
 import {Header} from "../components/page-components/Header";
-import {useFocusListener} from "../components/RouterPageContainer";
 import {RouteProps} from "../components/useRoute";
-import {adjustThemeColor} from "../components/page-components/adjustThemeColor";
 import {Card, CardRow, CardTitle} from "../components/page-components/Card";
 import {BsCreditCard2Front} from "react-icons/bs";
 import {

@@ -14,7 +14,7 @@ import {Input} from "../components/page-components/Input";
 import {MdCancel} from "react-icons/md";
 import {useUserProfile} from "../model/useUserProfile";
 import {Button} from "../components/page-components/Button";
-import {IoCheckmark, IoSaveOutline} from "react-icons/io5";
+import {IoSaveOutline} from "react-icons/io5";
 import {isEmptyText} from "../components/page-components/utils/isEmptyText";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
 
