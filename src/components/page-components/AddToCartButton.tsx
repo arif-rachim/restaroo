@@ -7,7 +7,7 @@ import {Store, StoreValue, useStore, useStoreValue} from "../store/useStore";
 import {Product, ProductConfig, ProductConfigOption} from "../../model/Product";
 import produce from "immer";
 import {CartItem} from "../../routes/DeliveryPage";
-import {useAppContext} from "../useAppContext";
+import {FactoryFunction, useAppContext} from "../useAppContext";
 import {useCallback} from "react";
 import {SlideDetail} from "../../routes/SlideDetail";
 import {Card, CardTitle} from "./Card";
@@ -17,17 +17,16 @@ import {Button} from "./Button";
 import {MdCheckBox, MdCheckBoxOutlineBlank} from "react-icons/md";
 import {Value} from "./Value";
 
-export function AddRemoveItemButton(props: (ValueOnChangeProperties<number> & { mustOpenDetail?: boolean })) {
-    const {value, onChange, mustOpenDetail} = props;
+export function AddRemoveItemButton(props: (ValueOnChangeProperties<number> & { mustOpenDetail?: boolean, size?: 'small' | 'normal' })) {
+    const {value, onChange, mustOpenDetail, size} = props;
     invariant(onChange);
     const hasValue = value > 0;
+    const isSmall = size === 'small';
     return <div style={{
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-
-        marginTop: -20,
         zIndex: 0,
         boxSizing: 'border-box'
     }} onClick={(event) => {
@@ -39,18 +38,22 @@ export function AddRemoveItemButton(props: (ValueOnChangeProperties<number> & { 
         <div style={{
             display: 'flex',
             flexDirection: 'row',
-            width: 100,
-            height: 35,
-            backgroundColor: red,
-            color: white,
-            borderRadius: 10,
+            width: isSmall ? 80 : 100,
+            backgroundColor: hasValue ?  red : white,
+            color: hasValue ?  white : red,
+            borderRadius: isSmall ? 5 : 10,
+            border: `1px solid ${red}`,
             alignItems: 'center'
         }}>
             <div style={{display: 'flex', width: '100%', height: '100%', position: "relative"}}>
 
                 <motion.div style={{width: '50%', padding: 5}} whileTap={{scale: 0.9}} onClick={(event) => {
-                    if (!mustOpenDetail) {
+                    if (!mustOpenDetail && value > 1) {
                         onChange(hasValue ? value - 1 : 1);
+                    } else if(!mustOpenDetail && value === 1){
+                        event.preventDefault();
+                        event.stopPropagation();
+                        onChange(-1);
                     } else if (mustOpenDetail && hasValue) {
                         event.preventDefault();
                         event.stopPropagation();
@@ -58,7 +61,7 @@ export function AddRemoveItemButton(props: (ValueOnChangeProperties<number> & { 
                     }
 
                 }} animate={{opacity: hasValue ? 1 : 0}}>
-                    <IoMdRemove fontSize={20}/>
+                    <IoMdRemove fontSize={isSmall ? 14 : 20}/>
                 </motion.div>
 
                 <div style={{
@@ -67,11 +70,10 @@ export function AddRemoveItemButton(props: (ValueOnChangeProperties<number> & { 
                     lineHeight: 1,
                     textAlign: 'center',
                     fontWeight: 'bold',
-                    width: 50,
-                    left: 24,
-                    top: 8
+                    width: isSmall ? 30 : 50,
+                    left: isSmall ? 27 : 24,
+                    top: isSmall ? 5 : 8
                 }} onClick={() => {
-
                     if (mustOpenDetail) {
                         return;
                     }
@@ -86,23 +88,23 @@ export function AddRemoveItemButton(props: (ValueOnChangeProperties<number> & { 
                                 if (!mustOpenDetail) {
                                     onChange(hasValue ? value + 1 : 1);
                                 }
-
                             }} animate={{opacity: hasValue ? 1 : 0}}>
-                    <IoMdAdd fontSize={20}/>
+                    <IoMdAdd fontSize={isSmall ? 14 : 20}/>
                 </motion.div>
-
             </div>
         </div>
-        {mustOpenDetail && <div style={{fontSize: 10, color: 'rgba(0,0,0,0.8)', marginTop: 5}}>{'customizable'}</div>}
+        {!isSmall && mustOpenDetail && <div style={{
+            fontSize: 10,
+            color: 'rgba(0,0,0,0.8)',
+            display: 'flex',
+            marginTop: 5,
+            flexDirection: 'column'
+        }}>{'customizable'}</div>}
     </div>;
 }
 
-export function AddToCartButton(props: { shoppingCart: Store<CartItem[]>, product: Product }) {
-    const {shoppingCart, product} = props;
-    const isCustomizable = product.config.length > 0
-    const {showSlidePanel} = useAppContext();
-
-    return <div onClick={async () => {
+export function openDetailPage<T>(showSlidePanel: <T>(factoryFunction: FactoryFunction<T>) => Promise<T>, product: Product, shoppingCart: Store<CartItem[]>) {
+    return async () => {
         const result = await showSlidePanel(closePanel => {
             return <ProductDetail product={product} closePanel={closePanel} total={1}/>
         });
@@ -111,12 +113,31 @@ export function AddToCartButton(props: { shoppingCart: Store<CartItem[]>, produc
         }
         const cartItem = (result as { product: Product, total: number, totalPrice: number, options: ProductConfigOption[] });
         shoppingCart.setState(items => [...items, cartItem]);
-    }}><StoreValue store={shoppingCart}
-                   selector={s => (s.filter(t => t.product.id === product.id)?.reduce((total, item) => total + item.total, 0) ?? 0)}
-                   property={'value'}>
+    };
+}
 
-        <AddRemoveItemButton onChange={(value) => {
-            if (isCustomizable) {
+export function AddToCartButton(props: { shoppingCart: Store<CartItem[]>, product: Product, size?: 'small' | 'normal' }) {
+    const {shoppingCart, product, size} = props;
+    const isCustomizable = product.config.length > 0
+    const {showSlidePanel} = useAppContext();
+    return <div onClick={openDetailPage(showSlidePanel, product, shoppingCart)}>
+        <StoreValue store={shoppingCart}
+                    selector={s => (s.filter(t => t.product.id === product.id)?.reduce((total, item) => total + item.total, 0) ?? 0)}
+                    property={'value'}>
+            <AddRemoveItemButton size={size} onChange={(value) => {
+
+                if(isCustomizable){
+                    if (value === -1) {
+                        shoppingCart.setState(produce(s => {
+                            const currentIndex = s.findIndex(s => s.product.id === product.id);
+                            if (currentIndex >= 0) {
+                                s.splice(currentIndex, 1)
+                            }
+                        }));
+                    }
+                    return;
+                }
+
                 if (value === -1) {
                     shoppingCart.setState(produce(s => {
                         const currentIndex = s.findIndex(s => s.product.id === product.id);
@@ -124,25 +145,25 @@ export function AddToCartButton(props: { shoppingCart: Store<CartItem[]>, produc
                             s.splice(currentIndex, 1)
                         }
                     }));
+                    return;
                 }
-                return;
-            }
-            shoppingCart.setState(produce(s => {
-                const currentIndex = s.findIndex(s => s.product.id === product.id);
-                if (currentIndex >= 0) {
-                    s[currentIndex].total = value;
-                    s[currentIndex].totalPrice = value * product.price
-                } else {
-                    s.push({
-                        product,
-                        total: value,
-                        totalPrice: value * product.price,
-                        options: []
-                    });
-                }
-            }));
-        }} mustOpenDetail={isCustomizable}/>
-    </StoreValue>
+
+                shoppingCart.setState(produce(s => {
+                    const currentIndex = s.findIndex(s => s.product.id === product.id);
+                    if (currentIndex >= 0) {
+                        s[currentIndex].total = value;
+                        s[currentIndex].totalPrice = value * product.price
+                    } else {
+                        s.push({
+                            product,
+                            total: value,
+                            totalPrice: value * product.price,
+                            options: []
+                        });
+                    }
+                }));
+            }} mustOpenDetail={isCustomizable}/>
+        </StoreValue>
     </div>
 }
 

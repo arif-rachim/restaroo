@@ -23,7 +23,7 @@ import produce from "immer";
 import {Image} from "../components/page-components/Image";
 import {SlideDetail} from "./SlideDetail";
 import {Button} from "../components/page-components/Button";
-import {AddRemoveItemButton, AddToCartButton} from "../components/page-components/AddToCartButton";
+import {AddRemoveItemButton, AddToCartButton, openDetailPage} from "../components/page-components/AddToCartButton";
 import {Value} from "../components/page-components/Value";
 
 function AddressHeader(props: { address?: Address }) {
@@ -161,7 +161,7 @@ export function DeliveryPage(props: RouteProps) {
                         padding: 10,
                         marginBottom: 20,
                         borderBottom: `1px dashed rgba(0,0,0,${isLastIndex ? '0' : '0.1'})`
-                    }} >
+                    }} onClick={openDetailPage(showSlidePanel, product, shoppingCart)}>
                         <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{fontSize: 20, marginBottom: 5}}><IoDisc/></div>
                             <div style={{fontSize: 16, fontWeight: 'bold', marginBottom: 15}}>{product.name}</div>

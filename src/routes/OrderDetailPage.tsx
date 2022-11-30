@@ -26,7 +26,7 @@ export default function OrderDetailPage(props:RouteProps) {
                 <div style={{display:'flex',flexDirection:'column'}}>
                 {
                     cartItems.map((cart, index) => {
-                        return <div key={index} style={{display: 'flex',padding:'5px 10px'}}>
+                        return <div key={index} style={{display: 'flex',padding:'5px 10px',marginBottom:15,justifyContent:'center'}}>
                             <div>
                                 <IoDisc style={{fontSize:16}}/>
                             </div>
@@ -35,10 +35,10 @@ export default function OrderDetailPage(props:RouteProps) {
                                 <div style={{fontWeight:'bold'}}>{cart.product.currency} {cart.product.price}</div>
                             </div>
                             <div style={{display:'flex',flexDirection:'column'}}>
-                                <div>{cart.total}
-                                    <AddToCartButton shoppingCart={shoppingCart} product={cart.product} />
+                                <div >
+                                    <AddToCartButton shoppingCart={shoppingCart} product={cart.product} size={'small'} />
                                 </div>
-                                <div style={{fontWeight:'bold'}}>{cart.product.currency} {cart.totalPrice}</div>
+                                <div style={{fontWeight:'bold',textAlign:'right',fontSize:14,marginTop:5}}>{cart.product.currency} {cart.totalPrice}</div>
                             </div>
                         </div>
                     })
