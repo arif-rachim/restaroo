@@ -54,7 +54,12 @@ export function AddRemoveItemButton(props: ({ size?: 'small' | 'normal', style?:
                     fontWeight: 'bold',
                     width: isSmall ? 30 : 50,
                     left: isSmall ? 27 : 24,
-                    top: isSmall ? 5 : 8
+                    top: isSmall ? 5 : 8,
+
+                }} onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onAddClick();
                 }} >{hasValue ? value : 'ADD'}
                 </div>
 
@@ -362,7 +367,7 @@ function ProductConfigItem(props: { product: Product, option: ProductConfigOptio
                        whileTap={{scale: 0.95}}
                        onTap={() => {
                            store.setState(produce((s: { total: number, options: ProductConfigOption[] }) => {
-                               const {required, maximumSelection, options} = config;
+                               const {required, maximumSelection} = config;
                                const index = s.options.findIndex(o => o.name === option.name);
                                const alreadySelected = index >= 0;
                                const toBeSelected = !alreadySelected;

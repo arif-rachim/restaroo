@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/RestarooIcon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/RestarooIcon.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/page-components/AddToCartButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/AddToCartButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/picker/PickerProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/picker/PickerProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/AccountPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AccountPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/Card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Card.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/store/useStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/store/useStore.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,19 +55,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/arifrachim/WebstormProjects/restaroo/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public" />
@@ -99,7 +103,12 @@
       <workItem from="1669395399050" duration="4091000" />
       <workItem from="1669446009430" duration="15246000" />
       <workItem from="1669549129035" duration="6185000" />
-      <workItem from="1669738888284" duration="17189000" />
+      <workItem from="1669738888284" duration="17519000" />
+      <workItem from="1669836606446" duration="348000" />
+      <workItem from="1669837134621" duration="337000" />
+      <workItem from="1669837485979" duration="113000" />
+      <workItem from="1669866952938" duration="6723000" />
+      <workItem from="1669893816847" duration="570000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>

@@ -7,7 +7,7 @@ import {
     useEffect,
     useMemo,
     useRef,
-    useState
+    useState,
 } from "react";
 import {useAfterInit} from "../page-components/utils/useAfterInit";
 
@@ -177,11 +177,12 @@ export function StoreValue<T, S>(props: PropsWithChildren<StoreValueInjectorProp
             childrenProps[props] = value[index];
         })
     } else {
+
         childrenProps[property] = value;
     }
     return cloneElement((children as any), childrenProps)
-
 }
+
 
 const isMatch = (a: any, b: any) => {
     if (a === b) {

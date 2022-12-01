@@ -8,14 +8,16 @@ type Element = string | number | boolean | ReactFragment | JSX.Element | null | 
 export function Header(props: PropsWithChildren<{ title: Element, size?: 'small' | 'big' }>) {
     let {title, size} = props;
     size = size ?? 'small';
-    return <div style={{display: 'flex', flexDirection: 'column', padding: '5px 5px'}}>
+    return <div style={{display: 'flex', flexDirection: 'column', padding: '0px 0px'}}>
         <div style={{
             display: 'flex',
             alignItems: 'center'
         }}>
-            <motion.div onTap={() => window.history.back()}
+            <motion.div onClick={() => {
+                window.history.back()
+            }}
                         whileHover={{scale: 1.05}}
-                        whileTap={{scale: 0.95}}>
+                        whileTap={{scale: 0.95}} style={{padding:5}}>
                 <IoChevronBackOutline style={{fontSize: 25}}/>
             </motion.div>
             {size === 'small' &&

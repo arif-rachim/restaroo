@@ -21,7 +21,7 @@ export const Card = forwardRef(function Card(props: PropsWithChildren<{ style?: 
 
 export function CardRow(props: { icon: IconType, title: string, onTap?: () => void }) {
     const {icon: Icon, title, onTap} = props;
-    return <motion.div style={{display: 'flex', alignItems: 'center', margin: '10px 0px'}} whileTap={{scale: 0.95}}
+    return <motion.div style={{display: 'flex', alignItems: 'center', margin: '0px 0px 10px 0px'}} whileTap={{scale: 0.95}}
                        onTap={onTap}>
         <div style={{fontSize: 30, marginLeft: 20}}>
             <Icon/>

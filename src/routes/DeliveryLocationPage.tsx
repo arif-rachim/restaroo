@@ -324,9 +324,9 @@ export function DeliveryLocationPage(props: RouteProps) {
                         <div>{addressName}</div>
                     </SkeletonBox>
                 </div>
-                <div>
+                <motion.div style={{color:red}} whileTap={{scale:0.95}}>
                     Change
-                </div>
+                </motion.div>
             </div>
             <Button title={'Enter complete address'} onTap={async () => {
                 let completeAddress = await showSlidePanel(closePanel => {
