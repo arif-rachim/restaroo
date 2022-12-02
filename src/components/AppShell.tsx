@@ -19,7 +19,8 @@ const shellStyle: CSSProperties = {
 }
 
 const modalStyle: CSSProperties = {
-    background: 'rgba(0,0,0,0.3)',
+    backdropFilter : 'blur(5px) contrast(60%)',
+    WebkitBackdropFilter : 'blur(5px) contrast(60%)',
     width: '100%',
     height: '100%',
     position: 'fixed',
@@ -31,7 +32,8 @@ const modalStyle: CSSProperties = {
 }
 
 const slidePanelStyle: CSSProperties = {
-    background: 'rgba(0,0,0,0.3)',
+    backdropFilter : 'blur(5px) contrast(60%)',
+    WebkitBackdropFilter : 'blur(5px) contrast(60%)',
     width: '100%',
     height: '100%',
     position: 'fixed',

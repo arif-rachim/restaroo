@@ -57,9 +57,9 @@ export interface CartItem {
 let previousScrollValue = 0;
 
 const cartButtonPosition = {
-    hidden : {bottom:-100},
-    low : {bottom:0},
-    high : {bottom:63}
+    hidden : {bottom:-150},
+    low : {bottom:-50},
+    high : {bottom:13}
 }
 
 
@@ -283,7 +283,10 @@ export function DeliveryPage(props: RouteProps) {
                 flexDirection: 'column',
                 position: 'absolute',
                 width: appDimension.width,
-                background: white
+                backdropFilter : 'blur(10px)',
+                WebkitBackdropFilter : 'blur(10px)',
+                background : 'rgba(255,255,255,0.5)',
+                paddingBottom:50,
             }} initial={{bottom: -100}} transition={{bounce:0}}>
                 <motion.div style={{
                     display: 'flex',

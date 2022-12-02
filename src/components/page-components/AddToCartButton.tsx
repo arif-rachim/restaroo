@@ -245,7 +245,7 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
         }).filter(m => m);
     }, [product.config, store.stateRef]);
     return <SlideDetail closePanel={closePanel} style={{backgroundColor: '#F2F2F2', padding: 0}}>
-        <div style={{flexGrow: 1, overflow: 'auto', display: 'flex', flexDirection: 'column'}}>
+        <div style={{flexGrow: 1, overflow: 'auto', display: 'flex', flexDirection: 'column',paddingBottom:70}}>
             <Card style={{padding: 0, margin: 10}}>
                 <div style={{marginBottom: 10}}>
                     <Image src={process.env.PUBLIC_URL + product.imageAddress} height={appDimension.width - 20}
@@ -263,7 +263,12 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
                 return <ProductConfigCard config={config} key={config.name} store={store} product={product}/>
             })}
         </div>
-        <div style={{display: 'flex', padding: 10, background: white, boxShadow: '0 -7px 8px -5px rgba(0,0,0,0.2)'}}>
+        <div style={{position:'absolute',boxSizing:'border-box',bottom:0,width:appDimension.width,display: 'flex', padding: 10, background: 'rgba(255,255,255,0.3)',
+            boxShadow: '0 0 8px 3px rgba(0,0,0,0.1)',
+            backdropFilter : 'blur(10px)',
+            WebkitBackdropFilter:'blur(10px)'}}
+
+        >
             <motion.div style={{
                 display: 'flex',
                 border: `1px solid ${red}`,

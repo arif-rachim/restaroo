@@ -11,12 +11,12 @@ import {ValueOnChangeProperties} from "../components/page-components/picker/crea
 import {blue, ButtonTheme, grey, red, white} from "./Theme";
 import produce from "immer";
 import {Input} from "../components/page-components/Input";
-import {MdCancel} from "react-icons/md";
 import {useUserProfile} from "../model/useUserProfile";
 import {Button} from "../components/page-components/Button";
 import {IoSaveOutline} from "react-icons/io5";
 import {isEmptyText} from "../components/page-components/utils/isEmptyText";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
+import {SlideDetail} from "./SlideDetail";
 
 
 const THIRTY_MINUTES = 1000 * 60 * 30;
@@ -141,7 +141,7 @@ function PersonalDetailForm(props: {
     closePanel: (result: any) => void,
     firstName: string, lastName: string, email: string, phoneNo: string
 }) {
-    const {firstName, lastName, phoneNo, email} = props;
+    const {firstName, lastName, phoneNo, email,closePanel} = props;
     const store = useStore({
         firstName,
         lastName,
@@ -158,21 +158,7 @@ function PersonalDetailForm(props: {
         }));
         return isEmptyObject(store.stateRef.current.errors);
     }
-    return <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        borderTopRightRadius: 15,
-        borderTopLeftRadius: 15,
-        padding: 10
-    }}>
-        <div style={{display: 'flex', justifyContent: 'center', marginTop: -60, paddingBottom: 20}}>
-            <motion.div onTap={() => {
-                props.closePanel(false)
-            }} whileTap={{scale: 0.95}}>
-                <MdCancel fontSize={40} style={{color: "white"}}/>
-            </motion.div>
-        </div>
+    return <SlideDetail closePanel={closePanel} >
         <StoreValue store={store} selector={[s => s.firstName, s => s.errors.firstName]} property={['value', 'error']}>
             <Input title={'First name'} placeholder={'enter your first name'}
                    onChange={(e) => {
@@ -180,7 +166,7 @@ function PersonalDetailForm(props: {
                            s.firstName = e.target.value;
                            s.errors.firstName = '';
                        }));
-                   }}/>
+                   }} style={{inputStyle:{fontSize:14},titleStyle:{fontSize:13}}}/>
         </StoreValue>
         <StoreValue store={store} selector={[s => s.lastName, s => s.errors.lastName]} property={['value', 'error']}>
             <Input title={'Last name'} placeholder={'enter your first name'}
@@ -189,7 +175,7 @@ function PersonalDetailForm(props: {
                            s.lastName = e.target.value;
                            s.errors.lastName = '';
                        }));
-                   }}/>
+                   }} style={{inputStyle:{fontSize:14},titleStyle:{fontSize:13}}}/>
         </StoreValue>
         <StoreValue store={store} selector={[s => s.email, s => s.errors.email]} property={['value', 'error']}>
             <Input title={'Email'} placeholder={'enter your email'} onChange={(e) => {
@@ -197,7 +183,7 @@ function PersonalDetailForm(props: {
                     s.email = e.target.value;
                     s.errors.email = '';
                 }));
-            }}/>
+            }} style={{inputStyle:{fontSize:14},titleStyle:{fontSize:13}}}/>
         </StoreValue>
         <StoreValue store={store} selector={[s => s.phoneNo, s => s.errors.phoneNo]} property={['value', 'error']}>
             <Input title={'Phone'} placeholder={'enter your phone number'} onChange={(e) => {
@@ -205,7 +191,7 @@ function PersonalDetailForm(props: {
                     s.phoneNo = e.target.value;
                     s.errors.phoneNo = '';
                 }));
-            }}/>
+            }} style={{inputStyle:{fontSize:14},titleStyle:{fontSize:13}}}/>
         </StoreValue>
         <Button onTap={() => {
             if (validate()) {
@@ -218,7 +204,7 @@ function PersonalDetailForm(props: {
                 props.closePanel(data);
             }
         }} title={'Save Changes'} icon={IoSaveOutline} theme={ButtonTheme.danger}/>
-    </div>;
+    </SlideDetail> ;
 }
 
 function Switch(props:ValueOnChangeProperties<boolean>) {

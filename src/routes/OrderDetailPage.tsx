@@ -5,12 +5,14 @@ import {CartItem} from "./DeliveryPage";
 import {Card, CardRow, CardTitle} from "../components/page-components/Card";
 import {useFocusListener} from "../components/RouterPageContainer";
 import {RouteProps} from "../components/useRoute";
-import {IoAddOutline, IoDisc, IoDocumentOutline} from "react-icons/io5";
+import {IoAddOutline, IoCaretForward, IoCaretUp, IoDisc, IoDocumentOutline, IoLocateOutline} from "react-icons/io5";
 import {AddToCartButton} from "../components/page-components/AddToCartButton";
 import {useNavigate} from "../components/useNavigate";
 import {RxLapTimer} from "react-icons/rx";
-import {CiDiscount1} from "react-icons/ci";
+import {TbDiscount} from "react-icons/tb";
 import {useAppContext} from "../components/useAppContext";
+import {RiMastercardLine} from "react-icons/ri";
+import {red, white} from "./Theme";
 
 export function calculateCartItemPrice(cart: CartItem): number {
     const total = cart.product.price + cart.options.reduce((total, configOption) => {
@@ -59,7 +61,14 @@ export default function OrderDetailPage(props: RouteProps) {
     const {appDimension} = useAppContext();
     return <Page style={{backgroundColor: '#F2F2F2'}}>
         <Header title={'Order Details'}/>
-        <div style={{display: 'flex', flexDirection: 'column', padding: 10, height: '100%', overflow: 'auto',paddingBottom:100}}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 10,
+            height: '100%',
+            overflow: 'auto',
+            paddingBottom: 150
+        }}>
             <Card style={{marginBottom: 10}}>
                 <div style={{display: 'flex', flexDirection: 'row', padding: '5px 10px', fontSize: 15}}>
                     <div><RxLapTimer/></div>
@@ -84,27 +93,27 @@ export default function OrderDetailPage(props: RouteProps) {
 
             <Card style={{marginBottom: 10}}>
                 <CardTitle title={'Discount'}/>
-                <CardRow title={'Use Coupons'} icon={CiDiscount1}></CardRow>
+                <CardRow title={'Use Coupons'} icon={TbDiscount}></CardRow>
             </Card>
             <Card style={{marginBottom: 10}}>
                 <CardTitle title={'Bill Summary'}/>
-                <div style={{display: 'flex', flexDirection: 'column',padding:'0px 10px'}}>
-                    <div style={{display: 'flex',marginBottom:5}}>
+                <div style={{display: 'flex', flexDirection: 'column', padding: '0px 10px'}}>
+                    <div style={{display: 'flex', marginBottom: 5}}>
                         <div style={{flexGrow: 1}}>Item total</div>
                         <div>AED 11.50</div>
                     </div>
-                    <div style={{display: 'flex',marginBottom:5}}>
+                    <div style={{display: 'flex', marginBottom: 5}}>
                         <div style={{flexGrow: 1}}>Delivery charge</div>
                         <div>AED 6</div>
                     </div>
-                    <div style={{display: 'flex',marginBottom:5}}>
+                    <div style={{display: 'flex', marginBottom: 5}}>
                         <div style={{flexGrow: 1}}>Tip for delivery partner</div>
                         <div>AED 3</div>
                     </div>
                     <div style={{
                         display: 'flex',
                         fontSize: 20,
-                        paddingTop:10,
+                        paddingTop: 10,
                         fontWeight: 'bold',
                         borderTop: '1px solid rgba(0,0,0,0.1)'
                     }}>
@@ -114,8 +123,54 @@ export default function OrderDetailPage(props: RouteProps) {
                 </div>
             </Card>
         </div>
-        <div style={{position:'absolute',bottom:0,width:appDimension.width,backgroundColor:'white'}}>
-
+        <div style={{
+            position: 'absolute',
+            bottom: 0,
+            width: '100%',
+            background : 'rgba(255,255,255,0.8)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter : 'blur(10px)',
+            boxShadow: '0 0 5px 3px rgba(0,0,0,0.05)',
+            display: 'flex',
+            flexDirection: 'column',
+            borderTopRightRadius: 10,
+            borderTopLeftRadius: 10
+        }}>
+            <div style={{display: 'flex', padding: 10, marginBottom: 10, borderBottom: '1px solid rgba(0,0,0,0.1)'}}>
+                <div style={{marginRight: 5}}><IoLocateOutline/></div>
+                <div style={{display: 'flex', flexGrow: 1, overflow: 'auto', flexDirection: 'column', marginRight: 5}}>
+                    <div style={{marginBottom: 5}}>Delivery at Home</div>
+                    <div style={{
+                        textOverflow: 'ellipsis',
+                        width: '100%',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap'
+                    }}>Marina Diamond 5, Flat 806, Dubai Marina,Flat Marina dubai dubai dubai
+                    </div>
+                </div>
+                <div>Change</div>
+            </div>
+            <div style={{display: 'flex', padding: 10}}>
+                <div style={{display: 'flex', flexDirection: 'column',flexGrow:1}}>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <div style={{marginRight: 5}}><RiMastercardLine style={{fontSize: 16}}/></div>
+                        <div style={{marginRight: 5,marginBottom:3}}>Pay Using</div>
+                        <div><IoCaretUp/></div>
+                    </div>
+                    <div style={{fontWeight: 'bold'}}>Personal</div>
+                    <div>{'****** 8875'}</div>
+                </div>
+                <div style={{display: 'flex',alignItems:'center',flexGrow:1,background:red,color:white,padding:10,borderRadius:10,marginLeft:10,maxWidth:200}}>
+                    <div style={{display: 'flex', flexDirection: 'column',flexGrow:'1'}}>
+                        <div style={{fontWeight: 'bold'}}>AED 20.50</div>
+                        <div>Total</div>
+                    </div>
+                    <div style={{display:'flex',alignItems:'flex-end'}}>
+                        <div style={{fontSize:16}}>Place Order</div>
+                        <div style={{marginLeft:5}} ><IoCaretForward style={{width:10,height:10}}/></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </Page>
 }

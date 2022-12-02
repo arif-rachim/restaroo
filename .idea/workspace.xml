@@ -10,14 +10,13 @@
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/page-components/AddToCartButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/AddToCartButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/store/useStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/store/useStore.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/FooterNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/FooterNavigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/SlideDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/SlideDetail.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,6 +108,7 @@
       <workItem from="1669837485979" duration="113000" />
       <workItem from="1669866952938" duration="6723000" />
       <workItem from="1669893816847" duration="570000" />
+      <workItem from="1669909365927" duration="6846000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>

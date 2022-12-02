@@ -1,7 +1,7 @@
 import {motion} from "framer-motion";
-import {MdCancel} from "react-icons/md";
 import {CSSProperties, PropsWithChildren} from "react";
 import {useAppContext} from "../components/useAppContext";
+import {IoClose} from "react-icons/io5";
 
 export function SlideDetail(props: PropsWithChildren<{ closePanel: (result: any) => void,style?:CSSProperties }>) {
     const {appDimension} = useAppContext();
@@ -16,10 +16,10 @@ export function SlideDetail(props: PropsWithChildren<{ closePanel: (result: any)
         ...props.style
     }}>
         <div style={{display: 'flex', justifyContent: 'center', marginTop: -60, paddingBottom: 20}}>
-            <motion.div onTap={() => {
+            <motion.div onClick={() => {
                 props.closePanel(false)
-            }} whileTap={{scale: 0.95}}>
-                <MdCancel fontSize={40} style={{color: "white"}}/>
+            }} whileTap={{scale: 0.95}} style={{background:'black',borderRadius:20,width:40,height:40}}>
+                <IoClose fontSize={40} style={{color: "white"}}/>
             </motion.div>
         </div>
         {props.children}
