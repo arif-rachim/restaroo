@@ -1,18 +1,32 @@
 import {Page} from "./Page";
 import {Header} from "../components/page-components/Header";
-import {Store, useStore, useStoreValue} from "../components/store/useStore";
+import {StoreValue, StoreValueRenderer, useStore} from "../components/store/useStore";
 import {CartItem} from "./DeliveryPage";
 import {Card, CardRow, CardTitle} from "../components/page-components/Card";
-import {useFocusListener} from "../components/RouterPageContainer";
 import {RouteProps} from "../components/useRoute";
-import {IoAddOutline, IoCaretForward, IoCaretUp, IoDisc, IoDocumentOutline, IoLocateOutline} from "react-icons/io5";
+import {
+    IoAddOutline,
+    IoCaretForward,
+    IoCaretUp,
+    IoDisc,
+    IoDocumentOutline,
+    IoLocation
+} from "react-icons/io5";
 import {AddToCartButton} from "../components/page-components/AddToCartButton";
 import {useNavigate} from "../components/useNavigate";
-import {RxLapTimer} from "react-icons/rx";
 import {TbDiscount} from "react-icons/tb";
-import {useAppContext} from "../components/useAppContext";
 import {RiMastercardLine} from "react-icons/ri";
 import {red, white} from "./Theme";
+import {Value} from "../components/page-components/Value";
+import {useDeliveryChargeCalculator} from "../components/useDeliveryChargeCalculator";
+import {AnimatePresence, motion} from "framer-motion";
+import {useAppContext} from "../components/useAppContext";
+import {AppState} from "../components/AppState";
+import {useAddress} from "../model/useAddress";
+import {useFocusListener} from "../components/RouterPageContainer";
+import {Address} from "../model/Address";
+import {GuestAddress} from "../model/Profile";
+import {useRef} from "react";
 
 export function calculateCartItemPrice(cart: CartItem): number {
     const total = cart.product.price + cart.options.reduce((total, configOption) => {
@@ -21,9 +35,11 @@ export function calculateCartItemPrice(cart: CartItem): number {
     return total;
 }
 
-export function CardItemDetail(props: { cart: CartItem, shoppingCart: Store<CartItem[]> }) {
-    const {cart, shoppingCart} = props;
-    return <div style={{display: 'flex', padding: '5px 10px', marginBottom: 15, justifyContent: 'center'}}>
+
+export function CardItemDetail(props: { cart: CartItem }) {
+    const {cart} = props;
+
+    return <motion.div style={{display: 'flex', padding: '5px 10px', marginBottom: 15, justifyContent: 'center'}}>
         <div>
             <IoDisc style={{fontSize: 16}}/>
         </div>
@@ -34,7 +50,7 @@ export function CardItemDetail(props: { cart: CartItem, shoppingCart: Store<Cart
         </div>
         <div style={{display: 'flex', flexDirection: 'column'}}>
             <div>
-                <AddToCartButton shoppingCart={shoppingCart} product={cart.product} options={cart.options}
+                <AddToCartButton product={cart.product} options={cart.options}
                                  size={'small'}/>
             </div>
             <div style={{
@@ -44,71 +60,123 @@ export function CardItemDetail(props: { cart: CartItem, shoppingCart: Store<Cart
                 marginTop: 5
             }}>{cart.product.currency} {cart.totalPrice}</div>
         </div>
-    </div>;
+    </motion.div>;
 }
 
+const tipsDataProvider = [2, 4, 8]
 export default function OrderDetailPage(props: RouteProps) {
-    const shoppingCart = useStore<CartItem[]>(() => {
-        const orderDetail = JSON.parse(localStorage.getItem('order-detail') ?? '');
-        return orderDetail;
-    });
-    useFocusListener(props.path, () => {
-        const orderDetail = JSON.parse(localStorage.getItem('order-detail') ?? '');
-        shoppingCart.setState(orderDetail);
-    });
-    const cartItems = useStoreValue(shoppingCart, s => s);
+    const {store} = useAppContext();
+
     const navigate = useNavigate();
-    const {appDimension} = useAppContext();
-    return <Page style={{backgroundColor: '#F2F2F2'}}>
-        <Header title={'Order Details'}/>
+    const deliveryCharge = useDeliveryChargeCalculator();
+    const tipsStore = useStore(tipsDataProvider[0]);
+    const {getNearestAddress} = useAddress();
+    const nearestAddressStore = useStore<Address>(GuestAddress);
+    useFocusListener(props.path, () => {
+        (async () => {
+            const address: Address = await getNearestAddress();
+            nearestAddressStore.setState(address);
+        })();
+    })
+    const headerRef = useRef<{ showShadow: (param: boolean) => void }>();
+    return <Page style={{backgroundColor: '#F2F2F2', position: 'relative'}}>
+
         <div style={{
             display: 'flex',
             flexDirection: 'column',
             padding: 10,
             height: '100%',
             overflow: 'auto',
-            paddingBottom: 150
+            paddingBottom: 150,
+            paddingTop: 50,
+        }} onScroll={(event) => {
+            headerRef.current?.showShadow((event.target as HTMLDivElement).scrollTop > 10)
         }}>
             <Card style={{marginBottom: 10}}>
                 <div style={{display: 'flex', flexDirection: 'row', padding: '5px 10px', fontSize: 15}}>
-                    <div><RxLapTimer/></div>
+                    <div></div>
                     <div style={{marginLeft: 10, marginBottom: 2}}>Delivery in 30 - 40 mins</div>
                 </div>
             </Card>
+
             <Card style={{marginBottom: 10}}>
                 <CardTitle title={'Your Order'}/>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                    {
-                        cartItems.map((cart, index) => {
-                            return <CardItemDetail cart={cart} shoppingCart={shoppingCart} key={index}/>
-                        })
-                    }
+                    <StoreValueRenderer store={store} selector={s => s.shoppingCart}
+                                        render={(cartItems: CartItem[]) => {
+                                            return <AnimatePresence>
+                                                {
+                                                    cartItems.map((cart, index) => {
+                                                        return <CardItemDetail cart={cart} key={index}/>
+                                                    })
+                                                }
+                                            </AnimatePresence>
+                                        }}/>
                     <CardRow title={'Add more items'} icon={IoAddOutline} onTap={() => {
                         navigate('delivery');
                     }}/>
                     <CardRow title={'Add cooking instruction'} icon={IoDocumentOutline} onTap={() => {
                     }}/>
+
                 </div>
             </Card>
-
             <Card style={{marginBottom: 10}}>
                 <CardTitle title={'Discount'}/>
                 <CardRow title={'Use Coupons'} icon={TbDiscount}></CardRow>
+            </Card>
+            <Card style={{marginBottom: 10}}>
+                <CardTitle title={'Tips for Delivery Partner'}/>
+                <div style={{display: 'flex', padding: '0px 10px'}}>
+                    <StoreValueRenderer store={tipsStore} selector={s => s} render={(selectedTips) => {
+
+                        return <>{tipsDataProvider.map(tip => {
+                            const selected = tip === selectedTips;
+                            return <motion.div key={tip}
+                                               style={{
+                                                   padding: '5px 10px',
+                                                   borderRadius: 5,
+                                                   marginRight: 10,
+                                                   boxShadow: '0 3px 5px -3px rgba(0,0,0,0.2)',
+                                                   fontSize: 14,
+                                                   backgroundColor: selected ? red : white,
+                                                   color: selected ? white : red,
+                                                   border: `1px solid ${red}`,
+                                               }}
+                                               whileTap={{scale: 0.95}}
+                                               onClick={() => {
+                                                   tipsStore.setState(tip)
+                                               }}
+                            >AED {tip}</motion.div>
+                        })}
+                        </>
+                    }}/>
+
+
+                </div>
+
             </Card>
             <Card style={{marginBottom: 10}}>
                 <CardTitle title={'Bill Summary'}/>
                 <div style={{display: 'flex', flexDirection: 'column', padding: '0px 10px'}}>
                     <div style={{display: 'flex', marginBottom: 5}}>
                         <div style={{flexGrow: 1}}>Item total</div>
-                        <div>AED 11.50</div>
+                        <div style={{marginRight: 5}}>AED</div>
+                        <StoreValue store={store}
+                                    selector={(s: AppState) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
+                                    property={'value'}>
+                            <Value/>
+                        </StoreValue>
                     </div>
                     <div style={{display: 'flex', marginBottom: 5}}>
                         <div style={{flexGrow: 1}}>Delivery charge</div>
-                        <div>AED 6</div>
+                        <div>AED {deliveryCharge}</div>
                     </div>
                     <div style={{display: 'flex', marginBottom: 5}}>
                         <div style={{flexGrow: 1}}>Tip for delivery partner</div>
-                        <div>AED 3</div>
+                        <StoreValueRenderer store={tipsStore} selector={s => s} render={(tip) => {
+                            return <div>AED {tip}</div>
+                        }}/>
+
                     </div>
                     <div style={{
                         display: 'flex',
@@ -118,7 +186,15 @@ export default function OrderDetailPage(props: RouteProps) {
                         borderTop: '1px solid rgba(0,0,0,0.1)'
                     }}>
                         <div style={{flexGrow: 1}}>Grand Total</div>
-                        <div>AED 20.50</div>
+                        <StoreValueRenderer store={store}
+                                            selector={(s: AppState) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
+                                            render={(total) => {
+                                                return <StoreValueRenderer store={tipsStore} selector={s => s}
+                                                                           render={(tip) => {
+                                                                               return <div>AED {total + tip + deliveryCharge}</div>
+                                                                           }}/>
+                                            }}/>
+
                     </div>
                 </div>
             </Card>
@@ -127,9 +203,9 @@ export default function OrderDetailPage(props: RouteProps) {
             position: 'absolute',
             bottom: 0,
             width: '100%',
-            background : 'rgba(255,255,255,0.8)',
+            background: 'rgba(255,255,255,0.8)',
             backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter : 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
             boxShadow: '0 0 5px 3px rgba(0,0,0,0.05)',
             display: 'flex',
             flexDirection: 'column',
@@ -137,40 +213,69 @@ export default function OrderDetailPage(props: RouteProps) {
             borderTopLeftRadius: 10
         }}>
             <div style={{display: 'flex', padding: 10, marginBottom: 10, borderBottom: '1px solid rgba(0,0,0,0.1)'}}>
-                <div style={{marginRight: 5}}><IoLocateOutline/></div>
+                <div style={{marginRight: 5}}><IoLocation/></div>
                 <div style={{display: 'flex', flexGrow: 1, overflow: 'auto', flexDirection: 'column', marginRight: 5}}>
-                    <div style={{marginBottom: 5}}>Delivery at Home</div>
-                    <div style={{
-                        textOverflow: 'ellipsis',
-                        width: '100%',
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap'
-                    }}>Marina Diamond 5, Flat 806, Dubai Marina,Flat Marina dubai dubai dubai
-                    </div>
+                    <StoreValue store={nearestAddressStore} selector={s => `Delivery at ${s?.location}`}
+                                property={'value'}>
+                        <Value style={{marginBottom: 5}}/>
+                    </StoreValue>
+                    <StoreValue store={nearestAddressStore}
+                                selector={(s: Address) => `${s?.areaOrStreetName}, ${s?.houseOrFlatNo}, ${s?.buildingOrPremiseName}, ${s?.landmark}`}
+                                property={'value'}>
+                        <Value style={{
+                            textOverflow: 'ellipsis',
+                            width: '100%',
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap'
+                        }}/>
+                    </StoreValue>
+
                 </div>
-                <div>Change</div>
+                <motion.div style={{color: red}} whileTap={{scale: 0.95}} onTap={() => {
+                    navigate('address-book');
+                }}>Change
+                </motion.div>
             </div>
             <div style={{display: 'flex', padding: 10}}>
-                <div style={{display: 'flex', flexDirection: 'column',flexGrow:1}}>
+                <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <div style={{marginRight: 5}}><RiMastercardLine style={{fontSize: 16}}/></div>
-                        <div style={{marginRight: 5,marginBottom:3}}>Pay Using</div>
+                        <div style={{marginRight: 5, marginBottom: 3}}>Pay Using</div>
                         <div><IoCaretUp/></div>
                     </div>
                     <div style={{fontWeight: 'bold'}}>Personal</div>
                     <div>{'****** 8875'}</div>
                 </div>
-                <div style={{display: 'flex',alignItems:'center',flexGrow:1,background:red,color:white,padding:10,borderRadius:10,marginLeft:10,maxWidth:200}}>
-                    <div style={{display: 'flex', flexDirection: 'column',flexGrow:'1'}}>
-                        <div style={{fontWeight: 'bold'}}>AED 20.50</div>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexGrow: 1,
+                    background: red,
+                    color: white,
+                    padding: 10,
+                    borderRadius: 10,
+                    marginLeft: 10,
+                    maxWidth: 200
+                }}>
+                    <div style={{display: 'flex', flexDirection: 'column', flexGrow: '1'}}>
+                        <StoreValueRenderer store={store}
+                                            selector={(s: AppState) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
+                                            render={(total) => {
+                                                return <StoreValueRenderer store={tipsStore} selector={s => s}
+                                                                           render={(tip) => {
+                                                                               return <div
+                                                                                   style={{fontWeight: 'bold'}}>AED {total + tip + deliveryCharge}</div>
+                                                                           }}/>
+                                            }}/>
                         <div>Total</div>
                     </div>
-                    <div style={{display:'flex',alignItems:'flex-end'}}>
-                        <div style={{fontSize:16}}>Place Order</div>
-                        <div style={{marginLeft:5}} ><IoCaretForward style={{width:10,height:10}}/></div>
+                    <div style={{display: 'flex', alignItems: 'flex-end'}}>
+                        <div style={{fontSize: 16}}>Place Order</div>
+                        <div style={{marginLeft: 5}}><IoCaretForward style={{width: 10, height: 10}}/></div>
                     </div>
                 </div>
             </div>
         </div>
+        <Header title={'Order Details'} floating={true} ref={headerRef}/>
     </Page>
 }

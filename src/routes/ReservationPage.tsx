@@ -11,12 +11,13 @@ import {ValueOnChangeProperties} from "../components/page-components/picker/crea
 import {blue, ButtonTheme, grey, red, white} from "./Theme";
 import produce from "immer";
 import {Input} from "../components/page-components/Input";
-import {useUserProfile} from "../model/useUserProfile";
+import {useProfile} from "../model/useProfile";
 import {Button} from "../components/page-components/Button";
 import {IoSaveOutline} from "react-icons/io5";
 import {isEmptyText} from "../components/page-components/utils/isEmptyText";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
 import {SlideDetail} from "./SlideDetail";
+import {Value} from "../components/page-components/Value";
 
 
 const THIRTY_MINUTES = 1000 * 60 * 30;
@@ -239,7 +240,7 @@ export function ReservationPage(props: RouteProps) {
         const time = new Date().getTime();
         return new Date((time - (time % THIRTY_MINUTES)) + THIRTY_MINUTES)
     }, []);
-    const user = useUserProfile();
+    const user = useProfile();
 
     const store = useStore<(Reservation & {
         errors: {
@@ -321,7 +322,7 @@ export function ReservationPage(props: RouteProps) {
                 <div style={{display: 'flex'}}>
                     <div style={{flexGrow: 1, fontSize: 16}}>
                         <StoreValue store={store} property={'value'} selector={s => s.seatingPreferences}>
-                            <Title/>
+                            <Value/>
                         </StoreValue>
                     </div>
                     <motion.div style={{color: 'red', marginLeft: 10}} onTap={async () => {
@@ -347,10 +348,10 @@ export function ReservationPage(props: RouteProps) {
                     <div style={{display: 'flex', flexDirection: 'column', fontSize: 16, flexGrow: 1}}>
                         <StoreValue store={store} selector={s => `${s.firstName} ${s.lastName}, ${s.phoneNo}`}
                                     property={'value'}>
-                            <Title/>
+                            <Value/>
                         </StoreValue>
                         <StoreValue store={store} selector={s => `${s.email}`} property={'value'}>
-                            <Title/>
+                            <Value/>
                         </StoreValue>
                     </div>
                     <motion.div style={{color: 'red', marginLeft: 10}} onTap={async () => {
@@ -395,6 +396,3 @@ export function ReservationPage(props: RouteProps) {
 }
 
 
-function Title(props: { value?: string }) {
-    return <div>{props.value}</div>
-}

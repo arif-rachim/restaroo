@@ -1,4 +1,4 @@
-import {CSSProperties, ReactElement, useRef} from "react";
+import {CSSProperties, ReactElement, useEffect, useRef} from "react";
 import {AppContextProvider} from "./useAppContext";
 import {AnimatePresence, motion} from "framer-motion";
 import {RouterPageContainer} from "./RouterPageContainer";
@@ -6,6 +6,9 @@ import {Store, useStore, useStoreValue} from "./store/useStore";
 import {AppState} from "./AppState";
 import {GuestProfile} from "../model/Profile";
 import {PickerProvider, ShowPickerFunction} from "./page-components/picker/PickerProvider";
+import {getProfile} from "../service/getProfile";
+import {getAddresses} from "../service/getAddresses";
+import produce from "immer";
 
 const shellStyle: CSSProperties = {
     width: '100%',
@@ -86,9 +89,20 @@ export default function AppShell() {
     })
     const showPickerRef = useRef<ShowPickerFunction>();
     const store = useStore<AppState>({
-        user: GuestProfile
+        user: GuestProfile,
+        addresses : [],
+        shoppingCart : []
     });
+    useEffect(() => {
+        (async () => {
+            const [profile,addresses] = await Promise.all([getProfile(),getAddresses()]);
+            store.setState(produce(s => {
+                s.addresses = addresses;
+                s.user = profile;
+            }))
+        })();
 
+    },[store])
     return <AppContextProvider panelStore={panelStore} store={store} showPickerRef={showPickerRef}>
         <div style={shellStyle}>
             <RouterPageContainer/>

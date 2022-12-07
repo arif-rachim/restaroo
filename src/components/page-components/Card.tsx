@@ -1,4 +1,4 @@
-import {CSSProperties, ForwardedRef, forwardRef, PropsWithChildren, useEffect, useId} from "react";
+import {CSSProperties, ForwardedRef, forwardRef, PropsWithChildren, ReactElement, useEffect, useId} from "react";
 import {IconType} from "react-icons";
 import {IoChevronForward} from "react-icons/io5";
 import invariant from "tiny-invariant";
@@ -19,10 +19,10 @@ export const Card = forwardRef(function Card(props: PropsWithChildren<{ style?: 
     </div>
 })
 
-export function CardRow(props: { icon: IconType, title: string, onTap?: () => void }) {
+export function CardRow(props: { icon: IconType, title: string | ReactElement, onTap?: () => void }) {
     const {icon: Icon, title, onTap} = props;
     return <motion.div style={{display: 'flex', alignItems: 'center', margin: '0px 0px 10px 0px'}} whileTap={{scale: 0.95}}
-                       onTap={onTap}>
+                       onTap={onTap} >
         <div style={{fontSize: 30, marginLeft: 20}}>
             <Icon/>
         </div>

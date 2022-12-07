@@ -1,13 +1,11 @@
-import invariant from "tiny-invariant";
 import {ButtonTheme, red, white} from "../../routes/Theme";
 import {motion} from "framer-motion";
 import {IoMdAdd, IoMdRemove} from "react-icons/io";
 import {Store, StoreValue, useStore, useStoreValue} from "../store/useStore";
 import {Product, ProductConfig, ProductConfigOption} from "../../model/Product";
 import produce from "immer";
-import {CartItem} from "../../routes/DeliveryPage";
 import {useAppContext} from "../useAppContext";
-import {CSSProperties, useCallback, useEffect} from "react";
+import {CSSProperties, useCallback} from "react";
 import {SlideDetail} from "../../routes/SlideDetail";
 import {Card, CardTitle} from "./Card";
 import {Image} from "./Image";
@@ -15,12 +13,12 @@ import {IoCartOutline, IoClose, IoDisc} from "react-icons/io5";
 import {Button} from "./Button";
 import {MdCheckBox, MdCheckBoxOutlineBlank} from "react-icons/md";
 import {Value} from "./Value";
-import {CardItemDetail} from "../../routes/OrderDetailPage";
+import {useShoppingCart} from "../../model/useShoppingCart";
 
-export function AddRemoveItemButton(props: ({ size?: 'small' | 'normal', style?: CSSProperties,value?:number,onAddClick:() =>void,onRemoveClick:() => void })) {
-    const {value, onAddClick,onRemoveClick, size, style} = props;
+export function AddRemoveItemButton(props: ({ size?: 'small' | 'normal', style?: CSSProperties, value?: number, onAddClick: () => void, onRemoveClick: () => void })) {
+    const {value, onAddClick, onRemoveClick, size, style} = props;
 
-    const hasValue = (value ?? 0)> 0;
+    const hasValue = (value ?? 0) > 0;
     const isSmall = size === 'small';
     return <div style={{
         width: '100%',
@@ -30,7 +28,7 @@ export function AddRemoveItemButton(props: ({ size?: 'small' | 'normal', style?:
         zIndex: 0,
         boxSizing: 'border-box',
         ...style
-    }} >
+    }}>
         <div style={{
             display: 'flex',
             flexDirection: 'row',
@@ -42,7 +40,8 @@ export function AddRemoveItemButton(props: ({ size?: 'small' | 'normal', style?:
             alignItems: 'center'
         }}>
             <div style={{display: 'flex', width: '100%', height: '100%', position: "relative"}}>
-                <motion.div style={{width: '50%', padding: 5}} whileTap={{scale: 0.9}} onClick={(event) => onRemoveClick()} animate={{opacity: hasValue ? 1 : 0}}>
+                <motion.div style={{width: '50%', padding: 5}} whileTap={{scale: 0.9}}
+                            onClick={(event) => onRemoveClick()} animate={{opacity: hasValue ? 1 : 0}}>
                     <IoMdRemove fontSize={isSmall ? 14 : 20}/>
                 </motion.div>
 
@@ -60,7 +59,7 @@ export function AddRemoveItemButton(props: ({ size?: 'small' | 'normal', style?:
                     e.preventDefault();
                     e.stopPropagation();
                     onAddClick();
-                }} >{hasValue ? value : 'ADD'}
+                }}>{hasValue ? value : 'ADD'}
                 </div>
 
                 <motion.div style={{width: '50%', textAlign: 'right', padding: 5}} whileTap={{scale: 0.9}}
@@ -73,154 +72,35 @@ export function AddRemoveItemButton(props: ({ size?: 'small' | 'normal', style?:
     </div>;
 }
 
-export function useDetailPage() :(product: Product) => Promise<CartItem|false>{
-    const {showSlidePanel} = useAppContext();
-    return (product: Product) => new Promise(resolve => {
-            (async () => {
-                const result = await showSlidePanel(closePanel => {
-                    return <ProductDetail product={product} closePanel={closePanel} total={1}/>
-                });
-                if (result === false) {
-                    resolve(false);
-                    return;
-                }
-                const cartItem = (result as { product: Product, total: number, totalPrice: number, options: ProductConfigOption[] });
-                resolve(cartItem)
-            })()
-        });
-}
 
 function optionsToString(options?: ProductConfigOption[]) {
-    if(options === undefined){
+    if (options === undefined) {
         return '';
     }
     return options.map(o => o.name).sort().join(';')
 }
 
-function CartItemSlidePanel(props:{shoppingCart: Store<CartItem[]>, product: Product, closePanel: (val: any) => void}) {
-    const {shoppingCart,product,closePanel} = props;
-    const cartItems: CartItem[] = useStoreValue(shoppingCart,s => s.filter(s => s.product.id === product.id),[product.id]);
-    const totalCartItems = cartItems.length;
-    useEffect(() => {
-        if(totalCartItems === 0){
-            closePanel(false);
-        }
-    },[totalCartItems,closePanel]);
-    return <SlideDetail closePanel={closePanel} style={{backgroundColor: '#F2F2F2',padding:0}}>
-        <Card >
-            <CardTitle title={product.name}/>
-            {
-                cartItems.map((cart, index) => {
-                    return <CardItemDetail cart={cart} shoppingCart={shoppingCart} key={index}/>
-                })
-            }
-        </Card>
-    </SlideDetail>
-}
 
-async function onAddClickedCallback(options: ProductConfigOption[], product: Product, openDetail: (product: Product) => Promise<CartItem | false>, shoppingCart: Store<CartItem[]>) {
-    if (options.length === 0) {
-        if (product.config.length > 0) {
-            const cartItem = await openDetail(product);
-            if (cartItem === false) {
-                return;
-            }
-            shoppingCart.setState(produce((cartItems: CartItem[]) => {
-                const existingCartItem = cartItems.find(c => c.product.id === cartItem.product.id && optionsToString(c.options) === optionsToString(cartItem.options));
-                if (existingCartItem) {
-                    existingCartItem.total = existingCartItem.total + cartItem.total;
-                    existingCartItem.totalPrice = existingCartItem.totalPrice + cartItem.totalPrice;
-                } else {
-                    cartItems.push(cartItem);
-                }
-            }));
-
-        } else {
-            shoppingCart.setState(produce((cartItems: CartItem[]) => {
-                const existingCartItem = cartItems.find(c => c.product.id === product.id);
-                if (existingCartItem) {
-                    existingCartItem.total = existingCartItem.total + 1;
-                    existingCartItem.totalPrice = existingCartItem.total * product.price;
-                } else {
-                    cartItems.push({
-                        product,
-                        total: 1,
-                        options: [],
-                        totalPrice: product.price
-                    })
-                }
-            }));
-        }
-    } else {
-        shoppingCart.setState(produce((cartItems: CartItem[]) => {
-            const existingCartItem = cartItems.find(c => c.product.id === product.id && optionsToString(c.options) === optionsToString(options));
-            if (existingCartItem) {
-                existingCartItem.totalPrice = (existingCartItem.totalPrice / existingCartItem.total) * (existingCartItem.total + 1);
-                existingCartItem.total = existingCartItem.total + 1;
-            }
-        }));
-    }
-}
-
-export function AddToCartButton(props: { shoppingCart: Store<CartItem[]>, product: Product, size?: 'small' | 'normal', style?: CSSProperties,options:ProductConfigOption[] }) {
-    const {shoppingCart, product, size, style,options} = props;
-    const openDetail = useDetailPage();
-    const {showSlidePanel} = useAppContext();
+export function AddToCartButton(props: { product: Product, size?: 'small' | 'normal', style?: CSSProperties, options: ProductConfigOption[] }) {
+    const {product, size, style, options} = props;
+    const {store} = useAppContext();
+    const {addItemToCartByProductAndOptions, removeItemFromCartByProductAndOptions} = useShoppingCart();
     return <div onClick={(event) => {
         event.preventDefault();
         event.stopPropagation();
     }}>
-        <StoreValue store={shoppingCart}
+        <StoreValue store={store}
                     selector={s => {
-                        if(options.length > 0){
-                            return (s.filter(t => t.product.id === product.id && optionsToString(options) === optionsToString(t.options))?.reduce((total, item) => total + item.total, 0) ?? 0)
-                        }else{
-                            return (s.filter(t => t.product.id === product.id)?.reduce((total, item) => total + item.total, 0) ?? 0);
+                        if (options.length > 0) {
+                            return (s.shoppingCart.filter(t => t.product.id === product.id && optionsToString(options) === optionsToString(t.options))?.reduce((total, item) => total + item.total, 0) ?? 0)
+                        } else {
+                            return (s.shoppingCart.filter(t => t.product.id === product.id)?.reduce((total, item) => total + item.total, 0) ?? 0);
                         }
                     }}
                     property={'value'}>
             <AddRemoveItemButton style={style} size={size}
-                                 onAddClick={async () => {
-                                     await onAddClickedCallback(options, product, openDetail, shoppingCart);
-                                 }}
-                                 onRemoveClick={async () => {
-
-                                     if(options.length === 0){
-                                         const index = shoppingCart.stateRef.current.findIndex(c => c.product.id === product.id);
-                                         if(index < 0){
-                                             await onAddClickedCallback(options, product, openDetail, shoppingCart);
-                                             return;
-                                         }
-                                         if(product.config.length > 0){
-                                             await showSlidePanel(closePanel => {
-                                                 return <CartItemSlidePanel shoppingCart={shoppingCart} product={product} closePanel={closePanel} />;
-                                             })
-                                         }else{
-                                             shoppingCart.setState(produce((cartItems:CartItem[]) => {
-                                                 const index = cartItems.findIndex(c => c.product.id === product.id);
-                                                 const existingCartItem = cartItems[index];
-                                                 invariant(existingCartItem);
-                                                 if(existingCartItem.total > 1){
-                                                     existingCartItem.total = existingCartItem.total - 1;
-                                                     existingCartItem.totalPrice  = existingCartItem.total * product.price;
-                                                 }else{
-                                                     cartItems.splice(index,1);
-                                                 }
-                                             }));
-                                         }
-                                     }else{
-                                         shoppingCart.setState(produce((cartItems:CartItem[]) => {
-                                             const index = cartItems.findIndex(c => c.product.id === product.id && optionsToString(c.options) === optionsToString(options));
-                                             const existingCartItem = cartItems[index];
-                                             if(existingCartItem.total > 1){
-                                                 existingCartItem.totalPrice = (existingCartItem.totalPrice / existingCartItem.total ) *  (existingCartItem.total - 1);
-                                                 existingCartItem.total = existingCartItem.total - 1;
-                                             }else{
-                                                 cartItems.splice(index,1);
-                                             }
-                                         }));
-                                     }
-                                 }}
+                                 onAddClick={async () => await addItemToCartByProductAndOptions(options, product)}
+                                 onRemoveClick={async () => await removeItemFromCartByProductAndOptions(options, product)}
             />
         </StoreValue>
     </div>
@@ -245,7 +125,7 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
         }).filter(m => m);
     }, [product.config, store.stateRef]);
     return <SlideDetail closePanel={closePanel} style={{backgroundColor: '#F2F2F2', padding: 0}}>
-        <div style={{flexGrow: 1, overflow: 'auto', display: 'flex', flexDirection: 'column',paddingBottom:70}}>
+        <div style={{flexGrow: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', paddingBottom: 70}}>
             <Card style={{padding: 0, margin: 10}}>
                 <div style={{marginBottom: 10}}>
                     <Image src={process.env.PUBLIC_URL + product.imageAddress} height={appDimension.width - 20}
@@ -263,10 +143,18 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
                 return <ProductConfigCard config={config} key={config.name} store={store} product={product}/>
             })}
         </div>
-        <div style={{position:'absolute',boxSizing:'border-box',bottom:0,width:appDimension.width,display: 'flex', padding: 10, background: 'rgba(255,255,255,0.3)',
+        <div style={{
+            position: 'absolute',
+            boxSizing: 'border-box',
+            bottom: 0,
+            width: appDimension.width,
+            display: 'flex',
+            padding: 10,
+            background: 'rgba(255,255,255,0.3)',
             boxShadow: '0 0 8px 3px rgba(0,0,0,0.1)',
-            backdropFilter : 'blur(10px)',
-            WebkitBackdropFilter:'blur(10px)'}}
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)'
+        }}
 
         >
             <motion.div style={{

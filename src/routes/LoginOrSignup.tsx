@@ -14,6 +14,7 @@ import {Image} from "../components/page-components/Image";
 import restaroo from "../assets/arif-rachim-restaroo.png";
 import {useNavigate} from "../components/useNavigate";
 import invariant from "tiny-invariant";
+import {Value} from "../components/page-components/Value";
 
 
 export function LoginOrSignup(route: RouteProps) {
@@ -103,7 +104,7 @@ export function LoginOrSignup(route: RouteProps) {
                                                   }}>
                             <div style={{marginTop: 2, marginRight: 5}}><IoChevronDown/></div>
                             <StoreValue store={countryStore} selector={s => s} property={'value'}>
-                                <Title/>
+                                <Value style={{flexGrow: 1, textAlign: 'right'}} />
                             </StoreValue>
                         </motion.div>} placeholder={'Enter Phone Number'} titleWidth={90} titlePosition={'left'}
                                style={{containerStyle: {borderBottom: 'unset'}}}
@@ -168,8 +169,4 @@ export function LoginOrSignup(route: RouteProps) {
         </div>
 
     </Page>
-}
-
-function Title(props: { value?: string }) {
-    return <div style={{flexGrow: 1, textAlign: 'right'}}>{props.value}</div>
 }

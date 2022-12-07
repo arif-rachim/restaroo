@@ -55,14 +55,13 @@ const AppContext = createContext<AppContextType>({
         showSlidePanel: Nothing,
         showHeader: Nothing,
         showFooter: Nothing,
-        store: createStoreInitValue({user: GuestProfile})
+        store: createStoreInitValue<AppState>({user: GuestProfile,addresses:[],shoppingCart : []})
     }
 );
 const HeaderFooterVisibilityContext = createContext<{ footerVisibleStore?: Store<boolean>, headerVisibleStore?: Store<boolean> }>({});
 
 export type FactoryFunction<T> = (closePanel: (val: T) => void) => ReactElement;
 export type PickerFunction = <T>(props: { picker: PickerOptions, value: T }) => Promise<T>;
-
 
 export function AppContextProvider<State extends AppState>(props: PropsWithChildren<{
     panelStore: Store<{ modalPanel: ReactElement | false, slidePanel: ReactElement | false }>
@@ -121,7 +120,7 @@ export function AppContextProvider<State extends AppState>(props: PropsWithChild
         const showHeader = headerVisibleStore.setState;
         const showFooter = footerVisibleStore.setState;
         return {appDimension, appType, showModal, store, showPicker, showSlidePanel, showHeader, showFooter}
-    }, [showModal, showSlidePanel, showPicker, store, window]);
+    }, [showModal, showSlidePanel, showPicker, store, window,headerVisibleStore.setState,footerVisibleStore.setState]);
 
     return <AppContext.Provider value={(contextValue as any)}>
         <HeaderFooterVisibilityContext.Provider value={{headerVisibleStore, footerVisibleStore}}>

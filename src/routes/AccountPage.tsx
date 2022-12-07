@@ -17,7 +17,7 @@ import {
 import {RefObject, useRef} from "react";
 import invariant from "tiny-invariant";
 import {RiDraftLine} from "react-icons/ri";
-import {useSessionIsActive, useUserProfile, useUserProfileSetter} from "../model/useUserProfile";
+import {useProfile, useProfileSetter, useSessionIsActive} from "../model/useProfile";
 import {Button} from "../components/page-components/Button";
 import {ButtonTheme} from "./Theme";
 import {Visible} from "../components/page-components/Visible";
@@ -27,7 +27,7 @@ import {GuestProfile} from "../model/Profile";
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     const isSessionActive = useSessionIsActive();
     const navigate = useNavigate();
-    const user = useUserProfile();
+    const user = useProfile();
     return <Card style={{margin: 10, marginBottom: -10}} ref={props.containerRef}>
         <Visible if={!isSessionActive}>
             <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
@@ -57,7 +57,7 @@ export function AccountPage(props: RouteProps) {
 
     const containerRef = useRef<HTMLDivElement>(null);
     const isSessionActive = useSessionIsActive();
-    const setUserProfile = useUserProfileSetter();
+    const setUserProfile = useProfileSetter();
     const navigate = useNavigate();
     return <Page style={{padding: 0, background: '#F2F2F2'}}>
         <Header title={''}/>
@@ -114,9 +114,9 @@ export function AccountPage(props: RouteProps) {
                     <CardRow icon={RiDraftLine} title={'Send feedback'}/>
                     <CardRow icon={IoStarOutline} title={'Rate us on play store'}/>
                     {isSessionActive &&
-                        <CardRow icon={IoLogOutOutline} title={'Log out'} onTap={() => {
+                        <CardRow icon={IoLogOutOutline} title={'Log out'} onTap={async () => {
                             // here we need to perform logout
-                            setUserProfile(GuestProfile);
+                            await setUserProfile(GuestProfile);
                             navigate('delivery');
                         }}/>
                     }

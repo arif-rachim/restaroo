@@ -26,83 +26,89 @@ import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
 import {Address} from "../model/Address";
 import {SkeletonBox} from "../components/page-components/SkeletonBox";
 import {SlideDetail} from "./SlideDetail";
+import {GuestAddress} from "../model/Profile";
+import {useAddress} from "../model/useAddress";
+import {useAfterInit} from "../components/page-components/utils/useAfterInit";
 
-export const EMPTY_ADDRESS: Address = {
-    areaOrStreetName: '',
-    buildingOrPremiseName: '',
-    houseOrFlatNo: '',
-    landmark: '',
-    lng: 0,
-    lat: 0,
-    location: "Home",
-    id: ''
-}
 
-function LocationSelector(props: { value?: string, onChange: (value: string) => void,error?:string }) {
-    const {value, onChange,error} = props;
+function LocationSelector(props: { value?: string, onChange: (value: string) => void, error?: string }) {
+    const {value, onChange, error} = props;
 
     const customLocation = ['Home', 'Work', 'Hotel'].indexOf(value ?? '') < 0;
     const border = (isFocused: boolean) => `1px solid ${isFocused ? red : 'rgba(0,0,0,0.1)'}`
     const color = (isFocused: boolean) => isFocused ? red : '#333';
-    return <AnimatePresence><div style={{display: 'flex', marginBottom: 10,alignItems:'center'}}>
-        {!customLocation &&
-            <motion.div initial={{width:0}} animate={{width:190}} exit={{width:0}} layout={true} style={{display: 'flex',overflow:'hidden'}}>
-                <motion.div layout={true}  style={{
-                    padding: 10,
-                    border: border(value === 'Home'),
-                    borderRadius: 10,
-                    marginRight: 10,
-                    color: color(value === 'Home')
-                }}
-                            whileTap={{scale: 0.95}} onTap={() => onChange('Home')}>Home
+
+    return <AnimatePresence>
+        <div style={{display: 'flex', marginBottom: 10, alignItems: 'center'}}>
+            {!customLocation &&
+                <motion.div initial={{width: 0}} animate={{width: 190}} exit={{width: 0}} layout={true}
+                            style={{display: 'flex', overflow: 'hidden'}}>
+                    <motion.div layout={true} style={{
+                        padding: 10,
+                        border: border(value === 'Home'),
+                        borderRadius: 10,
+                        marginRight: 10,
+                        color: color(value === 'Home')
+                    }}
+                                whileTap={{scale: 0.95}} onTap={() => onChange('Home')}>Home
+                    </motion.div>
+                    <motion.div layout={true} style={{
+                        padding: 10,
+                        border: border(value === 'Work'),
+                        borderRadius: 10,
+                        marginRight: 10,
+                        color: color(value === 'Work')
+                    }}
+                                whileTap={{scale: 0.95}} onTap={() => onChange('Work')}>Work
+                    </motion.div>
+                    <motion.div layout={true} style={{
+                        padding: 10,
+                        border: border(value === 'Hotel'),
+                        borderRadius: 10,
+                        marginRight: 10,
+                        color: color(value === 'Hotel')
+                    }}
+                                whileTap={{scale: 0.95}} onTap={() => onChange('Hotel')}>Hotel
+                    </motion.div>
                 </motion.div>
-                <motion.div layout={true} style={{
-                    padding: 10,
-                    border: border(value === 'Work'),
-                    borderRadius: 10,
-                    marginRight: 10,
-                    color: color(value === 'Work')
-                }}
-                            whileTap={{scale: 0.95}} onTap={() => onChange('Work')}>Work
-                </motion.div>
-                <motion.div layout={true} style={{
-                    padding: 10,
-                    border: border(value === 'Hotel'),
-                    borderRadius: 10,
-                    marginRight: 10,
-                    color: color(value === 'Hotel')
-                }}
-                            whileTap={{scale: 0.95}} onTap={() => onChange('Hotel')}>Hotel
-                </motion.div>
+            }
+            <motion.div layout={true} style={{
+                padding: 10,
+                border: border(customLocation),
+                borderRadius: 10,
+                marginRight: 10,
+                color: color(customLocation)
+            }}
+                        whileTap={{scale: 0.95}} onTap={() => onChange('')}>Other
             </motion.div>
-        }
-        <motion.div layout={true} style={{
-            padding: 10,
-            border: border(customLocation),
-            borderRadius: 10,
-            marginRight: 10,
-            color: color(customLocation)
-        }}
-                    whileTap={{scale: 0.95}} onTap={() => onChange('')}>Other
-        </motion.div>
-        {customLocation &&
-            <motion.div layout={true} style={{display: 'flex',flexGrow:1,alignItems:'center',overflow:'auto'}} initial={{opacity:0,width:0}} animate={{opacity:1,width:'100%'}} exit={{opacity:0,width:0}} >
-                <Input title={'Save as'} placeholder={''} titlePosition={'left'} style={{containerStyle: {flexGrow: 1,marginBottom:-20,borderBottom:'none'},titleStyle:{fontSize:13},inputStyle:{fontSize:16}}} error={error}
-                       onChange={(event) => {
-                           onChange(event.target.value)
-                       }}
-                />
-                <motion.div layout={true} style={{marginLeft:10}} onClick={() => {onChange('Home')}}>
-                    <MdCancel style={{fontSize:20,color:grey}}/>
+            {customLocation &&
+                <motion.div layout={true} style={{display: 'flex', flexGrow: 1, alignItems: 'center', overflow: 'auto'}}
+                            initial={{opacity: 0, width: 0}} animate={{opacity: 1, width: '100%'}}
+                            exit={{opacity: 0, width: 0}}>
+                    <Input title={'Save as'} placeholder={''} titlePosition={'left'} style={{
+                        containerStyle: {flexGrow: 1, marginBottom: -20, borderBottom: 'none'},
+                        titleStyle: {fontSize: 13},
+                        inputStyle: {fontSize: 16}
+                    }} error={error}
+                           onChange={(event) => {
+                               onChange(event.target.value)
+                           }}
+                    />
+                    <motion.div layout={true} style={{marginLeft: 10}} onClick={() => {
+                        onChange('Home')
+                    }}>
+                        <MdCancel style={{fontSize: 20, color: grey}}/>
+                    </motion.div>
                 </motion.div>
-            </motion.div>
-        }
-    </div></AnimatePresence>;
+            }
+        </div>
+    </AnimatePresence>;
 }
 
-function AddressSlidePanel(props: { closePanel: (val: Address|false) => void,address?:Address }) {
-    let {closePanel,address} = props;
-    address = address ?? EMPTY_ADDRESS;
+function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, address?: Address }) {
+    let {closePanel, address} = props;
+    address = address ?? GuestAddress;
+    const {saveAddress} = useAddress();
     const store = useStore<Address & {
         errors: {
             areaOrStreetName: string,
@@ -119,8 +125,8 @@ function AddressSlidePanel(props: { closePanel: (val: Address|false) => void,add
             s.errors.location = isEmptyText(s.location) ? 'Location is required' : '';
         }));
         return isEmptyObject(store.stateRef.current.errors);
-    },[store]);
-    const [busy,setBusy] = useState(false);
+    }, [store]);
+    const [busy, setBusy] = useState(false);
     return <SlideDetail closePanel={closePanel}>
         <div style={{
             fontSize: 20,
@@ -131,7 +137,8 @@ function AddressSlidePanel(props: { closePanel: (val: Address|false) => void,add
         }}>Enter complete address
         </div>
         <div style={{marginBottom: 10}}>Tag this location for later *</div>
-        <StoreValue store={store} selector={[param => param.location,param => param.errors.location]} property={['value','error']}>
+        <StoreValue store={store} selector={[param => param.location, param => param.errors.location]}
+                    property={['value', 'error']}>
             <LocationSelector onChange={(newValue: string) => {
                 store.setState(produce(s => {
                     s.location = newValue;
@@ -143,11 +150,11 @@ function AddressSlidePanel(props: { closePanel: (val: Address|false) => void,add
                     property={['value', 'error']}>
             <Input title={'House no. / Flat no. *'} placeholder={'Please enter house no / Flat no'}
                    style={{inputStyle: {fontSize: 16}, titleStyle: {fontSize: 13}}} onChange={(event) => {
-                       store.setState(produce(s => {
-                           s.houseOrFlatNo = event.target.value;
-                           s.errors.houseOrFlatNo = '';
-                       }));
-            }} />
+                store.setState(produce(s => {
+                    s.houseOrFlatNo = event.target.value;
+                    s.errors.houseOrFlatNo = '';
+                }));
+            }}/>
         </StoreValue>
         <StoreValue store={store} selector={[s => s.buildingOrPremiseName, s => s.errors.buildingOrPremiseName]}
                     property={['value', 'error']}>
@@ -178,10 +185,11 @@ function AddressSlidePanel(props: { closePanel: (val: Address|false) => void,add
             }}/>
         </StoreValue>
         <Button title={'Save address'} onTap={() => {
-            if(isValid()){
+            if (isValid()) {
                 (async () => {
                     setBusy(true);
-                    await saveAddress(store.stateRef.current);
+                    // eslint-disable-next-line
+                    const address = await saveAddress(store.stateRef.current);
                     setBusy(false);
                     closePanel(store.stateRef.current);
                 })();
@@ -196,13 +204,47 @@ export function DeliveryLocationPage(props: RouteProps) {
     const mapId = `${id}-map`;
     const mapContentId = `${id}-content`;
     const mapPopupId = `${id}-popup`;
+    const addressId = props.params.get('addressId');
 
     const {appDimension, showSlidePanel} = useAppContext();
+    const {addresses} = useAddress();
     const mapIdHeightRef = useRef(appDimension.height - 37 - 122);
-    const [address, setAddress] = useState<Address | undefined>();
+    const [address, setAddress] = useState<Address | undefined>(() => {
+        if(isEmptyText(addressId)){
+            return {
+                id : '',
+                lat : 0,
+                lng : 0,
+                location : 'Home',
+                defaultAddress : false,
+                buildingOrPremiseName : '',
+                landmark : '',
+                houseOrFlatNo : '',
+                areaOrStreetName : ''
+            };
+        }
+        return addresses.find(a => a.id === addressId);
+    });
+    useAfterInit(() => {
+        if(isEmptyText(addressId)){
+            setAddress({
+                id : '',
+                lat : 0,
+                lng : 0,
+                location : 'Home',
+                defaultAddress : false,
+                buildingOrPremiseName : '',
+                landmark : '',
+                houseOrFlatNo : '',
+                areaOrStreetName : ''
+            });
+            return;
+        }
+        setAddress(addresses.find(a => a.id === addressId));
+    },[addressId]);
     useEffect(() => {
         mapIdHeightRef.current = document.getElementById(mapId)?.offsetHeight ?? mapIdHeightRef.current;
-    },[mapId]);
+    }, [mapId]);
     const mapRef = useRef<Map>();
     usePatchBugInLeaflet();
     useEffect(() => {
@@ -232,22 +274,21 @@ export function DeliveryLocationPage(props: RouteProps) {
                 popup.style.opacity = '1';
                 const latLon = map.getCenter();
                 const address = await getLocationAddress(latLon);
-                setAddress(produce((s:Address|undefined) => {
-                    if(s){
+                setAddress(produce((s: Address | undefined) => {
+                    if (s) {
                         s.lat = latLon.lat;
                         s.lng = latLon.lng;
                         s.buildingOrPremiseName = address.name;
-                        s.areaOrStreetName = address.displayName.replace(address.name+', ','');
+                        s.areaOrStreetName = address.displayName.replace(address.name + ', ', '');
                     }
                 }));
             }
         }
+
         map.addEventListener('dragend', onDragEnd);
         map.addEventListener('move', onDragMove);
         map.addEventListener('moveend', onDragMoveEnd)
-        const tileLayer = createTile('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-
-        });
+        const tileLayer = createTile('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {});
         tileLayer.addTo(map);
         return () => {
             map.removeEventListener('dragend', onDragEnd);
@@ -269,8 +310,8 @@ export function DeliveryLocationPage(props: RouteProps) {
             setAddress(position);
         }
     });
-    const buildingName = ((address?.buildingOrPremiseName??'').substring(0,25)+((address?.buildingOrPremiseName ?? '').length > 25 ? '...':''));
-    const addressName = ((address?.areaOrStreetName??'').substring(0,65)+((address?.areaOrStreetName??'').length > 65 ?'...':''));
+    const buildingName = ((address?.buildingOrPremiseName ?? '').substring(0, 25) + ((address?.buildingOrPremiseName ?? '').length > 25 ? '...' : ''));
+    const addressName = ((address?.areaOrStreetName ?? '').substring(0, 65) + ((address?.areaOrStreetName ?? '').length > 65 ? '...' : ''));
     return <Page>
         <Header title={'Choose delivery location'}/>
         <div style={{
@@ -313,18 +354,27 @@ export function DeliveryLocationPage(props: RouteProps) {
                 </motion.div>
             </Visible>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', padding: '10px 20px',height:122,flexGrow:0,flexShrink:0,boxSizing:'border-box'}}>
-            <div style={{display: 'flex', flexGrow:1}}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '10px 20px',
+            height: 122,
+            flexGrow: 0,
+            flexShrink: 0,
+            boxSizing: 'border-box'
+        }}>
+            <div style={{display: 'flex', flexGrow: 1}}>
                 <IoLocation fontSize={25} style={{marginRight: 10}}/>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
-                    <SkeletonBox skeletonVisible={buildingName === ''} style={{height:13,marginBottom:5,marginRight:10}}>
+                    <SkeletonBox skeletonVisible={buildingName === ''}
+                                 style={{height: 13, marginBottom: 5, marginRight: 10}}>
                         <div style={{fontSize: 16, fontWeight: 'bold', marginBottom: 5}}>{buildingName}</div>
                     </SkeletonBox>
-                    <SkeletonBox skeletonVisible={addressName === ''} style={{height:13,marginRight:10}}>
+                    <SkeletonBox skeletonVisible={addressName === ''} style={{height: 13, marginRight: 10}}>
                         <div>{addressName}</div>
                     </SkeletonBox>
                 </div>
-                <motion.div style={{color:red}} whileTap={{scale:0.95}}>
+                <motion.div style={{color: red}} whileTap={{scale: 0.95}}>
                     Change
                 </motion.div>
             </div>
@@ -332,7 +382,7 @@ export function DeliveryLocationPage(props: RouteProps) {
                 let completeAddress = await showSlidePanel(closePanel => {
                     return <AddressSlidePanel closePanel={closePanel} address={address}/>
                 });
-                if(completeAddress === false){
+                if (completeAddress === false) {
                     return;
                 }
                 window.history.back();
@@ -351,10 +401,4 @@ function usePatchBugInLeaflet() {
     });
 }
 
-function saveAddress(address:Address):Promise<Address>{
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(address);
-        },300);
-    })
-}
+

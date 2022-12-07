@@ -14,15 +14,15 @@ import {useEffect, useId, useRef} from "react";
 import {StoreValue, useStore} from "../components/store/useStore";
 import {useCurrentPosition} from "../components/page-components/utils/useCurrentPosition";
 import {Address} from "../model/Address";
-import {EMPTY_ADDRESS} from "./DeliveryLocationPage";
 import {SkeletonBox} from "../components/page-components/SkeletonBox";
 import {Product, ProductConfigOption} from "../model/Product";
-import {AddToCartButton, useDetailPage} from "../components/page-components/AddToCartButton";
-import {Value} from "../components/page-components/Value";
+import {AddToCartButton} from "../components/page-components/AddToCartButton";
+import {GuestAddress} from "../model/Profile";
+import {ShoppingCartTotalItem, ShoppingCartTotalPrice, useShoppingCart} from "../model/useShoppingCart";
 
 function AddressHeader(props: { address?: Address }) {
     let {address} = props;
-    address = address ?? EMPTY_ADDRESS;
+    address = address ?? GuestAddress;
     let addressText = address.areaOrStreetName;
     addressText = addressText.substring(0, 40) + (addressText.length > 40 ? '...' : '');
     return <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto', width: '100%'}}>
@@ -57,25 +57,22 @@ export interface CartItem {
 let previousScrollValue = 0;
 
 const cartButtonPosition = {
-    hidden : {bottom:-150},
-    low : {bottom:-50},
-    high : {bottom:13}
+    hidden: {bottom: -150},
+    low: {bottom: -50},
+    high: {bottom: 13}
 }
 
 
-
-
 export function DeliveryPage(props: RouteProps) {
-
     const {appDimension, showFooter} = useAppContext();
     const navigate = useNavigate();
     const componentId = useId();
     const titleRef = useRef<{ title: string, offsetY: number }[]>([]);
     const selectedTitle = useStore('');
     const getCurrentPosition = useCurrentPosition();
-    const positionStore = useStore<Address>(EMPTY_ADDRESS);
-    const shoppingCart = useStore<CartItem[]>([]);
+    const positionStore = useStore<Address>(GuestAddress);
     const pushDownShoppingCartButton = useStore<boolean>(true);
+    const {addProductToCart,getTotalItemsInCart} = useShoppingCart();
     useEffect(() => {
         (async () => {
             const {position} = await getCurrentPosition();
@@ -85,7 +82,7 @@ export function DeliveryPage(props: RouteProps) {
         })();
         // eslint-disable-next-line
     }, []);
-    const openDetailPage = useDetailPage();
+
     return <Page style={{paddingTop: 110, paddingBottom: 110, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
         const target = event.target;
         const scrollTop = (target as HTMLDivElement).scrollTop;
@@ -132,8 +129,6 @@ export function DeliveryPage(props: RouteProps) {
         } else {
             header.style.transform = 'translateY(0px)';
         }
-
-
     }}>
 
         {menus.map((menu) => {
@@ -155,13 +150,7 @@ export function DeliveryPage(props: RouteProps) {
                         padding: 10,
                         marginBottom: 20,
                         borderBottom: `1px dashed rgba(0,0,0,${isLastIndex ? '0' : '0.1'})`
-                    }} onClick={async () => {
-                        const cartItem = await openDetailPage(product);
-                        if(cartItem === false){
-                            return;
-                        }
-                        shoppingCart.setState(old => [...old,cartItem]);
-                    }}>
+                    }} onClick={async () => await addProductToCart(product)}>
                         <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{fontSize: 20, marginBottom: 5}}><IoDisc/></div>
                             <div style={{fontSize: 16, fontWeight: 'bold', marginBottom: 15}}>{product.name}</div>
@@ -192,7 +181,7 @@ export function DeliveryPage(props: RouteProps) {
                                          backgroundColor: 'rgba(0,0,0,0.1)'
                                      }} alt={'product'}/>
                             </div>
-                            <AddToCartButton shoppingCart={shoppingCart} options={[]} product={product} style={{marginTop:-15}} />
+                            <AddToCartButton options={[]} product={product} style={{marginTop: -15}}/>
                         </div>
 
                     </div>
@@ -269,12 +258,12 @@ export function DeliveryPage(props: RouteProps) {
             </div>
         </div>
         <StoreValue store={pushDownShoppingCartButton} selector={s => {
-            const hidden = shoppingCart.stateRef.current.reduce((total,c) => (total + c.total),0) === 0;
-            if(hidden){
+            const hidden = getTotalItemsInCart() === 0;
+            if (hidden) {
                 return cartButtonPosition.hidden;
-            }else if(s){
+            } else if (s) {
                 return cartButtonPosition.low;
-            }else{
+            } else {
                 return cartButtonPosition.high;
             }
         }} property={'animate'}>
@@ -283,47 +272,36 @@ export function DeliveryPage(props: RouteProps) {
                 flexDirection: 'column',
                 position: 'absolute',
                 width: appDimension.width,
-                backdropFilter : 'blur(10px)',
-                WebkitBackdropFilter : 'blur(10px)',
-                background : 'rgba(255,255,255,0.5)',
-                paddingBottom:50,
-            }} initial={{bottom: -100}} transition={{bounce:0}}>
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                background: 'rgba(255,255,255,0.5)',
+                paddingBottom: 50,
+            }} initial={{bottom: -100}} transition={{bounce: 0}}>
                 <motion.div style={{
                     display: 'flex',
                     backgroundColor: red,
                     color: white,
                     padding: '10px 20px',
                     margin: '5px 10px',
-                    alignItems:'center',
+                    alignItems: 'center',
                     borderRadius: 10
-                }} whileTap={{scale:0.95}} onTap={() => {
-                    localStorage.setItem('order-detail',JSON.stringify(shoppingCart.stateRef.current));
+                }} whileTap={{scale: 0.95}} onTap={() => {
                     navigate('order-detail');
                 }}>
-                    <div style={{display: 'flex', flexDirection: 'column',flexGrow:1}}>
-                        <div style={{marginBottom:5}}>
-                            <StoreValue store={shoppingCart} selector={s => {
-                                const total = s.reduce((total,cartItem:CartItem) => (total + cartItem.total) , 0);
-                                return total + ' item'+(total>1 ? 's':'')
-                            }} property={'value'} >
-                                <Value/>
-                            </StoreValue>
+                    <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
+                        <div style={{marginBottom: 5}}>
+                            <ShoppingCartTotalItem/>
                         </div>
                         <div style={{display: 'flex', alignItems: 'flex-end'}}>
-                            <div style={{fontWeight:'bold',fontSize:16}}>
-                                <StoreValue store={shoppingCart} selector={s => {
-                                    const total = s.reduce((total,cartItem:CartItem) => (total + cartItem.totalPrice) , 0);
-                                    return 'AED '+total
-                                }} property={'value'} >
-                                    <Value/>
-                                </StoreValue>
+                            <div style={{fontWeight: 'bold', fontSize: 16}}>
+                                <ShoppingCartTotalPrice/>
                             </div>
                             <div style={{fontSize: 10, marginLeft: 5, marginBottom: 2}}>inclusive of taxes</div>
                         </div>
                     </div>
-                    <div style={{fontSize:16}}>Next</div>
+                    <div style={{fontSize: 16}}>Next</div>
                     <div>
-                        <IoChevronForward style={{fontSize:16,marginBottom:-3,marginLeft:5}}/>
+                        <IoChevronForward style={{fontSize: 16, marginBottom: -3, marginLeft: 5}}/>
                     </div>
                 </motion.div>
             </motion.div>

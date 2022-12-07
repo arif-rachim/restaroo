@@ -6,6 +6,7 @@ export interface Address {
     buildingOrPremiseName: string,
     areaOrStreetName: string,
     landmark: string,
+    defaultAddress:boolean,
     lat: number,
     lng: number
 }

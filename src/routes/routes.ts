@@ -12,6 +12,7 @@ import {AddressBookPage} from "./AddressBookPage";
 import {DeliveryLocationPage} from "./DeliveryLocationPage";
 import {HomePage} from "./HomePage";
 import OrderDetailPage from "./OrderDetailPage";
+import {PaymentMethodPage} from "./PaymentMethodPage";
 
 
 export const routes: Routes = {
@@ -54,7 +55,7 @@ export const routes: Routes = {
         component : AddressBookPage,
         initial : 'right'
     },
-    'delivery-location' : {
+    'delivery-location/$addressId' : {
         component : DeliveryLocationPage,
         initial : 'right'
     },
@@ -64,6 +65,10 @@ export const routes: Routes = {
     },
     'order-detail':{
         component : OrderDetailPage,
+        initial : 'right'
+    },
+    'payment-method':{
+        component : PaymentMethodPage,
         initial : 'right'
     }
 }

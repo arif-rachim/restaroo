@@ -69,7 +69,8 @@ export function useCurrentPosition() {
                         buildingOrPremiseName : locationAddress.name,
                         houseOrFlatNo : '',
                         landmark : '',
-                        id : nanoid()
+                        id : nanoid(),
+                        defaultAddress:false
                     }
                     resolve({position:address});
                 }else if(error){

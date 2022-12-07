@@ -11,7 +11,7 @@ import {StoreValue, useStore, useStoreListener} from "../components/store/useSto
 import {useFocusListener} from "../components/RouterPageContainer";
 import {useNavigate} from "../components/useNavigate";
 import {DemoProfile, GuestProfile, Profile} from "../model/Profile";
-import {useUserProfileSetter} from "../model/useUserProfile";
+import {useProfileSetter} from "../model/useProfile";
 import produce from "immer";
 import {nanoid} from "nanoid";
 
@@ -21,7 +21,7 @@ export function OtpPage(route: RouteProps) {
     const store = useStore({otp: '', countdown: 20, errorMessage: ''});
     const navigate = useNavigate();
     const [isBusy, setIsBusy] = useState(false);
-    const setUserProfile = useUserProfileSetter();
+    const setUserProfile = useProfileSetter();
     useFocusListener(route.path, () => {
         store.setState(old => ({
             otp: '', countdown: 20, errorMessage: ''

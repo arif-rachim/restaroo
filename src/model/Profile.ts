@@ -1,4 +1,5 @@
 import {Auditable} from "./Auditable";
+import {Address} from "./Address";
 
 export interface Profile extends Auditable {
     id: string,
@@ -20,6 +21,18 @@ export const GuestProfile: Profile = {
     lastUpdatedAt: undefined,
     lastUpdatedBy: undefined,
     gender: 'Male'
+}
+
+export const GuestAddress:Address = {
+    id : 'UNKNOWN_ADDRESS',
+    areaOrStreetName : '',
+    buildingOrPremiseName : '',
+    houseOrFlatNo : '',
+    landmark : '',
+    location : "Home",
+    lng : 0,
+    lat : 0,
+    defaultAddress : false
 }
 
 export const DemoProfile: Profile = {

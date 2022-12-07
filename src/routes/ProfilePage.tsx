@@ -16,14 +16,14 @@ import {isNullOrUndefined} from "../components/page-components/utils/isNullOrUnd
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
 import {useAppContext} from "../components/useAppContext";
 import {GuestProfile, Profile} from "../model/Profile";
-import {useUserProfileSetter} from "../model/useUserProfile";
+import {useProfileSetter} from "../model/useProfile";
 import {useNavigate} from "../components/useNavigate";
 
 export function ProfilePage(props: RouteProps) {
     const phoneNo = props.params.get('phoneNo');
     const profileId = props.params.get('profileId');
     const [busy, setBusy] = useState(false);
-    const setUserProfile = useUserProfileSetter();
+    const setUserProfile = useProfileSetter();
     const navigate = useNavigate();
     const store = useStore<Profile & { errors: any }>({
         ...GuestProfile,
