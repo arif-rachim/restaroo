@@ -10,13 +10,12 @@ export function PaymentMethodPage(route: RouteProps) {
         <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
             <Card>
                 <CardTitle title={'Cards'}/>
-                <CardRow title={<div style={{display: 'flex', flexDirection: 'column', fontSize: 13}}>
+                <CardRow title={<div style={{display: 'flex', flexDirection: 'column', fontSize: 13,padding:5}}>
                     <div>Personal</div>
                     <div>****** 8875</div>
                 </div>} icon={HiCreditCard} onTap={() => {
                 }}/>
             </Card>
         </div>
-        This is my payment method
     </Page>
 }

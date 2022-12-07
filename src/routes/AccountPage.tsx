@@ -23,6 +23,7 @@ import {ButtonTheme} from "./Theme";
 import {Visible} from "../components/page-components/Visible";
 import {useNavigate} from "../components/useNavigate";
 import {GuestProfile} from "../model/Profile";
+import {motion} from "framer-motion";
 
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     const isSessionActive = useSessionIsActive();
@@ -82,14 +83,19 @@ export function AccountPage(props: RouteProps) {
                 }
             }}>
                 <div style={{display: 'flex', marginBottom: 20}}>
-                    <Card style={{marginRight: 10, flexGrow: 1, alignItems: 'center'}}>
-                        <div style={{fontSize: 30}}>
-                            <BsCreditCard2Front/>
-                        </div>
-                        <div>
-                            Payments
-                        </div>
-                    </Card>
+                    <motion.div style={{marginRight: 10, flexGrow: 1, display: 'flex', flexDirection: 'column'}}
+                                whileTap={{scale: 0.95}} onClick={() => navigate('payment-method')}>
+
+                        <Card style={{alignItems: 'center'}}>
+                            <div style={{fontSize: 30}}>
+                                <BsCreditCard2Front/>
+                            </div>
+                            <div>
+                                Payments
+                            </div>
+                        </Card>
+
+                    </motion.div>
                     <Card style={{flexGrow: 1, alignItems: 'center'}}>
                         <div style={{fontSize: 30}}>
                             <IoSettingsOutline/>

@@ -57,12 +57,12 @@ export interface CartItem {
 let previousScrollValue = 0;
 
 const cartButtonPosition = {
-    hidden: {bottom: -150},
-    low: {bottom: -50},
-    high: {bottom: 13}
+    hidden: {bottom: 0,opacity:0},
+    low: {bottom: -65,opacity:1},
+    high: {bottom: 65,opacity:1}
 }
 
-
+let timeoutId:any = 0;
 export function DeliveryPage(props: RouteProps) {
     const {appDimension, showFooter} = useAppContext();
     const navigate = useNavigate();
@@ -83,7 +83,7 @@ export function DeliveryPage(props: RouteProps) {
         // eslint-disable-next-line
     }, []);
 
-    return <Page style={{paddingTop: 110, paddingBottom: 110, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
+    return <Page style={{paddingTop: 110, paddingBottom: 70, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
         const target = event.target;
         const scrollTop = (target as HTMLDivElement).scrollTop;
         const titleDiv = document.getElementById(`${componentId}-title`);
@@ -117,11 +117,18 @@ export function DeliveryPage(props: RouteProps) {
         } else {
             titleDiv.style.display = 'none';
         }
+        clearTimeout(timeoutId);
         if (scrollTop >= 400) {
             header.style.transform = `translateY(-110px)`;
             if (scrollDown) {
                 showFooter(false);
                 pushDownShoppingCartButton.setState(true);
+
+                timeoutId = setTimeout(() => {
+                    clearTimeout(timeoutId);
+                    showFooter(true);
+                    pushDownShoppingCartButton.setState(false);
+                },300);
             } else {
                 showFooter(true);
                 pushDownShoppingCartButton.setState(false);
@@ -272,11 +279,7 @@ export function DeliveryPage(props: RouteProps) {
                 flexDirection: 'column',
                 position: 'absolute',
                 width: appDimension.width,
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                background: 'rgba(255,255,255,0.5)',
-                paddingBottom: 50,
-            }} initial={{bottom: -100}} transition={{bounce: 0}}>
+            }} transition={{bounce:0}}>
                 <motion.div style={{
                     display: 'flex',
                     backgroundColor: red,
@@ -284,6 +287,7 @@ export function DeliveryPage(props: RouteProps) {
                     padding: '10px 20px',
                     margin: '5px 10px',
                     alignItems: 'center',
+                    boxShadow:'0 5px 5px -3px rgba(0,0,0,0.5)',
                     borderRadius: 10
                 }} whileTap={{scale: 0.95}} onTap={() => {
                     navigate('order-detail');

@@ -19,21 +19,21 @@ export const Card = forwardRef(function Card(props: PropsWithChildren<{ style?: 
     </div>
 })
 
-export function CardRow(props: { icon: IconType, title: string | ReactElement, onTap?: () => void }) {
-    const {icon: Icon, title, onTap} = props;
-    return <motion.div style={{display: 'flex', alignItems: 'center', margin: '0px 0px 10px 0px'}} whileTap={{scale: 0.95}}
+export function CardRow(props: { icon: IconType,tapIcon?:IconType, title: string | ReactElement, onTap?: () => void }) {
+    let {icon: Icon,tapIcon:TapIcon, title, onTap} = props;
+    TapIcon = TapIcon ?? IoChevronForward;
+    return <motion.div style={{display: 'flex', margin: '0px 0px 0px 0px'}} whileTap={{scale: 0.95}}
                        onTap={onTap} >
-        <div style={{fontSize: 30, marginLeft: 20}}>
+        <div style={{fontSize: 26, marginLeft: 20,padding:5,display:'flex',alignItems:'center',justifyContent:'center'}}>
             <Icon/>
         </div>
-        <div style={{fontSize: 16, marginBottom: 3, marginLeft: 10, flexGrow: 1, position: 'relative', display: 'flex'}}>
-            <div style={{flexGrow: 1}}>
+        <div style={{fontSize: 16, marginLeft: 10, flexGrow: 1, position: 'relative', display: 'flex',borderBottom: '1px solid rgba(0,0,0,0.1)'}}>
+            <div style={{flexGrow: 1,display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'flex-start'}}>
                 {title}
             </div>
-            <div style={{marginRight: 10}}>
-                <IoChevronForward/>
+            <div style={{marginRight: 10,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <TapIcon/>
             </div>
-            <div style={{position: 'absolute', bottom: -15, width: '100%', borderBottom: '1px solid rgba(0,0,0,0.1)'}}/>
         </div>
     </motion.div>;
 }

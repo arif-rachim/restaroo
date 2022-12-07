@@ -35,8 +35,7 @@ const modalStyle: CSSProperties = {
 }
 
 const slidePanelStyle: CSSProperties = {
-    backdropFilter : 'blur(5px) contrast(60%)',
-    WebkitBackdropFilter : 'blur(5px) contrast(60%)',
+
     width: '100%',
     height: '100%',
     position: 'fixed',
@@ -63,9 +62,12 @@ function Modal(props: { modalPanel?: ReactElement }) {
 
 
 function SlidePanel(props: { panel?: ReactElement }) {
-    return <motion.div style={slidePanelStyle} initial={{opacity: 0}} animate={{opacity: 1}}
-                       exit={{opacity: 0}} transition={{ease: "easeInOut", duration: 0.3}}
+    return <motion.div style={slidePanelStyle}
                        key={'slider-panel'}>
+        <motion.div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',backdropFilter : 'blur(5px) contrast(60%)',
+            WebkitBackdropFilter : 'blur(5px) contrast(60%)',}}
+                    initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
+        ></motion.div>
         <motion.div style={{position:'absolute'}} initial={{bottom: '-100%',width:'100%'}}
                     animate={{bottom: 0}} exit={{bottom: '-100%'}} transition={{bounce:0}}>
             {props?.panel}

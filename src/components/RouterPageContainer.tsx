@@ -50,8 +50,7 @@ const variants: Variants = {
  */
 export function RouterPageContainer() {
     const componentsRef = useRef<PathAbleComponent[]>([]);
-    const headerComponent = useRef<HTMLDivElement>(null);
-    const footerComponent = useRef<HTMLDivElement>(null);
+
 
     const {
         params,
@@ -107,11 +106,11 @@ export function RouterPageContainer() {
                 return <Component key={c.path} params={c.params} path={c.path} isFocused={isFocused}/>
             })}
 
-            <div style={{position: 'absolute', bottom: 0, width: '100%'}} ref={footerComponent}>
+            <div style={{position: 'absolute', bottom: 0, width: '100%'}} >
                 <RouteFooterComponent path={path} params={params}/>
             </div>
 
-            <div style={{position: 'absolute', top: 0, width: '100%'}} ref={headerComponent}>
+            <div style={{position: 'absolute', top: 0, width: '100%'}} >
                 <RouterHeaderComponent path={path} params={params}/>
             </div>
         </div>

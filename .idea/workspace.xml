@@ -11,28 +11,11 @@
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/AddToCartButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/AddToCartButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/page-components/Card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Value.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Value.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/utils/dateAdd.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/utils/dateAdd.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/utils/useCurrentPosition.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/utils/useCurrentPosition.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/store/useStore.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/useAppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useAppContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Address.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Address.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Profile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/useUserProfile.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/AccountPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AccountPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/AddressBookPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AddressBookPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/LoginOrSignup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/LoginOrSignup.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/OtpPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OtpPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/PaymentMethodPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/PaymentMethodPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +119,7 @@
       <workItem from="1669893816847" duration="570000" />
       <workItem from="1669909365927" duration="10195000" />
       <workItem from="1670154646106" duration="700000" />
-      <workItem from="1670416172471" duration="363000" />
+      <workItem from="1670416172471" duration="5874000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
@@ -165,5 +148,17 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update the picker" />
     <option name="LAST_COMMIT_MESSAGE" value="update the picker" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/routes/DeliveryPage.tsx</url>
+          <line>282</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
