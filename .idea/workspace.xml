@@ -8,15 +8,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/AccountPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AccountPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/PaymentMethodPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/PaymentMethodPage.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -119,7 +111,7 @@
       <workItem from="1669893816847" duration="570000" />
       <workItem from="1669909365927" duration="10195000" />
       <workItem from="1670154646106" duration="700000" />
-      <workItem from="1670416172471" duration="5874000" />
+      <workItem from="1670416172471" duration="6223000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
