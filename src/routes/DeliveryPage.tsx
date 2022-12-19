@@ -58,7 +58,7 @@ let previousScrollValue = 0;
 
 const cartButtonPosition = {
     hidden: {bottom: 0,opacity:0},
-    low: {bottom: -65,opacity:1},
+    low: {bottom: 0,opacity:0},
     high: {bottom: 65,opacity:1}
 }
 
@@ -117,22 +117,23 @@ export function DeliveryPage(props: RouteProps) {
         } else {
             titleDiv.style.display = 'none';
         }
-        clearTimeout(timeoutId);
+
         if (scrollTop >= 400) {
             header.style.transform = `translateY(-110px)`;
             if (scrollDown) {
                 showFooter(false);
                 pushDownShoppingCartButton.setState(true);
-
+                clearTimeout(timeoutId);
                 timeoutId = setTimeout(() => {
                     clearTimeout(timeoutId);
                     showFooter(true);
                     pushDownShoppingCartButton.setState(false);
-                },300);
-            } else {
-                showFooter(true);
-                pushDownShoppingCartButton.setState(false);
+                },1000);
             }
+            // else {
+            //     showFooter(true);
+            //     pushDownShoppingCartButton.setState(false);
+            // }
         } else {
             header.style.transform = 'translateY(0px)';
         }
