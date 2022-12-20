@@ -44,7 +44,7 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
                     <div style={{fontSize: 23, fontWeight: 'bold', marginBottom: 10}}>{user.name}</div>
                     <div style={{marginBottom: 5}}>{user.email}</div>
-                    <div>{user.phoneNo}</div>
+                    <div>{user.username}</div>
                 </div>
                 <div style={{width: 80, height: 80, backgroundColor: '#CCC', borderRadius: 13}}>
                 </div>

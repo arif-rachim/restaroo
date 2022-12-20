@@ -88,7 +88,7 @@ export function LoginOrSignup(route: RouteProps) {
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
                     <StoreValue store={phoneNumberStore} property={['value', 'error']}
                                 selector={[s => s.value, s => s.error]}>
-                        <Input title={<motion.div style={{display: 'flex', width: '100%'}} whileTap={{scale: 0.9}}
+                        <Input title={<motion.div style={{display: 'flex', width: '100%',paddingTop:2}} whileTap={{scale: 0.9}}
                                                   onClick={(event) => {
                                                       event.preventDefault();
                                                       event.stopPropagation();
@@ -104,7 +104,7 @@ export function LoginOrSignup(route: RouteProps) {
                                                   }}>
                             <div style={{marginTop: 2, marginRight: 5}}><IoChevronDown/></div>
                             <StoreValue store={countryStore} selector={s => s} property={'value'}>
-                                <Value style={{flexGrow: 1, textAlign: 'right'}} />
+                                <Value style={{flexGrow: 1, textAlign: 'right',fontSize:20}} />
                             </StoreValue>
                         </motion.div>} placeholder={'Enter Phone Number'} titleWidth={90} titlePosition={'left'}
                                style={{containerStyle: {borderBottom: 'unset'}}}
@@ -119,8 +119,6 @@ export function LoginOrSignup(route: RouteProps) {
             </div>
             <Button title={'Continue'} onTap={() => {
                 if (storeValid()) {
-                    // lets continue validate phone here
-                    // first we are sending the otp to user
                     invariant(countryStore.stateRef.current);
                     navigate(`otp/${countryStore.stateRef.current}${phoneNumberStore.stateRef.current.value}`)
                 }

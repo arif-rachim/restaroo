@@ -1,5 +1,4 @@
 import {Page} from "./Page";
-import {RouteProps} from "../components/useRoute";
 import {Header} from "../components/page-components/Header";
 import {CgProfile} from "react-icons/cg";
 import {Card} from "../components/page-components/Card";
@@ -9,48 +8,44 @@ import {ButtonTheme, veryLightBlue} from "./Theme";
 import {IoSaveOutline} from "react-icons/io5";
 import {StoreValue, useStore} from "../components/store/useStore";
 import produce from "immer";
-import {dateToDdMmmYyyy} from "../components/page-components/utils/dateToDdMmmYyyy";
 import {useCallback, useState} from "react";
 import {isEmptyText} from "../components/page-components/utils/isEmptyText";
-import {isNullOrUndefined} from "../components/page-components/utils/isNullOrUndefined";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
-import {useAppContext} from "../components/useAppContext";
-import {GuestProfile, Profile} from "../model/Profile";
+import {Profile} from "../model/Profile";
 import {useProfileSetter} from "../model/useProfile";
 import {useNavigate} from "../components/useNavigate";
+import {pocketBase} from "../components/pocketBase";
 
-export function ProfilePage(props: RouteProps) {
-    const phoneNo = props.params.get('phoneNo');
-    const profileId = props.params.get('profileId');
+export function ProfilePage() {
     const [busy, setBusy] = useState(false);
     const setUserProfile = useProfileSetter();
     const navigate = useNavigate();
-    const store = useStore<Profile & { errors: any }>({
-        ...GuestProfile,
-        birthday: undefined,
-        phoneNo: phoneNo ?? '',
-        id: profileId ?? '',
-        email: '',
-        name: '',
-        errors: {
-            name: '',
-            phoneNo: '',
-            email: '',
-            birthday: '',
-            gender: '',
-        }
-    });
+    const model = pocketBase.authStore.model;
+    const store = useStore<Profile & { errors: any }>(
+        {
+            verified: model?.verified,
+            updated: new Date(model?.updated ?? ''),
+            created: new Date(model?.created ?? ''),
+            emailVisibility: model?.emailVisibility,
+            username: model?.username,
+            id: model?.id ?? '',
+            email: model?.email,
+            name: model?.name,
+            errors: {
+                name: '',
+                username: '',
+                email: '',
+            }
+        });
     const validate = useCallback(() => {
         store.setState(produce(s => {
             s.errors.name = isEmptyText(s.name) ? 'Name is required' : '';
-            s.errors.phoneNo = isEmptyText(s.phoneNo) ? 'Phone number is required' : '';
+            s.errors.phoneNo = isEmptyText(s.username) ? 'Phone number is required' : '';
             s.errors.email = isEmptyText(s.email) ? 'Email is required' : '';
-            s.errors.birthday = isNullOrUndefined(s.birthday) ? 'Birthday is required' : '';
-            s.errors.gender = isNullOrUndefined(s.gender) ? 'Gender is required' : '';
         }));
         return isEmptyObject(store.stateRef.current.errors);
     }, [store]);
-    const context = useAppContext();
+
     return <Page style={{backgroundColor: '#F2F2F2'}}>
         <Header title={'Complete your Profile'}/>
 
@@ -77,12 +72,12 @@ export function ProfilePage(props: RouteProps) {
                             }))
                         }}/>
                     </StoreValue>
-                    <StoreValue store={store} selector={[s => s.phoneNo, s => s.errors.phoneNo]}
+                    <StoreValue store={store} selector={[s => s.username, s => s.errors.username]}
                                 property={['value', 'error']}>
                         <Input title={'Phone Number :'} placeholder={'Enter your phone number here'}
                                style={{containerStyle: {marginBottom: 10}}} onChange={(element) => {
                             store.setState(produce(s => {
-                                s.phoneNo = element.target.value;
+                                s.username = element.target.value;
                                 s.errors.phoneNo = '';
                             }))
                         }}/>
@@ -97,34 +92,7 @@ export function ProfilePage(props: RouteProps) {
                             }))
                         }}/>
                     </StoreValue>
-                    <StoreValue store={store} selector={[s => dateToDdMmmYyyy(s.birthday), s => s.errors.birthday]}
-                                property={['value', 'error']}>
-                        <Input title={'Birthday :'} placeholder={'DD-MMM-YYYY'}
-                               style={{containerStyle: {marginBottom: 10}}} readOnly={true} onFocus={async () => {
-                            const value = await context.showPicker({
-                                picker: 'date',
-                                value: store.stateRef.current.birthday
-                            });
-                            store.setState(produce(s => {
-                                s.birthday = (value as any);
-                                s.errors.birthday = '';
-                            }))
-                        }}/>
-                    </StoreValue>
-                    <StoreValue store={store} selector={[s => s.gender, s => s.errors.gender]}
-                                property={['value', 'error']}>
-                        <Input title={'Gender :'} placeholder={'Enter your gender here'}
-                               style={{containerStyle: {marginBottom: 10}}} readOnly={true} onFocus={async () => {
-                            const value = await context.showPicker({
-                                picker: 'gender',
-                                value: store.stateRef.current.gender
-                            });
-                            store.setState(produce(s => {
-                                s.gender = value;
-                                s.errors.gender = '';
-                            }))
-                        }}/>
-                    </StoreValue>
+
                 </Card>
             </div>
         </div>
@@ -136,15 +104,13 @@ export function ProfilePage(props: RouteProps) {
                             const state = store.stateRef.current;
                             const profile: Profile = {
                                 name: state.name,
-                                phoneNo: state.phoneNo ?? '',
+                                username: state.username,
                                 email: state.email,
-                                birthday: state.birthday,
-                                gender: state.gender,
                                 id: state.id,
-                                lastUpdatedAt: new Date(),
-                                lastUpdatedBy: state.name,
-                                createdBy: state.name,
-                                createdAt: new Date()
+                                updated: new Date(),
+                                verified: state.verified,
+                                emailVisibility: state.emailVisibility,
+                                created: state.created
                             }
                             const {result, error} = await updateUserProfile(profile);
                             setBusy(false);
@@ -164,10 +130,31 @@ export function ProfilePage(props: RouteProps) {
     </Page>
 }
 
-function updateUserProfile(profile: Profile): Promise<{ result: Profile, error: string }> {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve({error: '', result: profile})
-        }, 3000);
-    })
+async function updateUserProfile(profile: Profile): Promise<{ result: Profile, error: string }> {
+
+    const record: {
+        "id": string,
+        "created": string,
+        "updated": string,
+        "username": string,
+        "verified": boolean,
+        "emailVisibility": boolean,
+        "email": string,
+        "name": string,
+        "avatar": string
+    } = await pocketBase.collection('users').update(profile.id, {name : profile.name,emailVisibility:profile.emailVisibility});
+    await pocketBase.collection('users').requestEmailChange(profile.email);
+    return {
+        result: {
+            name: record.name,
+            username: record.username,
+            email: record.email,
+            emailVisibility: record.emailVisibility,
+            created: new Date(record.created),
+            updated: new Date(record.updated),
+            verified: record.verified,
+            id: record.id
+        },
+        error: ''
+    }
 }

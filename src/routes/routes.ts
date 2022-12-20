@@ -47,7 +47,7 @@ export const routes: Routes = {
         component: OtpPage,
         initial: 'right'
     },
-    'profile/$profileId/$phoneNo': {
+    'profile': {
         component: ProfilePage,
         initial: 'right'
     },

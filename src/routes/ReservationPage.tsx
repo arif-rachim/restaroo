@@ -257,7 +257,7 @@ export function ReservationPage(props: RouteProps) {
         seatingPreferences: 'Indoor Seating, Non Smoking Area',
         people: 0,
         lastName: '',
-        phoneNo: user.phoneNo,
+        phoneNo: user.username,
         id: '',
         updateOnWhatsapp : true,
         errors: {
@@ -272,7 +272,7 @@ export function ReservationPage(props: RouteProps) {
         store.setState(produce(s => {
             s.firstName = user.name;
             s.email = user.email;
-            s.phoneNo = user.phoneNo;
+            s.phoneNo = user.username;
         }));
     }, [user, store])
 

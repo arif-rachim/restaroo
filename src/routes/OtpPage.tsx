@@ -10,33 +10,40 @@ import {CSSProperties, useEffect, useState} from "react";
 import {StoreValue, useStore, useStoreListener} from "../components/store/useStore";
 import {useFocusListener} from "../components/RouterPageContainer";
 import {useNavigate} from "../components/useNavigate";
-import {DemoProfile, GuestProfile, Profile} from "../model/Profile";
+import {GuestProfile, Profile} from "../model/Profile";
 import {useProfileSetter} from "../model/useProfile";
 import produce from "immer";
-import {nanoid} from "nanoid";
+import {fetchService} from "../components/fetchService";
+import {pocketBase} from "../components/pocketBase";
 
+const APP_NAME = process.env.REACT_APP_APPLICATION_NAME;
 
 export function OtpPage(route: RouteProps) {
     const phoneNo = route.params.get('phoneNo');
-    const store = useStore({otp: '', countdown: 20, errorMessage: ''});
+    const store = useStore({otp: '', countdown: 20, errorMessage: '', token: ''});
     const navigate = useNavigate();
     const [isBusy, setIsBusy] = useState(false);
     const setUserProfile = useProfileSetter();
+
     useFocusListener(route.path, () => {
-        store.setState(old => ({
-            otp: '', countdown: 20, errorMessage: ''
-        }));
+        (async () => {
+            const token = Math.random().toString().substr(2, 6);
+            await fetchService('otp',{phone:phoneNo,otp:token,app:APP_NAME});
+            store.setState(old => ({
+                otp: '', countdown: 20, errorMessage: '', token
+            }));
+        })();
         return () => setIsBusy(false);
     });
 
     useStoreListener(store, s => s.otp, async (next, prev) => {
-
         if (next.length === 6) {
-            // @TODO FETCH THE USER INFO FROM SERVER OR PERFORM REGISTRATION
-            // IF user is not registered then we can ask their information
-            // continue to profile to complete the action !!!
             setIsBusy(true);
-            const {valid, profile} = await validateToken(next, phoneNo ?? '');
+            store.setState(produce(s => {
+                s.otp = '';
+            }));
+
+            const {valid, profile} = await validateToken(next, phoneNo ?? '', store.stateRef.current.token);
             if (!valid) {
                 setIsBusy(false);
                 store.setState(produce(s => {
@@ -48,7 +55,7 @@ export function OtpPage(route: RouteProps) {
             }
 
             if (profile.name === '') {
-                navigate(`profile/${profile.id}/${phoneNo}`);
+                navigate(`profile`);
             } else {
                 setUserProfile(profile);
                 navigate('delivery');
@@ -92,11 +99,14 @@ export function OtpPage(route: RouteProps) {
                     s => s.countdown === 0 ? 'Resend SMS' : `Resend SMS in ${s.countdown}`
                 ]} property={['disabled', 'title']}>
                     <Button title={''} icon={MdOutlineSms} theme={ButtonTheme.danger} onTap={() => {
-                        store.setState({
-                            otp: '',
-                            countdown: 20,
-                            errorMessage: ''
-                        });
+                        (async () => {
+                            const token = Math.random().toString().substr(2, 6);
+                            const result = await fetchService('otp',{phone:phoneNo,otp:token,app:APP_NAME});
+                            console.log('WE HAVE RESULT ',result);
+                            store.setState(old => ({
+                                otp: '', countdown: 20, errorMessage: '', token
+                            }));
+                        })();
                     }} style={{fontSize: 13, marginRight: 10}} iconStyle={{fontSize: 15, width: 15, height: 15}}
                             isBusy={isBusy}/>
                 </StoreValue>
@@ -118,21 +128,64 @@ export function OtpPage(route: RouteProps) {
  * @param token
  * @param phoneNo
  */
-async function validateToken(token: string, phoneNo: string): Promise<{ valid: boolean, profile: Profile }> {
-    // for time being we alwasy say true
-    return new Promise(resolve => {
-        setTimeout(() => {
-            if (phoneNo === '+971509018075') {
-                if (token === '123456') {
-                    resolve({valid: true, profile: DemoProfile});
-                } else {
-                    resolve({valid: false, profile: GuestProfile});
+async function validateToken(token: string, phoneNo: string, otp: string): Promise<{ valid: boolean, profile: Profile }> {
+    const userName = phoneNo.replace('+','');
+    if (token === otp) {
+        try{
+            const {record} = await pocketBase.collection('users').authWithPassword(userName,'12345678');
+            return {
+                valid: true,
+                profile: {
+                    username: record.username,
+                    email: record.email,
+                    name: record.name,
+                    id: record.id,
+                    created: new Date(record.created),
+                    updated: new Date(record.updated),
+                    emailVisibility: record.emailVisibility,
+                    verified: record.verified
                 }
-            } else {
-                resolve({valid: true, profile: {...GuestProfile, id: nanoid(), phoneNo: phoneNo, name: ''}});
             }
-        }, 3000);
-    });
+        }catch(err){
+            const result = await pocketBase.collection('users').create({
+                "username": userName,
+                "password": "12345678",
+                "passwordConfirm": "12345678",
+                "name": ""
+            });
+            return {
+                valid: true, profile: {
+                    username: result.username,
+                    email: result.email,
+                    name: '',
+                    id: result.id,
+                    created: new Date(result.created),
+                    updated: new Date(result.updated),
+                    emailVisibility: result.emailVisibility,
+                    verified: result.verified
+                }
+            }
+        }
+    } else {
+        return {valid: false, profile: GuestProfile};
+    }
+
+    // for time being we alwasy say true
+    // return new Promise(resolve => {
+    //
+    //
+    //     setTimeout(() => {
+    //         if (phoneNo === '+971509018075') {
+    //             if (token === '123456') {
+    //                 resolve({valid: true, profile: DemoProfile});
+    //             } else {
+    //                 resolve({valid: false, profile: GuestProfile});
+    //             }
+    //         } else {
+    //             resolve({valid: true, profile: {...GuestProfile, id: nanoid(), phoneNo: phoneNo, name: ''}});
+    //         }
+    //     }, 3000);
+    // });
 }
 
 function Error(props: { error: string, style?: CSSProperties }) {

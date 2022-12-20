@@ -1,6 +1,5 @@
 import React, {createContext, useMemo} from 'react';
 import RestarooIcon from "./assets/RestarooIcon.svg";
-
 import AppShell from "./components/AppShell";
 
 export const WindowSizeContext = createContext<{ width: number, height: number }>({width: 0, height: 0})
