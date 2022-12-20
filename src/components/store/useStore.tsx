@@ -89,19 +89,19 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
 
 export function useStoreListener<T, S>(store: Store<T>, selector: (param: T) => S, listener: (next: S, prev?: S) => void, deps?: DependencyList | undefined) {
     const {addListener, stateRef} = store;
-    const propsRef = useRef({selector});
-    propsRef.current = {selector};
+    const propsRef = useRef({selector,listener});
+    propsRef.current = {selector,listener};
     deps = deps ?? [];
     useEffect(() => {
         const next = propsRef.current.selector(stateRef.current);
-        listener(next);
+        propsRef.current.listener(next);
 
         return addListener((nextState: any, prevState: any) => {
             const {selector} = propsRef.current;
             const current = selector(prevState);
             const next = selector(nextState);
             if (!isMatch(next, current)) {
-                listener(next, current);
+                propsRef.current.listener(next,current);
             }
         });
         // eslint-disable-next-line

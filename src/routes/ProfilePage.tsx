@@ -12,14 +12,16 @@ import {useCallback, useState} from "react";
 import {isEmptyText} from "../components/page-components/utils/isEmptyText";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
 import {Profile} from "../model/Profile";
-import {useProfileSetter} from "../model/useProfile";
 import {useNavigate} from "../components/useNavigate";
 import {pocketBase} from "../components/pocketBase";
+import {useAppContext} from "../components/useAppContext";
+import {useFocusListener} from "../components/RouterPageContainer";
+import {RouteProps} from "../components/useRoute";
 
-export function ProfilePage() {
+export function ProfilePage(props: RouteProps) {
     const [busy, setBusy] = useState(false);
-    const setUserProfile = useProfileSetter();
     const navigate = useNavigate();
+    const {store: appStore} = useAppContext();
     const model = pocketBase.authStore.model;
     const store = useStore<Profile & { errors: any }>(
         {
@@ -33,15 +35,29 @@ export function ProfilePage() {
             name: model?.name,
             errors: {
                 name: '',
-                username: '',
-                email: '',
+                username: ''
             }
         });
+    useFocusListener(props.path, () => {
+        const model = pocketBase.authStore.model;
+        store.setState(produce(s => {
+            s.verified = model?.verified;
+            s.updated = new Date(model?.updated ?? '');
+            s.created = new Date(model?.created ?? '');
+            s.emailVisibility = model?.emailVisibility;
+            s.username = model?.username;
+            s.id = model?.id ?? '';
+            s.email = model?.email;
+            s.name = model?.name;
+            s.errors.name = '';
+            s.errors.phoneNo = '';
+
+        }))
+    })
     const validate = useCallback(() => {
         store.setState(produce(s => {
             s.errors.name = isEmptyText(s.name) ? 'Name is required' : '';
             s.errors.phoneNo = isEmptyText(s.username) ? 'Phone number is required' : '';
-            s.errors.email = isEmptyText(s.email) ? 'Email is required' : '';
         }));
         return isEmptyObject(store.stateRef.current.errors);
     }, [store]);
@@ -64,7 +80,8 @@ export function ProfilePage() {
                 <Card>
                     <StoreValue store={store} selector={[s => s.name, s => s.errors.name]}
                                 property={['value', 'error']}>
-                        <Input title={'Name :'} placeholder={'Enter your name here'}
+                        <Input title={'Name :'} titlePosition={'left'} titleWidth={90}
+                               placeholder={'Enter your name here'}
                                style={{containerStyle: {marginBottom: 10}}} onChange={(element) => {
                             store.setState(produce(s => {
                                 s.name = element.target.value;
@@ -72,27 +89,28 @@ export function ProfilePage() {
                             }))
                         }}/>
                     </StoreValue>
+                    {/* We ignore this because we believe in our app we are not using email to communicate*/}
+                    {/*<StoreValue store={store} selector={[s => s.email, s => s.errors.email]}*/}
+                    {/*            property={['value', 'error']}>*/}
+                    {/*    <Input title={'Email :'} titlePosition={'left'} titleWidth={90} placeholder={'Enter your email address here'}*/}
+                    {/*           style={{containerStyle: {marginBottom: 10}}} onChange={(element) => {*/}
+                    {/*        store.setState(produce(s => {*/}
+                    {/*            s.email = element.target.value;*/}
+                    {/*            s.errors.email = '';*/}
+                    {/*        }))*/}
+                    {/*    }}/>*/}
+                    {/*</StoreValue>*/}
                     <StoreValue store={store} selector={[s => s.username, s => s.errors.username]}
                                 property={['value', 'error']}>
-                        <Input title={'Phone Number :'} placeholder={'Enter your phone number here'}
+                        <Input title={'Phone :'} titlePosition={'left'} titleWidth={90}
+                               placeholder={'Enter your phone number here'}
                                style={{containerStyle: {marginBottom: 10}}} onChange={(element) => {
                             store.setState(produce(s => {
                                 s.username = element.target.value;
                                 s.errors.phoneNo = '';
                             }))
-                        }}/>
+                        }} readOnly={true}/>
                     </StoreValue>
-                    <StoreValue store={store} selector={[s => s.email, s => s.errors.email]}
-                                property={['value', 'error']}>
-                        <Input title={'Email :'} placeholder={'Enter your email address here'}
-                               style={{containerStyle: {marginBottom: 10}}} onChange={(element) => {
-                            store.setState(produce(s => {
-                                s.email = element.target.value;
-                                s.errors.email = '';
-                            }))
-                        }}/>
-                    </StoreValue>
-
                 </Card>
             </div>
         </div>
@@ -118,7 +136,9 @@ export function ProfilePage() {
                                 // do something
                                 return;
                             }
-                            setUserProfile(result);
+                            appStore.setState(produce(s => {
+                                s.user = result
+                            }));
                             navigate('delivery');
                         }
                     }}
@@ -142,8 +162,8 @@ async function updateUserProfile(profile: Profile): Promise<{ result: Profile, e
         "email": string,
         "name": string,
         "avatar": string
-    } = await pocketBase.collection('users').update(profile.id, {name : profile.name,emailVisibility:profile.emailVisibility});
-    await pocketBase.collection('users').requestEmailChange(profile.email);
+    } = await pocketBase.collection('users').update(profile.id, {name: profile.name});
+    // await pocketBase.collection('users').requestEmailChange(profile.email);
     return {
         result: {
             name: record.name,

@@ -130,11 +130,13 @@ export function useFocusListener(path: string, callback: () => (Promise<nothing|
     const currentStorePath = useContext(CurrentActivePathContext);
     const lastFocusStateRef = useRef(false);
     const lastFocusResultCallback = useRef<(Promise<nothing|void> | nothing | void)>();
+    const callbackRef = useRef(callback);
+    callbackRef.current = callback;
     useStoreListener(currentStorePath,currentPath => currentPath,(next, prev) => {
         const isFocused = next === path;
         if(lastFocusStateRef.current !== isFocused){
             if(isFocused){
-                lastFocusResultCallback.current = callback();
+                lastFocusResultCallback.current = callbackRef.current();
             }else{
                 if(isFunction(lastFocusResultCallback.current)){
                     (lastFocusResultCallback.current as nothing)();
@@ -151,30 +153,7 @@ export function useFocusListener(path: string, callback: () => (Promise<nothing|
             }
             lastFocusStateRef.current = isFocused;
         }
-
     },[]);
-    //
-    //
-    // useEffect(() => {
-    //     let result:any;
-    //     if(isFocused){
-    //         result = callback();
-    //     }
-    //     return () => {
-    //         if(isPromise(result)){
-    //             result.then((callback:any) => {
-    //                 if(isFunction(callback)){
-    //                     callback();
-    //                 }
-    //             })
-    //         }
-    //         if(isFunction(result)){
-    //             result();
-    //         }
-    //     }
-    //     // eslint-disable-next-line
-    // }, [isFocused])
-
 }
 
 

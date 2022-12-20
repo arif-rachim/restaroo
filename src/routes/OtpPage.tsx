@@ -11,19 +11,19 @@ import {StoreValue, useStore, useStoreListener} from "../components/store/useSto
 import {useFocusListener} from "../components/RouterPageContainer";
 import {useNavigate} from "../components/useNavigate";
 import {GuestProfile, Profile} from "../model/Profile";
-import {useProfileSetter} from "../model/useProfile";
 import produce from "immer";
 import {fetchService} from "../components/fetchService";
 import {pocketBase} from "../components/pocketBase";
+import {useAppContext} from "../components/useAppContext";
 
 const APP_NAME = process.env.REACT_APP_APPLICATION_NAME;
 
 export function OtpPage(route: RouteProps) {
     const phoneNo = route.params.get('phoneNo');
     const store = useStore({otp: '', countdown: 20, errorMessage: '', token: ''});
+    const {store:appStore} = useAppContext();
     const navigate = useNavigate();
     const [isBusy, setIsBusy] = useState(false);
-    const setUserProfile = useProfileSetter();
 
     useFocusListener(route.path, () => {
         (async () => {
@@ -57,7 +57,9 @@ export function OtpPage(route: RouteProps) {
             if (profile.name === '') {
                 navigate(`profile`);
             } else {
-                setUserProfile(profile);
+                appStore.setState(produce(s => {
+                    s.user = profile;
+                }))
                 navigate('delivery');
             }
         }
@@ -147,45 +149,30 @@ async function validateToken(token: string, phoneNo: string, otp: string): Promi
                 }
             }
         }catch(err){
-            const result = await pocketBase.collection('users').create({
+            await pocketBase.collection('users').create({
                 "username": userName,
                 "password": "12345678",
                 "passwordConfirm": "12345678",
                 "name": ""
             });
+            const {record} = await pocketBase.collection('users').authWithPassword(userName,'12345678');
             return {
-                valid: true, profile: {
-                    username: result.username,
-                    email: result.email,
-                    name: '',
-                    id: result.id,
-                    created: new Date(result.created),
-                    updated: new Date(result.updated),
-                    emailVisibility: result.emailVisibility,
-                    verified: result.verified
+                valid: true,
+                profile: {
+                    username: record.username,
+                    email: record.email,
+                    name: record.name,
+                    id: record.id,
+                    created: new Date(record.created),
+                    updated: new Date(record.updated),
+                    emailVisibility: record.emailVisibility,
+                    verified: record.verified
                 }
             }
         }
     } else {
         return {valid: false, profile: GuestProfile};
     }
-
-    // for time being we alwasy say true
-    // return new Promise(resolve => {
-    //
-    //
-    //     setTimeout(() => {
-    //         if (phoneNo === '+971509018075') {
-    //             if (token === '123456') {
-    //                 resolve({valid: true, profile: DemoProfile});
-    //             } else {
-    //                 resolve({valid: false, profile: GuestProfile});
-    //             }
-    //         } else {
-    //             resolve({valid: true, profile: {...GuestProfile, id: nanoid(), phoneNo: phoneNo, name: ''}});
-    //         }
-    //     }, 3000);
-    // });
 }
 
 function Error(props: { error: string, style?: CSSProperties }) {

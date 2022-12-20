@@ -9,26 +9,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/handlers/otp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/pocketbase" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/service.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/fetchService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/pocketBase.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Profile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/store/useStore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/store/useStore.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/useProfile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/useProfile.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/AccountPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AccountPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/LoginOrSignup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/LoginOrSignup.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/OtpPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OtpPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ReservationPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/getProfile.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/setProfile.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +132,7 @@
       <workItem from="1670154646106" duration="700000" />
       <workItem from="1670416172471" duration="6223000" />
       <workItem from="1671459449645" duration="602000" />
-      <workItem from="1671506328046" duration="28204000" />
+      <workItem from="1671506328046" duration="35693000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>

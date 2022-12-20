@@ -6,9 +6,9 @@ import {Store, useStore, useStoreValue} from "./store/useStore";
 import {AppState} from "./AppState";
 import {GuestProfile} from "../model/Profile";
 import {PickerProvider, ShowPickerFunction} from "./page-components/picker/PickerProvider";
-import {getProfile} from "../service/getProfile";
 import {getAddresses} from "../service/getAddresses";
 import produce from "immer";
+import {pocketBase} from "./pocketBase";
 
 const shellStyle: CSSProperties = {
     width: '100%',
@@ -104,10 +104,26 @@ export default function AppShell() {
     });
     useEffect(() => {
         (async () => {
-            const [profile, addresses] = await Promise.all([getProfile(), getAddresses()]);
+            let user = GuestProfile;
+            if(pocketBase.authStore.token){
+                const authData = await pocketBase.collection('users').authRefresh();
+                if(authData.record){
+                    user = {
+                        id : authData.record.id,
+                        emailVisibility : authData.record.emailVisibility,
+                        email : authData.record.email,
+                        verified : authData.record.verified,
+                        created : new Date(authData.record.created),
+                        updated : new Date(authData.record.updated),
+                        name : authData.record.name,
+                        username : authData.record.username
+                    }
+                }
+            }
+            const addresses = await getAddresses();
             store.setState(produce(s => {
                 s.addresses = addresses;
-                s.user = profile;
+                s.user = user;
             }))
         })();
 

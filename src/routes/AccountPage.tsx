@@ -17,13 +17,16 @@ import {
 import {RefObject, useRef} from "react";
 import invariant from "tiny-invariant";
 import {RiDraftLine} from "react-icons/ri";
-import {useProfile, useProfileSetter, useSessionIsActive} from "../model/useProfile";
+import {useProfile, useSessionIsActive} from "../model/useProfile";
 import {Button} from "../components/page-components/Button";
 import {ButtonTheme} from "./Theme";
 import {Visible} from "../components/page-components/Visible";
 import {useNavigate} from "../components/useNavigate";
 import {GuestProfile} from "../model/Profile";
 import {motion} from "framer-motion";
+import {useAppContext} from "../components/useAppContext";
+import produce from "immer";
+import {pocketBase} from "../components/pocketBase";
 
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     const isSessionActive = useSessionIsActive();
@@ -40,11 +43,10 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
             </div>
         </Visible>
         <Visible if={isSessionActive}>
-            <div style={{display: 'flex', padding: 10}}>
-                <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
-                    <div style={{fontSize: 23, fontWeight: 'bold', marginBottom: 10}}>{user.name}</div>
-                    <div style={{marginBottom: 5}}>{user.email}</div>
-                    <div>{user.username}</div>
+            <div style={{display: 'flex', padding: 10,alignItems:'flex-end'}}>
+                <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1,paddingRight:10}}>
+                    <div style={{fontSize: 26, fontWeight: 200,lineHeight:1,marginBottom:10}}>{user.name}</div>
+                    <div style={{fontSize:16,fontWeight:300}}>{user.username}</div>
                 </div>
                 <div style={{width: 80, height: 80, backgroundColor: '#CCC', borderRadius: 13}}>
                 </div>
@@ -55,10 +57,9 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
 
 
 export function AccountPage(props: RouteProps) {
-
+    const {store:appStore} = useAppContext();
     const containerRef = useRef<HTMLDivElement>(null);
     const isSessionActive = useSessionIsActive();
-    const setUserProfile = useProfileSetter();
     const navigate = useNavigate();
     return <Page style={{padding: 0, background: '#F2F2F2'}}>
         <Header title={''}/>
@@ -122,7 +123,10 @@ export function AccountPage(props: RouteProps) {
                     {isSessionActive &&
                         <CardRow icon={IoLogOutOutline} title={'Log out'} onTap={async () => {
                             // here we need to perform logout
-                            await setUserProfile(GuestProfile);
+                            pocketBase.authStore.clear();
+                            appStore.setState(produce(s => {
+                                s.user = GuestProfile
+                            }));
                             navigate('delivery');
                         }}/>
                     }
