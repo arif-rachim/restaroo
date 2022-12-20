@@ -8,7 +8,7 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import {Icon, map as createMap, Map, tileLayer as createTile} from "leaflet";
 import {useAppContext} from "../components/useAppContext";
 import invariant from "tiny-invariant";
-import {useFocusListener} from "../components/RouterPageContainer";
+import {useFocusListener, useFocusListenerAfterInit} from "../components/RouterPageContainer";
 import {RouteProps} from "../components/useRoute";
 import {blue, ButtonTheme, grey, red} from "./Theme";
 import {isNullOrUndefined} from "../components/page-components/utils/isNullOrUndefined";
@@ -27,8 +27,7 @@ import {Address} from "../model/Address";
 import {SkeletonBox} from "../components/page-components/SkeletonBox";
 import {SlideDetail} from "./SlideDetail";
 import {GuestAddress} from "../model/Profile";
-import {useAddress} from "../model/useAddress";
-import {useAfterInit} from "../components/page-components/utils/useAfterInit";
+import {pocketBase} from "../components/pocketBase";
 
 
 function LocationSelector(props: { value?: string, onChange: (value: string) => void, error?: string }) {
@@ -108,7 +107,8 @@ function LocationSelector(props: { value?: string, onChange: (value: string) => 
 function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, address?: Address }) {
     let {closePanel, address} = props;
     address = address ?? GuestAddress;
-    const {saveAddress} = useAddress();
+
+    const {store: appStore} = useAppContext();
     const store = useStore<Address & {
         errors: {
             areaOrStreetName: string,
@@ -189,7 +189,56 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                 (async () => {
                     setBusy(true);
                     // eslint-disable-next-line
-                    const address = await saveAddress(store.stateRef.current);
+                    const currentAddress = store.stateRef.current;
+                    if(currentAddress.id){
+                        const record: any = await pocketBase.collection('address').update(currentAddress.id,{
+                            "location": currentAddress.location,
+                            "houseOrFlatNo": currentAddress.houseOrFlatNo,
+                            "buildingOrPremiseName": currentAddress.buildingOrPremiseName,
+                            "areaOrStreetName": currentAddress.areaOrStreetName,
+                            "landmark": currentAddress.landmark,
+                            "lat": currentAddress.lat,
+                            "lng": currentAddress.lng,
+                        });
+                        appStore.setState(produce(s => {
+                            const indexToReplace = s.addresses.findIndex(s => s.id === record.id);
+                            s.addresses.splice(indexToReplace,1,{
+                                id: record.id,
+                                areaOrStreetName: record.areaOrStreetName,
+                                buildingOrPremiseName: record.buildingOrPremiseName,
+                                houseOrFlatNo: record.houseOrFlatNo,
+                                lng: record.lng,
+                                location: record.location,
+                                lat: record.lat,
+                                landmark: record.landmark
+                            })
+                        }));
+                    }else{
+                        const record: any = await pocketBase.collection('address').create({
+                            "location": currentAddress.location,
+                            "houseOrFlatNo": currentAddress.houseOrFlatNo,
+                            "buildingOrPremiseName": currentAddress.buildingOrPremiseName,
+                            "areaOrStreetName": currentAddress.areaOrStreetName,
+                            "landmark": currentAddress.landmark,
+                            "lat": currentAddress.lat,
+                            "lng": currentAddress.lng,
+                            "user": appStore.stateRef.current.user.id
+                        });
+
+                        appStore.setState(produce(s => {
+                            s.addresses.push({
+                                id: record.id,
+                                areaOrStreetName: record.areaOrStreetName,
+                                buildingOrPremiseName: record.buildingOrPremiseName,
+                                houseOrFlatNo: record.houseOrFlatNo,
+                                lng: record.lng,
+                                location: record.location,
+                                lat: record.lat,
+                                landmark: record.landmark
+                            });
+                        }));
+                    }
+
                     setBusy(false);
                     closePanel(store.stateRef.current);
                 })();
@@ -206,42 +255,50 @@ export function DeliveryLocationPage(props: RouteProps) {
     const mapPopupId = `${id}-popup`;
     const addressId = props.params.get('addressId');
 
-    const {appDimension, showSlidePanel} = useAppContext();
-    const {addresses} = useAddress();
+    const {appDimension, showSlidePanel,store:appStore} = useAppContext();
+
     const mapIdHeightRef = useRef(appDimension.height - 37 - 122);
     const [address, setAddress] = useState<Address | undefined>(() => {
-        if(isEmptyText(addressId)){
+        if (isEmptyText(addressId)) {
             return {
-                id : '',
-                lat : 0,
-                lng : 0,
-                location : 'Home',
-                defaultAddress : false,
-                buildingOrPremiseName : '',
-                landmark : '',
-                houseOrFlatNo : '',
-                areaOrStreetName : ''
+                id: '',
+                lat: 0,
+                lng: 0,
+                location: 'Home',
+                defaultAddress: false,
+                buildingOrPremiseName: '',
+                landmark: '',
+                houseOrFlatNo: '',
+                areaOrStreetName: ''
             };
         }
-        return addresses.find(a => a.id === addressId);
+        return appStore.stateRef.current.addresses.find(a => a.id === addressId);
     });
-    useAfterInit(() => {
-        if(isEmptyText(addressId)){
+    useFocusListenerAfterInit(props.path,() => {
+        if (isEmptyText(addressId)) {
             setAddress({
-                id : '',
-                lat : 0,
-                lng : 0,
-                location : 'Home',
-                defaultAddress : false,
-                buildingOrPremiseName : '',
-                landmark : '',
-                houseOrFlatNo : '',
-                areaOrStreetName : ''
+                id: '',
+                lat: 0,
+                lng: 0,
+                location: 'Home',
+                buildingOrPremiseName: '',
+                landmark: '',
+                houseOrFlatNo: '',
+                areaOrStreetName: ''
             });
             return;
         }
-        setAddress(addresses.find(a => a.id === addressId));
-    },[addressId]);
+        const address = appStore.stateRef.current.addresses.find(a => a.id === addressId);
+        setAddress(address);
+        if(address && mapRef.current){
+            const latLng = {
+                lat: address.lat,
+                lng: address.lng
+            };
+            mapRef.current.flyTo(latLng, 18);
+        }
+    })
+
     useEffect(() => {
         mapIdHeightRef.current = document.getElementById(mapId)?.offsetHeight ?? mapIdHeightRef.current;
     }, [mapId]);

@@ -9,16 +9,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
+      <change afterPath="$PROJECT_DIR$/public/images/avatar/bear.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/avatar/dog.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/avatar/giraffe.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/avatar/hippo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/avatar/lion.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/avatar/panda.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/images/avatar/tiger.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/store/useStore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/store/useStore.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/useProfile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/useProfile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/AccountPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AccountPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/OtpPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OtpPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ProfilePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/getProfile.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/setProfile.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/page-components/utils/useCurrentPosition.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/utils/useCurrentPosition.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pocketBase.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pocketBase.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/useDeliveryChargeCalculator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useDeliveryChargeCalculator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Address.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Address.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Auditable.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Profile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/useAddress.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/useAddress.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/AddressBookPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AddressBookPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/deleteAddress.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/getAddresses.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/selectDefaultAddress.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/setAddress.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +75,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/arifrachim/WebstormProjects/restaroo",
+    "last_opened_file_path": "/Users/arifrachim/WebstormProjects/restaroo/public/images/avatar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -74,6 +89,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/images/avatar" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/public" />
       <recent name="$PROJECT_DIR$/public/assets/product" />
@@ -132,7 +148,7 @@
       <workItem from="1670154646106" duration="700000" />
       <workItem from="1670416172471" duration="6223000" />
       <workItem from="1671459449645" duration="602000" />
-      <workItem from="1671506328046" duration="35693000" />
+      <workItem from="1671506328046" duration="44185000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>

@@ -6,9 +6,9 @@ import {Store, useStore, useStoreValue} from "./store/useStore";
 import {AppState} from "./AppState";
 import {GuestProfile} from "../model/Profile";
 import {PickerProvider, ShowPickerFunction} from "./page-components/picker/PickerProvider";
-import {getAddresses} from "../service/getAddresses";
 import produce from "immer";
 import {pocketBase} from "./pocketBase";
+import {Address} from "../model/Address";
 
 const shellStyle: CSSProperties = {
     width: '100%',
@@ -105,22 +105,38 @@ export default function AppShell() {
     useEffect(() => {
         (async () => {
             let user = GuestProfile;
+            let addresses:Address[] = [];
             if(pocketBase.authStore.token){
                 const authData = await pocketBase.collection('users').authRefresh();
-                if(authData.record){
-                    user = {
-                        id : authData.record.id,
-                        emailVisibility : authData.record.emailVisibility,
-                        email : authData.record.email,
-                        verified : authData.record.verified,
-                        created : new Date(authData.record.created),
-                        updated : new Date(authData.record.updated),
-                        name : authData.record.name,
-                        username : authData.record.username
-                    }
+                if(!authData.record){
+                    return;
                 }
+                user = {
+                    id : authData.record.id,
+                    emailVisibility : authData.record.emailVisibility,
+                    email : authData.record.email,
+                    verified : authData.record.verified,
+                    created : new Date(authData.record.created),
+                    updated : new Date(authData.record.updated),
+                    name : authData.record.name,
+                    username : authData.record.username
+                }
+                let result = await pocketBase.collection('address').getList(1,50,{
+                    filter : `user="${user.id}"`
+                });
+                addresses = result.items.map(item => ({
+                    location : item.location,
+                    areaOrStreetName : item.areaOrStreetName,
+                    buildingOrPremiseName : item.buildingOrPremiseName,
+                    id : item.id,
+                    lng : item.lng,
+                    lat : item.lat,
+                    defaultAddress : false,
+                    houseOrFlatNo : item.houseOrFlatNo,
+                    landmark : item.landmark
+                }));
             }
-            const addresses = await getAddresses();
+
             store.setState(produce(s => {
                 s.addresses = addresses;
                 s.user = user;

@@ -1,4 +1,3 @@
-
 import {Address} from "./Address";
 
 export interface Profile {
@@ -31,8 +30,7 @@ export const GuestAddress: Address = {
     landmark: '',
     location: "Home",
     lng: 0,
-    lat: 0,
-    defaultAddress: false
+    lat: 0
 }
 
 export const DemoProfile: Profile = {

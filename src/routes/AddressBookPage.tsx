@@ -4,9 +4,12 @@ import {IoAdd} from "react-icons/io5";
 import {SkeletonBox} from "../components/page-components/SkeletonBox";
 import {red} from "./Theme";
 import {AnimatePresence, motion} from "framer-motion";
-import {MdCheck, MdDelete, MdOutlineHome, MdOutlineHotel, MdOutlineLocationOn, MdWorkOutline} from "react-icons/md";
+import {MdDelete, MdOutlineHome, MdOutlineHotel, MdOutlineLocationOn, MdWorkOutline} from "react-icons/md";
 import {useNavigate} from "../components/useNavigate";
-import {useAddress} from "../model/useAddress";
+import {useAppContext} from "../components/useAppContext";
+import {pocketBase} from "../components/pocketBase";
+import {produce} from "immer";
+import {useStoreValue} from "../components/store/useStore";
 
 const ICONS: any = {
     'Home': MdOutlineHome,
@@ -17,7 +20,8 @@ const ICONS: any = {
 export function AddressBookPage() {
     const isLoading = false;
     const navigate = useNavigate();
-    const {removeAddress, addresses,setDefaultAddress} = useAddress();
+    const {store:appStore} = useAppContext();
+    const addresses = useStoreValue(appStore,s => s.addresses);
     return <Page>
         <Header title={'My Address'} size={'big'}>
             <div style={{
@@ -57,23 +61,18 @@ export function AddressBookPage() {
                             <div style={{lineHeight: 2}}>{address.buildingOrPremiseName}</div>
                             <div style={{lineHeight: 1.3}}>{address.areaOrStreetName}</div>
                             <div style={{display: 'flex', margin: '10px 0px'}}>
-                                <motion.div style={{display: 'flex', alignItems: 'center'}} whileTap={{scale: 0.95}} onClick={async (event) => {
-                                    event.preventDefault();
-                                    event.stopPropagation();
-                                    await setDefaultAddress(address.id)
-                                }}>
 
-                                    <div>Default delivery address</div>
-                                    {address.defaultAddress &&
-                                        <MdCheck style={{color: red, marginLeft: 5}}/>
-                                    }
-                                </motion.div>
                                 <div style={{flexGrow:1}}/>
                                 <motion.div style={{display: 'flex', alignItems: 'center', marginLeft: 20}}
                                             whileTap={{scale: 0.95}} onClick={async (event) => {
                                     event.preventDefault();
                                     event.stopPropagation();
-                                    await removeAddress(address.id)
+                                    await pocketBase.collection('address').delete(address.id)
+                                    appStore.setState(produce(s => {
+                                        const addressIndex = s.addresses.findIndex(a => a.id === address.id);
+                                        s.addresses.splice(addressIndex,1);
+                                    }))
+
                                 }}>
                                     <MdDelete style={{color: red, marginRight: 5}}/>
                                     Delete

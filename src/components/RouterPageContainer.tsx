@@ -155,6 +155,15 @@ export function useFocusListener(path: string, callback: () => (Promise<nothing|
         }
     },[]);
 }
-
+export function useFocusListenerAfterInit(path: string, callback: () => (Promise<nothing|void>|nothing|void) ){
+    const readyRef = useRef(false);
+    return useFocusListener(path,() => {
+        if(readyRef.current === false){
+            readyRef.current = true;
+            return;
+        }
+        return callback();
+    });
+}
 
 

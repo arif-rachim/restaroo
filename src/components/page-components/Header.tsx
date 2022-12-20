@@ -1,13 +1,6 @@
 import {motion} from "framer-motion";
 import {IoChevronBackOutline} from "react-icons/io5";
-import {
-    CSSProperties,
-    forwardRef,
-    PropsWithChildren,
-    ReactFragment,
-    useId,
-    useImperativeHandle
-} from "react";
+import {CSSProperties, forwardRef, PropsWithChildren, ReactFragment, useId, useImperativeHandle} from "react";
 import {useAppContext} from "../useAppContext";
 import invariant from "tiny-invariant";
 

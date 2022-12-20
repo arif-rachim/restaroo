@@ -4,14 +4,7 @@ import {StoreValue, StoreValueRenderer, useStore} from "../components/store/useS
 import {CartItem} from "./DeliveryPage";
 import {Card, CardRow, CardTitle} from "../components/page-components/Card";
 import {RouteProps} from "../components/useRoute";
-import {
-    IoAddOutline,
-    IoCaretForward,
-    IoCaretUp,
-    IoDisc,
-    IoDocumentOutline,
-    IoLocation
-} from "react-icons/io5";
+import {IoAddOutline, IoCaretForward, IoCaretUp, IoDisc, IoDocumentOutline, IoLocation} from "react-icons/io5";
 import {AddToCartButton} from "../components/page-components/AddToCartButton";
 import {useNavigate} from "../components/useNavigate";
 import {TbDiscount} from "react-icons/tb";

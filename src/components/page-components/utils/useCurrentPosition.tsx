@@ -4,7 +4,6 @@ import {ButtonTheme, white} from "../../../routes/Theme";
 import {Button} from "../Button";
 import {MdOutlineCancel, MdOutlineLocationOn} from "react-icons/md";
 import {Address} from "../../../model/Address";
-import {nanoid} from "nanoid";
 
 const PERMISSION_DENIED = {
     POSITION_UNAVAILABLE: 0,
@@ -69,8 +68,7 @@ export function useCurrentPosition() {
                         buildingOrPremiseName : locationAddress.name,
                         houseOrFlatNo : '',
                         landmark : '',
-                        id : nanoid(),
-                        defaultAddress:false
+                        id : ''
                     }
                     resolve({position:address});
                 }else if(error){
