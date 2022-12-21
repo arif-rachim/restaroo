@@ -9,31 +9,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
-      <change afterPath="$PROJECT_DIR$/public/images/avatar/bear.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/avatar/dog.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/avatar/giraffe.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/avatar/hippo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/avatar/lion.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/avatar/panda.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/images/avatar/tiger.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RouterPageContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/page-components/utils/useCurrentPosition.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-components/utils/useCurrentPosition.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pocketBase.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pocketBase.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/useDeliveryChargeCalculator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/useDeliveryChargeCalculator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Address.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Address.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Auditable.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Profile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/useAddress.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/useAddress.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/AddressBookPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AddressBookPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OrderDetailPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/deleteAddress.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/getAddresses.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/selectDefaultAddress.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/setAddress.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,21 +49,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/arifrachim/WebstormProjects/restaroo/public/images/avatar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui",
-    "ts.external.directory.path": "/Users/arifrachim/WebstormProjects/restaroo/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/arifrachim/WebstormProjects/restaroo/public/images/avatar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/arifrachim/WebstormProjects/restaroo/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public/images/avatar" />
@@ -148,7 +125,8 @@
       <workItem from="1670154646106" duration="700000" />
       <workItem from="1670416172471" duration="6223000" />
       <workItem from="1671459449645" duration="602000" />
-      <workItem from="1671506328046" duration="44185000" />
+      <workItem from="1671506328046" duration="44443000" />
+      <workItem from="1671592192787" duration="8940000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>

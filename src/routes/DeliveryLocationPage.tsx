@@ -8,7 +8,6 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import {Icon, map as createMap, Map, tileLayer as createTile} from "leaflet";
 import {useAppContext} from "../components/useAppContext";
 import invariant from "tiny-invariant";
-import {useFocusListener, useFocusListenerAfterInit} from "../components/RouterPageContainer";
 import {RouteProps} from "../components/useRoute";
 import {blue, ButtonTheme, grey, red} from "./Theme";
 import {isNullOrUndefined} from "../components/page-components/utils/isNullOrUndefined";
@@ -19,7 +18,7 @@ import {getLocationAddress, useCurrentPosition} from "../components/page-compone
 import {Button} from "../components/page-components/Button";
 import {Input} from "../components/page-components/Input";
 import {MdCancel} from "react-icons/md";
-import {StoreValue, useStore} from "../components/store/useStore";
+import {StoreValue, useStore, useStoreValue} from "../components/store/useStore";
 import produce from "immer";
 import {isEmptyText} from "../components/page-components/utils/isEmptyText";
 import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
@@ -190,8 +189,8 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                     setBusy(true);
                     // eslint-disable-next-line
                     const currentAddress = store.stateRef.current;
-                    if(currentAddress.id){
-                        const record: any = await pocketBase.collection('address').update(currentAddress.id,{
+                    if (currentAddress.id) {
+                        const record: any = await pocketBase.collection('address').update(currentAddress.id, {
                             "location": currentAddress.location,
                             "houseOrFlatNo": currentAddress.houseOrFlatNo,
                             "buildingOrPremiseName": currentAddress.buildingOrPremiseName,
@@ -202,7 +201,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                         });
                         appStore.setState(produce(s => {
                             const indexToReplace = s.addresses.findIndex(s => s.id === record.id);
-                            s.addresses.splice(indexToReplace,1,{
+                            s.addresses.splice(indexToReplace, 1, {
                                 id: record.id,
                                 areaOrStreetName: record.areaOrStreetName,
                                 buildingOrPremiseName: record.buildingOrPremiseName,
@@ -213,7 +212,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                                 landmark: record.landmark
                             })
                         }));
-                    }else{
+                    } else {
                         const record: any = await pocketBase.collection('address').create({
                             "location": currentAddress.location,
                             "houseOrFlatNo": currentAddress.houseOrFlatNo,
@@ -247,6 +246,27 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
     </SlideDetail>;
 }
 
+async function onFocusedListener(addressId: string | undefined, getCurrentPosition: (map?: Map) => Promise<{ position?: Address; error?: GeolocationPositionError }>, mapRef: React.MutableRefObject<Map | undefined>, setAddress: (address: Address | undefined) => void, addresses: Address[]) {
+    if (isEmptyText(addressId)) {
+        const {position, error} = await getCurrentPosition(mapRef.current);
+        if (error) {
+            console.warn(error);
+            return;
+        }
+        setAddress(position);
+        return;
+    }
+    const address = addresses.find(a => a.id === addressId);
+    if (address && mapRef.current) {
+        setAddress(address);
+        const latLng = {
+            lat: address.lat,
+            lng: address.lng
+        };
+        mapRef.current.flyTo(latLng, 18);
+    }
+}
+
 export function DeliveryLocationPage(props: RouteProps) {
 
     const id = useId();
@@ -255,49 +275,41 @@ export function DeliveryLocationPage(props: RouteProps) {
     const mapPopupId = `${id}-popup`;
     const addressId = props.params.get('addressId');
 
-    const {appDimension, showSlidePanel,store:appStore} = useAppContext();
+    const {appDimension, showSlidePanel, store: appStore} = useAppContext();
 
     const mapIdHeightRef = useRef(appDimension.height - 37 - 122);
-    const [address, setAddress] = useState<Address | undefined>(() => {
-        if (isEmptyText(addressId)) {
-            return {
-                id: '',
-                lat: 0,
-                lng: 0,
-                location: 'Home',
-                defaultAddress: false,
-                buildingOrPremiseName: '',
-                landmark: '',
-                houseOrFlatNo: '',
-                areaOrStreetName: ''
-            };
-        }
-        return appStore.stateRef.current.addresses.find(a => a.id === addressId);
+    const [address, setAddress] = useState<Address | undefined>({
+        id: '',
+        lat: 0,
+        lng: 0,
+        location: 'Home',
+        buildingOrPremiseName: '',
+        landmark: '',
+        houseOrFlatNo: '',
+        areaOrStreetName: ''
     });
-    useFocusListenerAfterInit(props.path,() => {
-        if (isEmptyText(addressId)) {
-            setAddress({
-                id: '',
-                lat: 0,
-                lng: 0,
-                location: 'Home',
-                buildingOrPremiseName: '',
-                landmark: '',
-                houseOrFlatNo: '',
-                areaOrStreetName: ''
-            });
+    const [mapIsReady,setMapIsReady] = useState(false);
+    const getCurrentPosition = useCurrentPosition();
+    const addresses = useStoreValue(appStore, s => s.addresses);
+
+    useEffect(() => {
+        if(!mapIsReady){
             return;
         }
-        const address = appStore.stateRef.current.addresses.find(a => a.id === addressId);
-        setAddress(address);
-        if(address && mapRef.current){
-            const latLng = {
-                lat: address.lat,
-                lng: address.lng
-            };
-            mapRef.current.flyTo(latLng, 18);
+        const hasAddress = !isEmptyText(addressId);
+        const hasAddressesArray = addresses && addresses.length > 0;
+        if (hasAddress) {
+            if (hasAddressesArray) {
+                onFocusedListener(addressId, getCurrentPosition, mapRef, setAddress, addresses);
+            }
+        } else {
+            (async() => {
+                setAddress(undefined);
+                await onFocusedListener(addressId, getCurrentPosition, mapRef, setAddress, addresses);
+            })();
         }
-    })
+        // eslint-disable-next-line
+    }, [addresses, addressId,mapIsReady])
 
     useEffect(() => {
         mapIdHeightRef.current = document.getElementById(mapId)?.offsetHeight ?? mapIdHeightRef.current;
@@ -347,6 +359,7 @@ export function DeliveryLocationPage(props: RouteProps) {
         map.addEventListener('moveend', onDragMoveEnd)
         const tileLayer = createTile('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {});
         tileLayer.addTo(map);
+        setMapIsReady(true);
         return () => {
             map.removeEventListener('dragend', onDragEnd);
             map.removeEventListener('move', onDragMove);
@@ -356,17 +369,7 @@ export function DeliveryLocationPage(props: RouteProps) {
         }
         // eslint-disable-next-line
     }, [id]);
-    const getCurrentPosition = useCurrentPosition();
-    useFocusListener(props.path, async () => {
-        if (isNullOrUndefined(address)) {
-            const {position, error} = await getCurrentPosition(mapRef.current);
-            if (error) {
-                console.warn(error);
-                return;
-            }
-            setAddress(position);
-        }
-    });
+
     const buildingName = ((address?.buildingOrPremiseName ?? '').substring(0, 25) + ((address?.buildingOrPremiseName ?? '').length > 25 ? '...' : ''));
     const addressName = ((address?.areaOrStreetName ?? '').substring(0, 65) + ((address?.areaOrStreetName ?? '').length > 65 ? '...' : ''));
     return <Page>
