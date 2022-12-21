@@ -119,7 +119,8 @@ export default function AppShell() {
                     created : new Date(authData.record.created),
                     updated : new Date(authData.record.updated),
                     name : authData.record.name,
-                    username : authData.record.username
+                    username : authData.record.username,
+                    avatar : authData.record.avatar
                 }
                 let result = await pocketBase.collection('address').getList(1,50,{
                     filter : `user="${user.id}"`

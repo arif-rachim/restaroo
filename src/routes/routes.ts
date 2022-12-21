@@ -1,9 +1,10 @@
+import {Routes} from "../components/useRoute";
 import {LandingPage} from "./LandingPage";
 import {DeliveryPage} from "./DeliveryPage";
 import {FooterNavigation} from "../components/page-components/FooterNavigation";
+
 import {DiningPage} from "./DiningPage";
 import {ReservationPage} from "./ReservationPage";
-import {Routes} from "../components/useRoute";
 import {AccountPage} from "./AccountPage";
 import {LoginOrSignup} from "./LoginOrSignup";
 import {OtpPage} from "./OtpPage";
@@ -13,6 +14,7 @@ import {DeliveryLocationPage} from "./DeliveryLocationPage";
 import {HomePage} from "./HomePage";
 import OrderDetailPage from "./OrderDetailPage";
 import {PaymentMethodPage} from "./PaymentMethodPage";
+import CameraPage from "./CameraPage";
 
 
 export const routes: Routes = {
@@ -24,7 +26,8 @@ export const routes: Routes = {
         component: DeliveryPage,
         footerComponent: FooterNavigation,
         initial: 'left',
-    },
+    }
+    ,
     'dining': {
         component: DiningPage,
         footerComponent: FooterNavigation,
@@ -69,6 +72,10 @@ export const routes: Routes = {
     },
     'payment-method':{
         component : PaymentMethodPage,
+        initial : 'right'
+    },
+    'camera':{
+        component : CameraPage,
         initial : 'right'
     }
 }

@@ -33,6 +33,7 @@ export function ProfilePage(props: RouteProps) {
             id: model?.id ?? '',
             email: model?.email,
             name: model?.name,
+            avatar : model?.avatar,
             errors: {
                 name: '',
                 username: ''
@@ -128,7 +129,8 @@ export function ProfilePage(props: RouteProps) {
                                 updated: new Date(),
                                 verified: state.verified,
                                 emailVisibility: state.emailVisibility,
-                                created: state.created
+                                created: state.created,
+                                avatar : state.avatar
                             }
                             const {result, error} = await updateUserProfile(profile);
                             setBusy(false);
@@ -173,7 +175,8 @@ async function updateUserProfile(profile: Profile): Promise<{ result: Profile, e
             created: new Date(record.created),
             updated: new Date(record.updated),
             verified: record.verified,
-            id: record.id
+            id: record.id,
+            avatar : record.avatar
         },
         error: ''
     }

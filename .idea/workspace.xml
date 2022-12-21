@@ -9,8 +9,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
+      <change afterPath="$PROJECT_DIR$/src/components/page-components/AvatarImage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/CameraPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryLocationPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppShell.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Profile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/AccountPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AccountPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DeliveryPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/OtpPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/OtpPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +31,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="JavaScript File" />
+        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
       </list>
     </option>
@@ -126,7 +137,7 @@
       <workItem from="1670416172471" duration="6223000" />
       <workItem from="1671459449645" duration="602000" />
       <workItem from="1671506328046" duration="44443000" />
-      <workItem from="1671592192787" duration="8940000" />
+      <workItem from="1671592192787" duration="22458000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
@@ -161,7 +172,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/routes/DeliveryPage.tsx</url>
-          <line>283</line>
+          <line>280</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

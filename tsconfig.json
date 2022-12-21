@@ -7,6 +7,12 @@
       "esnext"
     ],
     "allowJs": true,
+    // start from here
+    //"declaration": true,
+    //"emitDeclarationOnly": true,
+    //"outDir": "dist",
+    //"declarationMap": true,
+    // close here
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

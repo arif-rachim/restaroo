@@ -7,7 +7,7 @@ import {IoChevronDown, IoChevronForward, IoDisc, IoHeartOutline} from "react-ico
 import {red, white} from "./Theme";
 import {MdPlace} from "react-icons/md";
 import {motion} from "framer-motion";
-import {CgProfile} from "react-icons/cg";
+
 import {useAppContext} from "../components/useAppContext";
 import {useNavigate} from "../components/useNavigate";
 import {useEffect, useId, useRef} from "react";
@@ -19,6 +19,7 @@ import {Product, ProductConfigOption} from "../model/Product";
 import {AddToCartButton} from "../components/page-components/AddToCartButton";
 import {GuestAddress} from "../model/Profile";
 import {ShoppingCartTotalItem, ShoppingCartTotalPrice, useShoppingCart} from "../model/useShoppingCart";
+import {AvatarImage} from "../components/page-components/AvatarImage";
 
 function AddressHeader(props: { address?: Address }) {
     let {address} = props;
@@ -218,12 +219,8 @@ export function DeliveryPage(props: RouteProps) {
                 <StoreValue store={positionStore} selector={p => p} property={'address'}>
                     <AddressHeader/>
                 </StoreValue>
-                <motion.div style={{fontSize: 35, width: 35, flexShrink: 0, marginLeft: 5}} whileTap={{scale: 0.9}}
-                            onTap={() => {
-                                navigate('account');
-                            }}>
-                    <CgProfile/>
-                </motion.div>
+                <AvatarImage height={40} width={40} onClick={() => navigate('account')}/>
+
             </div>
             <div style={{display: 'flex', marginBottom: 5, padding: '0 10px'}}>
                 <div style={{

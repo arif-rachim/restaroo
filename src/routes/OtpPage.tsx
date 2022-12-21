@@ -145,7 +145,8 @@ async function validateToken(token: string, phoneNo: string, otp: string): Promi
                     created: new Date(record.created),
                     updated: new Date(record.updated),
                     emailVisibility: record.emailVisibility,
-                    verified: record.verified
+                    verified: record.verified,
+                    avatar : record.avatar
                 }
             }
         }catch(err){
@@ -166,7 +167,8 @@ async function validateToken(token: string, phoneNo: string, otp: string): Promi
                     created: new Date(record.created),
                     updated: new Date(record.updated),
                     emailVisibility: record.emailVisibility,
-                    verified: record.verified
+                    verified: record.verified,
+                    avatar : record.avatar
                 }
             }
         }

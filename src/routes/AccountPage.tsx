@@ -27,6 +27,7 @@ import {motion} from "framer-motion";
 import {useAppContext} from "../components/useAppContext";
 import produce from "immer";
 import {pocketBase} from "../components/pocketBase";
+import {AvatarImage} from "../components/page-components/AvatarImage";
 
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     const isSessionActive = useSessionIsActive();
@@ -48,8 +49,7 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
                     <div style={{fontSize: 26, fontWeight: 200,lineHeight:1,marginBottom:10}}>{user.name}</div>
                     <div style={{fontSize:16,fontWeight:300}}>{user.username}</div>
                 </div>
-                <div style={{width: 80, height: 80, backgroundColor: '#CCC', borderRadius: 13}}>
-                </div>
+                <AvatarImage height={80} width={80} onClick={() => navigate('camera')}/>
             </div>
         </Visible>
     </Card>;

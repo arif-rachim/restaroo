@@ -8,7 +8,9 @@ export interface Profile {
     email: string,
     emailVisibility: boolean,
     verified: boolean
-    name: string
+    name: string,
+
+    avatar : string
 }
 
 export const GuestProfile: Profile = {
@@ -19,7 +21,8 @@ export const GuestProfile: Profile = {
     created: new Date(),
     updated: undefined,
     verified : true,
-    emailVisibility : true
+    emailVisibility : true,
+    avatar : ''
 }
 
 export const GuestAddress: Address = {
@@ -41,5 +44,6 @@ export const DemoProfile: Profile = {
     created: new Date(),
     updated: undefined,
     verified : true,
-    emailVisibility : true
+    emailVisibility : true,
+    avatar : ''
 }
