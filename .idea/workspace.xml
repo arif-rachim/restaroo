@@ -9,14 +9,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
-      <change afterPath="$PROJECT_DIR$/packages/lib/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/lib/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/api/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/packages/api/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/public/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +127,7 @@
       <workItem from="1671506328046" duration="44443000" />
       <workItem from="1671592192787" duration="22458000" />
       <workItem from="1671632264435" duration="5932000" />
-      <workItem from="1672229901648" duration="5844000" />
+      <workItem from="1672229901648" duration="5913000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
