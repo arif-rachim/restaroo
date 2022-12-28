@@ -1,9 +1,7 @@
 {
-  "name": "restaroo",
+  "name": "@restaroo/platform",
   "version": "0.1.0",
   "private": true,
-  "#homepage": "https://rach.im/restaroo",
-  "homepage": "http://localhost:3000",
   "dependencies": {
     "@ctrl/tinycolor": "^3.4.1",
     "@testing-library/jest-dom": "^5.16.5",
@@ -15,6 +13,7 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
     "@types/react-html5-camera-photo": "^1.5.1",
+    "dotenv": "^16.0.3",
     "framer-motion": "^7.6.7",
     "immer": "^9.0.16",
     "leaflet": "^1.9.3",
@@ -27,39 +26,12 @@
     "react-icons": "^4.7.1",
     "react-scripts": "5.0.1",
     "tiny-invariant": "^1.3.1",
+    "ts-node": "^10.9.1",
     "twilio": "^3.84.0",
     "typescript": "^4.9.3",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "PORT=3000 react-scripts start",
-    "build": "react-scripts build&&rm -rf docs&&mv build docs",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "start:https": "ngrok http 3000",
-    "start:service": "nodenv -E .env.local ./service/service.js",
-    "start:pocketbase": "./service/pocketbase serve --http=127.0.0.1:8090"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@types/react-avatar-editor": "^13.0.0",
-    "node-env-run": "^4.0.2"
-  }
+  "workspaces": [
+    "packages/*"
+  ]
 }
