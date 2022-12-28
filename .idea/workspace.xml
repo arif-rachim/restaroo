@@ -9,7 +9,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
-      <change beforePath="$PROJECT_DIR$/packages/adm/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +51,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/arifrachim/WebstormProjects/restaroo/packages/api",
+    "last_opened_file_path": "/Users/arifrachim/WebstormProjects/restaroo/packages/adm",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -65,11 +65,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/packages/adm" />
+      <recent name="$PROJECT_DIR$/packages/adm/public" />
       <recent name="$PROJECT_DIR$/packages/api" />
       <recent name="$PROJECT_DIR$/packages/app" />
       <recent name="$PROJECT_DIR$/packages/api/db" />
-      <recent name="$PROJECT_DIR$/public/images/avatar" />
-      <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/service" />
@@ -127,7 +127,7 @@
       <workItem from="1671506328046" duration="44443000" />
       <workItem from="1671592192787" duration="22458000" />
       <workItem from="1671632264435" duration="5932000" />
-      <workItem from="1672229901648" duration="5913000" />
+      <workItem from="1672229901648" duration="6097000" />
     </task>
     <task id="LOCAL-00001" summary="update the picker">
       <created>1668769542693</created>
