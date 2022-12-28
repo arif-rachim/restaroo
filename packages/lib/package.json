@@ -1,0 +1,16 @@
+{
+  "name": "@restaroo/lib",
+  "version": "1.0.0",
+  "description": "Restaroo platform library package",
+  "author": "",
+  "license": "ISC",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/module.js",
+  "types": "dist/types.d.ts",
+  "scripts": {
+    "dev": "parcel watch",
+    "build": "parcel build",
+    "typecheck": "tsc --noEmit src/index.ts"
+  }
+}
