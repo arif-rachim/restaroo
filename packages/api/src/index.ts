@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+dotenv.config({path:'.env.local'});
 import {createServer, IncomingMessage, ServerResponse} from "http";
 import {spawn} from "child_process";
 import {options} from "./middleware/options";
@@ -6,7 +7,7 @@ import {pocketBase} from "./middleware/pocketbase";
 import {json} from "./middleware/json";
 import {get} from "./middleware/get";
 import {Middleware} from "./middleware/Middleware";
-dotenv.config({path:'.env.local'});
+
 
 function createMiddleware(){
     const middlewares:Middleware[] = [];

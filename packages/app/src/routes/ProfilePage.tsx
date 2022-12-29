@@ -1,22 +1,27 @@
 import {Page} from "./Page";
-import {Header} from "../components/page-components/Header";
+import {
+    Button,
+    ButtonTheme,
+    Card,
+    Header,
+    Input,
+    isEmptyObject,
+    isEmptyText,
+    pageBackgroundColor,
+    Profile,
+    RouteProps,
+    StoreValue,
+    theme,
+    useAppContext,
+    useFocusListener,
+    useNavigate,
+    useStore
+} from "@restaroo/lib";
 import {CgProfile} from "react-icons/cg";
-import {Card} from "../components/page-components/Card";
-import {Input} from "../components/page-components/Input";
-import {Button} from "../components/page-components/Button";
-import {ButtonTheme, veryLightBlue} from "./Theme";
 import {IoSaveOutline} from "react-icons/io5";
-import {StoreValue, useStore} from "../components/store/useStore";
 import produce from "immer";
 import {useCallback, useState} from "react";
-import {isEmptyText} from "../components/page-components/utils/isEmptyText";
-import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
-import {Profile} from "../model/Profile";
-import {useNavigate} from "../components/useNavigate";
-import {pocketBase} from "../components/pocketBase";
-import {useAppContext} from "../components/useAppContext";
-import {useFocusListener} from "../components/RouterPageContainer";
-import {RouteProps} from "../components/useRoute";
+import {pocketBase} from "../service";
 
 export function ProfilePage(props: RouteProps) {
     const [busy, setBusy] = useState(false);
@@ -33,7 +38,7 @@ export function ProfilePage(props: RouteProps) {
             id: model?.id ?? '',
             email: model?.email,
             name: model?.name,
-            avatar : model?.avatar,
+            avatar: model?.avatar,
             errors: {
                 name: '',
                 username: ''
@@ -63,7 +68,7 @@ export function ProfilePage(props: RouteProps) {
         return isEmptyObject(store.stateRef.current.errors);
     }, [store]);
 
-    return <Page style={{backgroundColor: '#F2F2F2'}}>
+    return <Page style={{backgroundColor: pageBackgroundColor}}>
         <Header title={'Complete your Profile'}/>
 
         <div style={{
@@ -130,7 +135,7 @@ export function ProfilePage(props: RouteProps) {
                                 verified: state.verified,
                                 emailVisibility: state.emailVisibility,
                                 created: state.created,
-                                avatar : state.avatar
+                                avatar: state.avatar
                             }
                             const {result, error} = await updateUserProfile(profile);
                             setBusy(false);
@@ -144,7 +149,7 @@ export function ProfilePage(props: RouteProps) {
                             navigate('delivery');
                         }
                     }}
-                    style={{backgroundColor: veryLightBlue}}
+                    style={{backgroundColor: theme[ButtonTheme.promoted]}}
                     isBusy={busy}
             />
         </div>
@@ -176,7 +181,7 @@ async function updateUserProfile(profile: Profile): Promise<{ result: Profile, e
             updated: new Date(record.updated),
             verified: record.verified,
             id: record.id,
-            avatar : record.avatar
+            avatar: record.avatar
         },
         error: ''
     }

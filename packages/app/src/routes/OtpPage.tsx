@@ -1,34 +1,39 @@
-import {RouteProps} from "../components/useRoute";
+import {
+    Button,
+    ButtonTheme,
+    GuestProfile,
+    Header,
+    OtpInput,
+    Profile,
+    red,
+    RouteProps,
+    StoreValue,
+    useAppContext,
+    useFocusListener,
+    useNavigate,
+    useStore,
+    useStoreListener
+} from "@restaroo/lib";
 import {Page} from "./Page";
-import {Header} from "../components/page-components/Header";
-import {OtpInput} from "../components/page-components/OtpInput";
-import {Button} from "../components/page-components/Button";
-import {ButtonTheme, red} from "./Theme";
 import {MdOutlineSms} from "react-icons/md";
 import {IoCallOutline} from "react-icons/io5";
 import {CSSProperties, useEffect, useState} from "react";
-import {StoreValue, useStore, useStoreListener} from "../components/store/useStore";
-import {useFocusListener} from "../components/RouterPageContainer";
-import {useNavigate} from "../components/useNavigate";
-import {GuestProfile, Profile} from "../model/Profile";
 import produce from "immer";
-import {fetchService} from "../components/fetchService";
-import {pocketBase} from "../components/pocketBase";
-import {useAppContext} from "../components/useAppContext";
+import {fetchService, pocketBase} from "../service";
 
 const APP_NAME = process.env.REACT_APP_APPLICATION_NAME;
 
 export function OtpPage(route: RouteProps) {
     const phoneNo = route.params.get('phoneNo');
     const store = useStore({otp: '', countdown: 20, errorMessage: '', token: ''});
-    const {store:appStore} = useAppContext();
+    const {store: appStore} = useAppContext();
     const navigate = useNavigate();
     const [isBusy, setIsBusy] = useState(false);
 
     useFocusListener(route.path, () => {
         (async () => {
             const token = Math.random().toString().substr(2, 6);
-            await fetchService('otp',{phone:phoneNo,otp:token,app:APP_NAME});
+            await fetchService('otp', {phone: phoneNo, otp: token, app: APP_NAME});
             store.setState(old => ({
                 otp: '', countdown: 20, errorMessage: '', token
             }));
@@ -103,8 +108,8 @@ export function OtpPage(route: RouteProps) {
                     <Button title={''} icon={MdOutlineSms} theme={ButtonTheme.danger} onTap={() => {
                         (async () => {
                             const token = Math.random().toString().substr(2, 6);
-                            const result = await fetchService('otp',{phone:phoneNo,otp:token,app:APP_NAME});
-                            console.log('WE HAVE RESULT ',result);
+                            const result = await fetchService('otp', {phone: phoneNo, otp: token, app: APP_NAME});
+                            console.log('WE HAVE RESULT ', result);
                             store.setState(old => ({
                                 otp: '', countdown: 20, errorMessage: '', token
                             }));
@@ -131,10 +136,10 @@ export function OtpPage(route: RouteProps) {
  * @param phoneNo
  */
 async function validateToken(token: string, phoneNo: string, otp: string): Promise<{ valid: boolean, profile: Profile }> {
-    const userName = phoneNo.replace('+','');
+    const userName = phoneNo.replace('+', '');
     if (token === otp) {
-        try{
-            const {record} = await pocketBase.collection('users').authWithPassword(userName,'12345678');
+        try {
+            const {record} = await pocketBase.collection('users').authWithPassword(userName, '12345678');
             return {
                 valid: true,
                 profile: {
@@ -146,17 +151,17 @@ async function validateToken(token: string, phoneNo: string, otp: string): Promi
                     updated: new Date(record.updated),
                     emailVisibility: record.emailVisibility,
                     verified: record.verified,
-                    avatar : record.avatar
+                    avatar: record.avatar
                 }
             }
-        }catch(err){
+        } catch (err) {
             await pocketBase.collection('users').create({
                 "username": userName,
                 "password": "12345678",
                 "passwordConfirm": "12345678",
                 "name": ""
             });
-            const {record} = await pocketBase.collection('users').authWithPassword(userName,'12345678');
+            const {record} = await pocketBase.collection('users').authWithPassword(userName, '12345678');
             return {
                 valid: true,
                 profile: {
@@ -168,7 +173,7 @@ async function validateToken(token: string, phoneNo: string, otp: string): Promi
                     updated: new Date(record.updated),
                     emailVisibility: record.emailVisibility,
                     verified: record.verified,
-                    avatar : record.avatar
+                    avatar: record.avatar
                 }
             }
         }

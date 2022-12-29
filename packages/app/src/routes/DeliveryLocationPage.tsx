@@ -1,32 +1,40 @@
 import {Page} from "./Page";
-import {Header} from "../components/page-components/Header";
+import {
+    Address,
+    Button,
+    ButtonTheme,
+    disabledColor,
+    getLocationAddress,
+    GuestAddress,
+    Header,
+    Input,
+    isEmptyObject,
+    isEmptyText,
+    isNullOrUndefined,
+    red,
+    RouteProps,
+    SkeletonBox,
+    StoreValue,
+    useAppContext,
+    useAppDimension,
+    useCurrentPosition,
+    useStore,
+    useStoreValue,
+    Visible
+} from "@restaroo/lib";
 import {useCallback, useEffect, useId, useRef, useState} from "react";
 import "leaflet/dist/leaflet.css"
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import {Icon, map as createMap, Map, tileLayer as createTile} from "leaflet";
-import {useAppContext} from "../components/useAppContext";
 import invariant from "tiny-invariant";
-import {RouteProps} from "../components/useRoute";
-import {blue, ButtonTheme, grey, red} from "./Theme";
-import {isNullOrUndefined} from "../components/page-components/utils/isNullOrUndefined";
 import {IoLocation, IoSaveOutline} from "react-icons/io5";
 import {AnimatePresence, motion} from "framer-motion";
-import {Visible} from "../components/page-components/Visible";
-import {getLocationAddress, useCurrentPosition} from "../components/page-components/utils/useCurrentPosition";
-import {Button} from "../components/page-components/Button";
-import {Input} from "../components/page-components/Input";
 import {MdCancel} from "react-icons/md";
-import {StoreValue, useStore, useStoreValue} from "../components/store/useStore";
 import produce from "immer";
-import {isEmptyText} from "../components/page-components/utils/isEmptyText";
-import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
-import {Address} from "../model/Address";
-import {SkeletonBox} from "../components/page-components/SkeletonBox";
 import {SlideDetail} from "./SlideDetail";
-import {GuestAddress} from "../model/Profile";
-import {pocketBase} from "../components/pocketBase";
+import {pocketBase} from "../service";
 
 
 function LocationSelector(props: { value?: string, onChange: (value: string) => void, error?: string }) {
@@ -95,7 +103,7 @@ function LocationSelector(props: { value?: string, onChange: (value: string) => 
                     <motion.div layout={true} style={{marginLeft: 10}} onClick={() => {
                         onChange('Home')
                     }}>
-                        <MdCancel style={{fontSize: 20, color: grey}}/>
+                        <MdCancel style={{fontSize: 20, color: disabledColor}}/>
                     </motion.div>
                 </motion.div>
             }
@@ -118,9 +126,9 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
     }>({...address, errors: {areaOrStreetName: '', buildingOrPremiseName: '', houseOrFlatNo: '', location: ''}});
     const isValid = useCallback(() => {
         store.setState(produce(s => {
-            s.errors.areaOrStreetName = isEmptyText(s.areaOrStreetName) ? 'Area or Street name is required' : '';
-            s.errors.buildingOrPremiseName = isEmptyText(s.buildingOrPremiseName) ? 'Building or Premise name is required' : '';
-            s.errors.houseOrFlatNo = isEmptyText(s.houseOrFlatNo) ? 'house or Flat number is required' : '';
+            s.errors.areaOrStreetName = isEmptyText(s.areaOrStreetName) ? 'Area nonull Street name is required' : '';
+            s.errors.buildingOrPremiseName = isEmptyText(s.buildingOrPremiseName) ? 'Building nonull Premise name is required' : '';
+            s.errors.houseOrFlatNo = isEmptyText(s.houseOrFlatNo) ? 'house nonull Flat number is required' : '';
             s.errors.location = isEmptyText(s.location) ? 'Location is required' : '';
         }));
         return isEmptyObject(store.stateRef.current.errors);
@@ -157,7 +165,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
         </StoreValue>
         <StoreValue store={store} selector={[s => s.buildingOrPremiseName, s => s.errors.buildingOrPremiseName]}
                     property={['value', 'error']}>
-            <Input title={'Building / Premise Name *'} placeholder={'Please enter building or premise'}
+            <Input title={'Building / Premise Name *'} placeholder={'Please enter building nonull premise'}
                    style={{inputStyle: {fontSize: 16}, titleStyle: {fontSize: 13}}} onChange={(event) => {
                 store.setState(produce(s => {
                     s.buildingOrPremiseName = event.target.value;
@@ -167,7 +175,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
         </StoreValue>
         <StoreValue store={store} selector={[s => s.areaOrStreetName, s => s.errors.areaOrStreetName]}
                     property={['value', 'error']}>
-            <Input title={'Area / Street *'} placeholder={'Please find area or street address'}
+            <Input title={'Area / Street *'} placeholder={'Please find area nonull street address'}
                    style={{inputStyle: {fontSize: 16}, titleStyle: {fontSize: 13}}} onChange={(event) => {
                 store.setState(produce(s => {
                     s.areaOrStreetName = event.target.value;
@@ -274,8 +282,8 @@ export function DeliveryLocationPage(props: RouteProps) {
     const mapContentId = `${id}-content`;
     const mapPopupId = `${id}-popup`;
     const addressId = props.params.get('addressId');
-
-    const {appDimension, showSlidePanel, store: appStore} = useAppContext();
+    const {appDimension} = useAppDimension();
+    const {showSlidePanel, store: appStore} = useAppContext();
 
     const mapIdHeightRef = useRef(appDimension.height - 37 - 122);
     const [address, setAddress] = useState<Address | undefined>({
@@ -288,12 +296,12 @@ export function DeliveryLocationPage(props: RouteProps) {
         houseOrFlatNo: '',
         areaOrStreetName: ''
     });
-    const [mapIsReady,setMapIsReady] = useState(false);
+    const [mapIsReady, setMapIsReady] = useState(false);
     const getCurrentPosition = useCurrentPosition();
     const addresses = useStoreValue(appStore, s => s.addresses);
 
     useEffect(() => {
-        if(!mapIsReady){
+        if (!mapIsReady) {
             return;
         }
         const hasAddress = !isEmptyText(addressId);
@@ -303,13 +311,13 @@ export function DeliveryLocationPage(props: RouteProps) {
                 onFocusedListener(addressId, getCurrentPosition, mapRef, setAddress, addresses);
             }
         } else {
-            (async() => {
+            (async () => {
                 setAddress(undefined);
                 await onFocusedListener(addressId, getCurrentPosition, mapRef, setAddress, addresses);
             })();
         }
         // eslint-disable-next-line
-    }, [addresses, addressId,mapIsReady])
+    }, [addresses, addressId, mapIsReady])
 
     useEffect(() => {
         mapIdHeightRef.current = document.getElementById(mapId)?.offsetHeight ?? mapIdHeightRef.current;
@@ -391,7 +399,7 @@ export function DeliveryLocationPage(props: RouteProps) {
                     left: (appDimension.width / 2) - 20,
                     top: ((mapIdHeightRef.current) / 2) - 40,
                 }} initial={{y: -100}} animate={{y: 0}} transition={{duration: 2}}>
-                    <IoLocation style={{fontSize: 40, color: blue}}/>
+                    <IoLocation style={{fontSize: 40, color: red}}/>
                     <div style={{
                         position: 'absolute',
                         backgroundColor: '#333',

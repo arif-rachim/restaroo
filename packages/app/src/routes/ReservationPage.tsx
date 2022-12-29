@@ -1,23 +1,32 @@
 import {Page} from "./Page";
-import {RouteProps} from "../components/useRoute";
-import {dateToDdd, dateToDdMmm, dateToDdMmmYyyy} from "../components/page-components/utils/dateToDdMmmYyyy";
-import {dateAdd} from "../components/page-components/utils/dateAdd";
-import {dateToHhMm, hhMmToDate} from "../components/page-components/utils/dateToHhMm";
+import {
+    Button,
+    ButtonTheme,
+    dateAdd,
+    dateToDdd,
+    dateToDdMmm,
+    dateToDdMmmYyyy,
+    dateToHhMm,
+    disabledColor,
+    hhMmToDate,
+    Input,
+    isEmptyObject,
+    isEmptyText,
+    pageColor,
+    red,
+    RouteProps,
+    StoreValue,
+    useAppContext,
+    useProfile,
+    useStore,
+    Value,
+    ValueOnChangeProperties
+} from "@restaroo/lib";
 import {useEffect, useMemo} from "react";
-import {useAppContext} from "../components/useAppContext";
-import {StoreValue, useStore} from "../components/store/useStore";
 import {motion} from "framer-motion";
-import {ValueOnChangeProperties} from "../components/page-components/picker/createPicker";
-import {blue, ButtonTheme, grey, red, white} from "./Theme";
 import produce from "immer";
-import {Input} from "../components/page-components/Input";
-import {useProfile} from "../model/useProfile";
-import {Button} from "../components/page-components/Button";
 import {IoSaveOutline} from "react-icons/io5";
-import {isEmptyText} from "../components/page-components/utils/isEmptyText";
-import {isEmptyObject} from "../components/page-components/utils/isEmptyObject";
 import {SlideDetail} from "./SlideDetail";
-import {Value} from "../components/page-components/Value";
 
 
 const THIRTY_MINUTES = 1000 * 60 * 30;
@@ -31,7 +40,7 @@ interface Reservation {
     lastName: string,
     email: string,
     phoneNo: string,
-    updateOnWhatsapp : boolean
+    updateOnWhatsapp: boolean
 }
 
 function DateSelector(props: ValueOnChangeProperties<Date>) {
@@ -56,8 +65,8 @@ function DateSelector(props: ValueOnChangeProperties<Date>) {
                 padding: '10px 30px',
                 marginRight: 10,
                 alignItems: 'center',
-                backgroundColor: isSelected ? blue : white,
-                color: isSelected ? white : 'unset'
+                backgroundColor: isSelected ? red : pageColor,
+                color: isSelected ? pageColor : 'unset'
             }} key={index} whileTap={{scale: 0.95}} onTap={() => onChange ? onChange(date) : ''}>
                 <div style={{marginBottom: 3}}>{label}</div>
                 <div style={{
@@ -102,8 +111,8 @@ function TimeSelector(props: ({ openingTime: string, closingTime: string } & Val
                 padding: '20px 30px',
                 marginRight: 10,
                 alignItems: 'center',
-                backgroundColor: isSelected ? blue : white,
-                color: isSelected ? white : 'unset'
+                backgroundColor: isSelected ? red : pageColor,
+                color: isSelected ? pageColor : 'unset'
             }} key={index} whileTap={{scale: 0.95}} onTap={() => onChange ? onChange(time) : ''}>
                 <div style={{fontSize: 16}}>{dateToHhMm(time)}</div>
             </motion.div>
@@ -129,8 +138,8 @@ function NumberOfPeopleSelector(props: ValueOnChangeProperties<number>) {
                 padding: '20px 30px',
                 marginRight: 10,
                 alignItems: 'center',
-                backgroundColor: isSelected ? blue : white,
-                color: isSelected ? white : 'unset'
+                backgroundColor: isSelected ? red : pageColor,
+                color: isSelected ? pageColor : 'unset'
             }} key={index} whileTap={{scale: 0.95}} onTap={() => onChange ? onChange(total) : ''}>
                 <div style={{fontSize: 16}}>{total}</div>
             </motion.div>
@@ -142,7 +151,7 @@ function PersonalDetailForm(props: {
     closePanel: (result: any) => void,
     firstName: string, lastName: string, email: string, phoneNo: string
 }) {
-    const {firstName, lastName, phoneNo, email,closePanel} = props;
+    const {firstName, lastName, phoneNo, email, closePanel} = props;
     const store = useStore({
         firstName,
         lastName,
@@ -159,7 +168,7 @@ function PersonalDetailForm(props: {
         }));
         return isEmptyObject(store.stateRef.current.errors);
     }
-    return <SlideDetail closePanel={closePanel} >
+    return <SlideDetail closePanel={closePanel}>
         <StoreValue store={store} selector={[s => s.firstName, s => s.errors.firstName]} property={['value', 'error']}>
             <Input title={'First name'} placeholder={'enter your first name'}
                    onChange={(e) => {
@@ -167,7 +176,7 @@ function PersonalDetailForm(props: {
                            s.firstName = e.target.value;
                            s.errors.firstName = '';
                        }));
-                   }} style={{inputStyle:{fontSize:14},titleStyle:{fontSize:13}}}/>
+                   }} style={{inputStyle: {fontSize: 14}, titleStyle: {fontSize: 13}}}/>
         </StoreValue>
         <StoreValue store={store} selector={[s => s.lastName, s => s.errors.lastName]} property={['value', 'error']}>
             <Input title={'Last name'} placeholder={'enter your first name'}
@@ -176,7 +185,7 @@ function PersonalDetailForm(props: {
                            s.lastName = e.target.value;
                            s.errors.lastName = '';
                        }));
-                   }} style={{inputStyle:{fontSize:14},titleStyle:{fontSize:13}}}/>
+                   }} style={{inputStyle: {fontSize: 14}, titleStyle: {fontSize: 13}}}/>
         </StoreValue>
         <StoreValue store={store} selector={[s => s.email, s => s.errors.email]} property={['value', 'error']}>
             <Input title={'Email'} placeholder={'enter your email'} onChange={(e) => {
@@ -184,7 +193,7 @@ function PersonalDetailForm(props: {
                     s.email = e.target.value;
                     s.errors.email = '';
                 }));
-            }} style={{inputStyle:{fontSize:14},titleStyle:{fontSize:13}}}/>
+            }} style={{inputStyle: {fontSize: 14}, titleStyle: {fontSize: 13}}}/>
         </StoreValue>
         <StoreValue store={store} selector={[s => s.phoneNo, s => s.errors.phoneNo]} property={['value', 'error']}>
             <Input title={'Phone'} placeholder={'enter your phone number'} onChange={(e) => {
@@ -192,39 +201,44 @@ function PersonalDetailForm(props: {
                     s.phoneNo = e.target.value;
                     s.errors.phoneNo = '';
                 }));
-            }} style={{inputStyle:{fontSize:14},titleStyle:{fontSize:13}}}/>
+            }} style={{inputStyle: {fontSize: 14}, titleStyle: {fontSize: 13}}}/>
         </StoreValue>
         <Button onTap={() => {
             if (validate()) {
                 const data = {
-                    firstName:store.stateRef.current.firstName,
-                    lastName:store.stateRef.current.lastName,
-                    phoneNo:store.stateRef.current.phoneNo,
-                    email:store.stateRef.current.email,
+                    firstName: store.stateRef.current.firstName,
+                    lastName: store.stateRef.current.lastName,
+                    phoneNo: store.stateRef.current.phoneNo,
+                    email: store.stateRef.current.email,
                 };
                 props.closePanel(data);
             }
         }} title={'Save Changes'} icon={IoSaveOutline} theme={ButtonTheme.danger}/>
-    </SlideDetail> ;
+    </SlideDetail>;
 }
 
-function Switch(props:ValueOnChangeProperties<boolean>) {
-    let {value,onChange} = props;
+function Switch(props: ValueOnChangeProperties<boolean>) {
+    let {value, onChange} = props;
     value = value === true;
     return <div style={{width: 40, display: 'flex', flexDirection: 'column'}}>
         <motion.div style={{
             display: 'flex',
-            flexDirection: !value?'row':'row-reverse',
+            flexDirection: !value ? 'row' : 'row-reverse',
             width: 40,
             borderRadius: 20,
             height: 20,
             border: '1px solid rgba(0,0,0,0.1)'
         }} onTap={() => {
-            if(onChange !== undefined){
+            if (onChange !== undefined) {
                 onChange(!value)
             }
         }}>
-            <motion.div layout style={{width: 20, height: 20, background: value === true ?red:grey, borderRadius: 10}}>
+            <motion.div layout style={{
+                width: 20,
+                height: 20,
+                background: value === true ? red : disabledColor,
+                borderRadius: 10
+            }}>
 
             </motion.div>
         </motion.div>
@@ -259,7 +273,7 @@ export function ReservationPage(props: RouteProps) {
         lastName: '',
         phoneNo: user.username,
         id: '',
-        updateOnWhatsapp : true,
+        updateOnWhatsapp: true,
         errors: {
             firstName: '',
             lastName: '',

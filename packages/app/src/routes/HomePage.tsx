@@ -1,9 +1,4 @@
-import {Header} from "../components/page-components/Header";
-import {Input} from "../components/page-components/Input";
-import {useAppContext} from "../components/useAppContext";
-import {StoreValue, useStore} from "../components/store/useStore";
-import {dateToDdMmmYyyy} from "../components/page-components/utils/dateToDdMmmYyyy";
-import {dateToHhMm} from "../components/page-components/utils/dateToHhMm";
+import {dateToDdMmmYyyy, dateToHhMm, Header, Input, StoreValue, useAppContext, useStore} from "@restaroo/lib";
 
 export function HomePage() {
     const appContext = useAppContext();

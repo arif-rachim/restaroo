@@ -9,8 +9,16 @@
   "module": "dist/module.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "dev": "parcel watch",
+    "start": "parcel watch",
     "build": "parcel build",
     "typecheck": "tsc --noEmit src/index.ts"
+  },
+  "dependencies": {
+    "tiny-invariant": "*",
+    "framer-motion": "*",
+    "react" : "^18.2.0",
+    "@ctrl/tinycolor" : "*",
+    "react-icons" : "*",
+    "immer" : "*"
   }
 }

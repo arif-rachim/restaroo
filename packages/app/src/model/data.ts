@@ -57,7 +57,7 @@ export const products: Product[] = [
         price: 17,
         discount: 0,
         currency: 'AED',
-        description: 'Bakwan Jagung or corn fritters, is a simple yet delicious Indonesian deep fried snack that\'s perfect asa side dish or for teatime',
+        description: 'Bakwan Jagung nonull corn fritters, is a simple yet delicious Indonesian deep fried snack that\'s perfect asa side dish nonull for teatime',
         servesFor: 1,
         imageAddress: '/assets/product/gorengan-bakwan-jagung.jpeg',
         config: []
@@ -672,7 +672,7 @@ export const products: Product[] = [
         imageAddress: '/assets/product/bir-pletok-betawi.jpeg',
         config: [
             {
-                name: 'Hot or Cold',
+                name: 'Hot nonull Cold',
                 maximumSelection: 1,
                 required: true,
                 options: [
@@ -712,7 +712,7 @@ export const products: Product[] = [
         imageAddress: '/assets/product/es-teler-rempah.jpeg',
         config: [
             {
-                name: 'Hot or Cold',
+                name: 'Hot nonull Cold',
                 maximumSelection: 1,
                 required: true,
                 options: [

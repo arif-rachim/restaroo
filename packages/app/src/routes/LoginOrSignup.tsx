@@ -1,24 +1,29 @@
 import {Page} from "./Page";
-import {RouteProps} from "../components/useRoute";
-import {Input} from "../components/page-components/Input";
+import {
+    Button,
+    ButtonTheme,
+    Image,
+    Input,
+    RouteProps,
+    StoreValue,
+    useAppContext,
+    useAppDimension,
+    useNavigate,
+    useStore,
+    Value
+} from "@restaroo/lib";
 import {IoChevronDown, IoCloseCircleOutline, IoLogInOutline} from "react-icons/io5";
 import {motion} from "framer-motion";
-import {useAppContext} from "../components/useAppContext";
-import {StoreValue, useStore} from "../components/store/useStore";
-import {Button} from "../components/page-components/Button";
-import {ButtonTheme} from "./Theme";
 import {FcGoogle} from "react-icons/fc";
 import {BsThreeDots} from "react-icons/bs";
 import {useCallback} from "react";
-import {Image} from "../components/page-components/Image";
 import restaroo from "../assets/arif-rachim-restaroo.png";
-import {useNavigate} from "../components/useNavigate";
 import invariant from "tiny-invariant";
-import {Value} from "../components/page-components/Value";
 
 
 export function LoginOrSignup(route: RouteProps) {
-    const appContext = useAppContext();
+    const {appDimension} = useAppDimension();
+    const {showPicker} = useAppContext();
     const countryStore = useStore('+971');
     const phoneNumberStore = useStore({value: '', error: ''});
     const storeValid = useCallback(() => {
@@ -32,7 +37,7 @@ export function LoginOrSignup(route: RouteProps) {
     return <Page>
 
         <div style={{backgroundColor: 'red', position: 'absolute', top: 0}}>
-            <Image src={restaroo} height={appContext.appDimension.width} width={appContext.appDimension.width}/>
+            <Image src={restaroo} height={appDimension.width} width={appDimension.width}/>
         </div>
         <div style={{flexGrow: 1}}/>
 
@@ -88,7 +93,8 @@ export function LoginOrSignup(route: RouteProps) {
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
                     <StoreValue store={phoneNumberStore} property={['value', 'error']}
                                 selector={[s => s.value, s => s.error]}>
-                        <Input title={<motion.div style={{display: 'flex', width: '100%',paddingTop:2}} whileTap={{scale: 0.9}}
+                        <Input title={<motion.div style={{display: 'flex', width: '100%', paddingTop: 2}}
+                                                  whileTap={{scale: 0.9}}
                                                   onClick={(event) => {
                                                       event.preventDefault();
                                                       event.stopPropagation();
@@ -96,7 +102,7 @@ export function LoginOrSignup(route: RouteProps) {
                                                   onTap={async (event) => {
                                                       event.preventDefault();
                                                       event.stopPropagation();
-                                                      const country = await appContext.showPicker({
+                                                      const country = await showPicker({
                                                           picker: 'country',
                                                           value: countryStore.stateRef.current
                                                       });
@@ -104,7 +110,7 @@ export function LoginOrSignup(route: RouteProps) {
                                                   }}>
                             <div style={{marginTop: 2, marginRight: 5}}><IoChevronDown/></div>
                             <StoreValue store={countryStore} selector={s => s} property={'value'}>
-                                <Value style={{flexGrow: 1, textAlign: 'right',fontSize:20}} />
+                                <Value style={{flexGrow: 1, textAlign: 'right', fontSize: 20}}/>
                             </StoreValue>
                         </motion.div>} placeholder={'Enter Phone Number'} titleWidth={90} titlePosition={'left'}
                                style={{containerStyle: {borderBottom: 'unset'}}}

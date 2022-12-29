@@ -1,25 +1,31 @@
 import {Page} from "./Page";
-import {RouteProps} from "../components/useRoute";
-import {Card, CardTitle} from "../components/page-components/Card";
+import {
+    Address,
+    AvatarImage,
+    Card,
+    CardTitle,
+    GuestAddress,
+    pageBackgroundColor,
+    pageColor,
+    red,
+    RouteProps,
+    SkeletonBox,
+    StoreValue,
+    useAppContext,
+    useAppDimension,
+    useCurrentPosition,
+    useNavigate,
+    useStore
+} from "@restaroo/lib";
 import {menus, products} from "../model/data";
 import invariant from "tiny-invariant";
 import {IoChevronDown, IoChevronForward, IoDisc, IoHeartOutline} from "react-icons/io5";
-import {red, white} from "./Theme";
 import {MdPlace} from "react-icons/md";
 import {motion} from "framer-motion";
-
-import {useAppContext} from "../components/useAppContext";
-import {useNavigate} from "../components/useNavigate";
 import {useEffect, useId, useRef} from "react";
-import {StoreValue, useStore} from "../components/store/useStore";
-import {useCurrentPosition} from "../components/page-components/utils/useCurrentPosition";
-import {Address} from "../model/Address";
-import {SkeletonBox} from "../components/page-components/SkeletonBox";
 import {Product, ProductConfigOption} from "../model/Product";
-import {AddToCartButton} from "../components/page-components/AddToCartButton";
-import {GuestAddress} from "../model/Profile";
-import {ShoppingCartTotalItem, ShoppingCartTotalPrice, useShoppingCart} from "../model/useShoppingCart";
-import {AvatarImage} from "../components/page-components/AvatarImage";
+import {AddToCartButton} from "../component/AddToCartButton";
+import {ShoppingCartTotalItem, ShoppingCartTotalPrice, useShoppingCart} from "../component/useShoppingCart";
 
 function AddressHeader(props: { address?: Address }) {
     let {address} = props;
@@ -58,14 +64,16 @@ export interface CartItem {
 let previousScrollValue = 0;
 
 const cartButtonPosition = {
-    hidden: {bottom: 0,opacity:0},
-    low: {bottom: 0,opacity:0},
-    high: {bottom: 65,opacity:1}
+    hidden: {bottom: 0, opacity: 0},
+    low: {bottom: 0, opacity: 0},
+    high: {bottom: 65, opacity: 1}
 }
 
-let timeoutId:any = 0;
+let timeoutId: any = 0;
+
 export function DeliveryPage(props: RouteProps) {
-    const {appDimension, showFooter} = useAppContext();
+    const {appDimension} = useAppDimension();
+    const {showFooter} = useAppContext();
     const navigate = useNavigate();
     const componentId = useId();
     const titleRef = useRef<{ title: string, offsetY: number }[]>([]);
@@ -73,7 +81,7 @@ export function DeliveryPage(props: RouteProps) {
     const getCurrentPosition = useCurrentPosition();
     const positionStore = useStore<Address>(GuestAddress);
     const pushDownShoppingCartButton = useStore<boolean>(true);
-    const {addProductToCart,getTotalItemsInCart} = useShoppingCart();
+    const {addProductToCart, getTotalItemsInCart} = useShoppingCart();
     useEffect(() => {
         (async () => {
             const {position} = await getCurrentPosition();
@@ -84,61 +92,62 @@ export function DeliveryPage(props: RouteProps) {
         // eslint-disable-next-line
     }, []);
 
-    return <Page style={{paddingTop: 110, paddingBottom: 70, backgroundColor: '#F2F2F2'}} onScroll={(event) => {
-        const target = event.target;
-        const scrollTop = (target as HTMLDivElement).scrollTop;
-        const titleDiv = document.getElementById(`${componentId}-title`);
-        const header = document.getElementById(`${componentId}-header`);
-        const nonVegButton = document.getElementById(`${componentId}-nonveg-button`);
-        const vegButton = document.getElementById(`${componentId}-veg-button`);
-        invariant(titleDiv);
-        invariant(header);
-        invariant(nonVegButton);
-        invariant(vegButton);
-        let scrollDown = previousScrollValue < scrollTop;
-        previousScrollValue = scrollTop;
+    return <Page style={{paddingTop: 110, paddingBottom: 70, backgroundColor: pageBackgroundColor}}
+                 onScroll={(event) => {
+                     const target = event.target;
+                     const scrollTop = (target as HTMLDivElement).scrollTop;
+                     const titleDiv = document.getElementById(`${componentId}-title`);
+                     const header = document.getElementById(`${componentId}-header`);
+                     const nonVegButton = document.getElementById(`${componentId}-nonveg-button`);
+                     const vegButton = document.getElementById(`${componentId}-veg-button`);
+                     invariant(titleDiv);
+                     invariant(header);
+                     invariant(nonVegButton);
+                     invariant(vegButton);
+                     let scrollDown = previousScrollValue < scrollTop;
+                     previousScrollValue = scrollTop;
 
-        const titleArray = titleRef.current.filter(title => title.offsetY <= scrollTop);
-        const title = titleArray[titleArray.length - 1].title;
-        if (selectedTitle.stateRef.current !== title) {
-            selectedTitle.setState(title);
-        }
-        if (scrollTop > 5) {
-            header.style.backgroundColor = '#FFF';
-            nonVegButton.style.border = '1px solid rgba(0,0,0,0.1)';
-            vegButton.style.border = '1px solid rgba(0,0,0,0.1)';
-        } else {
-            header.style.backgroundColor = '#F2F2F2';
-            nonVegButton.style.border = '1px solid rgba(0,0,0,0)';
-            vegButton.style.border = '1px solid rgba(0,0,0,0)';
-        }
+                     const titleArray = titleRef.current.filter(title => title.offsetY <= scrollTop);
+                     const title = titleArray[titleArray.length - 1].title;
+                     if (selectedTitle.stateRef.current !== title) {
+                         selectedTitle.setState(title);
+                     }
+                     if (scrollTop > 5) {
+                         header.style.backgroundColor = '#FFF';
+                         nonVegButton.style.border = '1px solid rgba(0,0,0,0.1)';
+                         vegButton.style.border = '1px solid rgba(0,0,0,0.1)';
+                     } else {
+                         header.style.backgroundColor = pageBackgroundColor;
+                         nonVegButton.style.border = '1px solid rgba(0,0,0,0)';
+                         vegButton.style.border = '1px solid rgba(0,0,0,0)';
+                     }
 
-        if (scrollTop > 13) {
-            titleDiv.style.display = 'flex';
-        } else {
-            titleDiv.style.display = 'none';
-        }
+                     if (scrollTop > 13) {
+                         titleDiv.style.display = 'flex';
+                     } else {
+                         titleDiv.style.display = 'none';
+                     }
 
-        if (scrollTop >= 400) {
-            header.style.transform = `translateY(-110px)`;
-            if (scrollDown) {
-                showFooter(false);
-                pushDownShoppingCartButton.setState(true);
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => {
-                    clearTimeout(timeoutId);
-                    showFooter(true);
-                    pushDownShoppingCartButton.setState(false);
-                },1000);
-            }
-            // else {
-            //     showFooter(true);
-            //     pushDownShoppingCartButton.setState(false);
-            // }
-        } else {
-            header.style.transform = 'translateY(0px)';
-        }
-    }}>
+                     if (scrollTop >= 400) {
+                         header.style.transform = `translateY(-110px)`;
+                         if (scrollDown) {
+                             showFooter(false);
+                             pushDownShoppingCartButton.setState(true);
+                             clearTimeout(timeoutId);
+                             timeoutId = setTimeout(() => {
+                                 clearTimeout(timeoutId);
+                                 showFooter(true);
+                                 pushDownShoppingCartButton.setState(false);
+                             }, 1000);
+                         }
+                         // else {
+                         //     showFooter(true);
+                         //     pushDownShoppingCartButton.setState(false);
+                         // }
+                     } else {
+                         header.style.transform = 'translateY(0px)';
+                     }
+                 }}>
 
         {menus.map((menu) => {
             return <Card key={menu.id} style={{marginBottom: 20}}>
@@ -204,7 +213,7 @@ export function DeliveryPage(props: RouteProps) {
             position: 'absolute',
             top: 0,
             width: appDimension.width,
-            backgroundColor: '#F2F2F2',
+            backgroundColor: pageBackgroundColor,
             transition: 'background-color 200ms cubic-bezier(0,0,0.7,0.9),transform 200ms cubic-bezier(0,0,0.7,0.9)'
         }} id={`${componentId}-header`}>
             <div style={{
@@ -231,7 +240,7 @@ export function DeliveryPage(props: RouteProps) {
                     padding: 5,
                     boxShadow: '0 3px 10px -3px rgba(0,0,0,0.06)',
                     border: '1px solid rgba(0,0,0,0)',
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: pageColor,
                     borderRadius: 10,
                     marginRight: 10
                 }} id={`${componentId}-veg-button`}><IoDisc style={{fontSize: 20, marginRight: 5}}/>
@@ -245,7 +254,7 @@ export function DeliveryPage(props: RouteProps) {
                     padding: 5,
                     boxShadow: '0 3px 10px -3px rgba(0,0,0,0.06)',
                     border: '1px solid rgba(0,0,0,0)',
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: pageColor,
                     borderRadius: 10
                 }} id={`${componentId}-nonveg-button`}><IoDisc style={{fontSize: 20, marginRight: 5}}/>
                     <div style={{fontWeight: 'bold', fontSize: 13}}>Non-Veg</div>
@@ -255,7 +264,7 @@ export function DeliveryPage(props: RouteProps) {
                 display: 'none',
                 flexDirection: 'column',
                 boxShadow: '0 7px 10px -5px rgba(0,0,0,0.3)',
-                background: 'white',
+                background: pageColor,
             }}>
                 <StoreValue store={selectedTitle} property={'title'} selector={s => s}>
                     <CardTitle/>
@@ -277,15 +286,15 @@ export function DeliveryPage(props: RouteProps) {
                 flexDirection: 'column',
                 position: 'absolute',
                 width: appDimension.width,
-            }} transition={{bounce:0}}>
+            }} transition={{bounce: 0}}>
                 <motion.div style={{
                     display: 'flex',
                     backgroundColor: red,
-                    color: white,
+                    color: pageColor,
                     padding: '10px 20px',
                     margin: '5px 10px',
                     alignItems: 'center',
-                    boxShadow:'0 5px 5px -3px rgba(0,0,0,0.5)',
+                    boxShadow: '0 5px 5px -3px rgba(0,0,0,0.5)',
                     borderRadius: 10
                 }} whileTap={{scale: 0.95}} onTap={() => {
                     navigate('order-detail');

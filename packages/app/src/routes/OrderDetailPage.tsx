@@ -1,25 +1,33 @@
 import {Page} from "./Page";
-import {Header} from "../components/page-components/Header";
-import {StoreValue, StoreValueRenderer, useStore} from "../components/store/useStore";
+import {
+    Address,
+    Card,
+    CardRow,
+    CardTitle,
+    GuestAddress,
+    Header,
+    pageBackgroundColor,
+    pageColor,
+    red,
+    RouteProps,
+    StoreValue,
+    StoreValueRenderer,
+    useAddress,
+    useAppStore,
+    useFocusListener,
+    useNavigate,
+    useStore,
+    Value
+} from "@restaroo/lib";
 import {CartItem} from "./DeliveryPage";
-import {Card, CardRow, CardTitle} from "../components/page-components/Card";
-import {RouteProps} from "../components/useRoute";
 import {IoAddOutline, IoCaretForward, IoCaretUp, IoDisc, IoDocumentOutline, IoLocation} from "react-icons/io5";
-import {AddToCartButton} from "../components/page-components/AddToCartButton";
-import {useNavigate} from "../components/useNavigate";
+import {AddToCartButton} from "../component/AddToCartButton";
 import {TbDiscount} from "react-icons/tb";
 import {RiMastercardLine} from "react-icons/ri";
-import {red, white} from "./Theme";
-import {Value} from "../components/page-components/Value";
-import {useDeliveryChargeCalculator} from "../components/useDeliveryChargeCalculator";
+import {useDeliveryChargeCalculator} from "../component/useDeliveryChargeCalculator";
 import {AnimatePresence, motion} from "framer-motion";
-import {useAppContext} from "../components/useAppContext";
-import {AppState} from "../components/AppState";
-import {useAddress} from "../model/useAddress";
-import {useFocusListener} from "../components/RouterPageContainer";
-import {Address} from "../model/Address";
-import {GuestAddress} from "../model/Profile";
 import {useRef} from "react";
+import {AppState} from "../component/AppState";
 
 export function calculateCartItemPrice(cart: CartItem): number {
     const total = cart.product.price + cart.options.reduce((total, configOption) => {
@@ -58,8 +66,9 @@ export function CardItemDetail(props: { cart: CartItem }) {
 
 const tipsDataProvider = [2, 4, 8]
 export default function OrderDetailPage(props: RouteProps) {
-    const {store} = useAppContext();
-
+    const store = useAppStore<AppState>();
+    // const {store:st} = useAppContext();
+    // const store:Store<AppState> = st as any;
     const navigate = useNavigate();
     const deliveryCharge = useDeliveryChargeCalculator();
     const tipsStore = useStore(tipsDataProvider[0]);
@@ -72,7 +81,7 @@ export default function OrderDetailPage(props: RouteProps) {
         })();
     })
     const headerRef = useRef<{ showShadow: (param: boolean) => void }>();
-    return <Page style={{backgroundColor: '#F2F2F2', position: 'relative'}}>
+    return <Page style={{backgroundColor: pageBackgroundColor, position: 'relative'}}>
 
         <div style={{
             display: 'flex',
@@ -131,8 +140,8 @@ export default function OrderDetailPage(props: RouteProps) {
                                                    marginRight: 10,
                                                    boxShadow: '0 3px 5px -3px rgba(0,0,0,0.2)',
                                                    fontSize: 14,
-                                                   backgroundColor: selected ? red : white,
-                                                   color: selected ? white : red,
+                                                   backgroundColor: selected ? red : pageColor,
+                                                   color: selected ? pageColor : red,
                                                    border: `1px solid ${red}`,
                                                }}
                                                whileTap={{scale: 0.95}}
@@ -155,7 +164,7 @@ export default function OrderDetailPage(props: RouteProps) {
                         <div style={{flexGrow: 1}}>Item total</div>
                         <div style={{marginRight: 5}}>AED</div>
                         <StoreValue store={store}
-                                    selector={(s: AppState) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
+                                    selector={(s) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
                                     property={'value'}>
                             <Value/>
                         </StoreValue>
@@ -180,7 +189,7 @@ export default function OrderDetailPage(props: RouteProps) {
                     }}>
                         <div style={{flexGrow: 1}}>Grand Total</div>
                         <StoreValueRenderer store={store}
-                                            selector={(s: AppState) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
+                                            selector={(s) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
                                             render={(total) => {
                                                 return <StoreValueRenderer store={tipsStore} selector={s => s}
                                                                            render={(tip) => {
@@ -244,7 +253,7 @@ export default function OrderDetailPage(props: RouteProps) {
                     alignItems: 'center',
                     flexGrow: 1,
                     background: red,
-                    color: white,
+                    color: pageColor,
                     padding: 10,
                     borderRadius: 10,
                     marginLeft: 10,
@@ -252,7 +261,7 @@ export default function OrderDetailPage(props: RouteProps) {
                 }}>
                     <div style={{display: 'flex', flexDirection: 'column', flexGrow: '1'}}>
                         <StoreValueRenderer store={store}
-                                            selector={(s: AppState) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
+                                            selector={(s) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
                                             render={(total) => {
                                                 return <StoreValueRenderer store={tipsStore} selector={s => s}
                                                                            render={(tip) => {

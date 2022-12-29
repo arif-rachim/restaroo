@@ -1,7 +1,21 @@
 import {Page} from "./Page";
-import {Header} from "../components/page-components/Header";
-import {RouteProps} from "../components/useRoute";
-import {Card, CardRow, CardTitle} from "../components/page-components/Card";
+import {
+    AvatarImage,
+    Button,
+    ButtonTheme,
+    Card,
+    CardRow,
+    CardTitle,
+    GuestProfile,
+    Header,
+    pageBackgroundColor,
+    RouteProps,
+    useAppContext,
+    useNavigate,
+    useProfile,
+    useSessionIsActive,
+    Visible
+} from "@restaroo/lib";
 import {BsCreditCard2Front} from "react-icons/bs";
 import {
     IoBagHandleOutline,
@@ -17,17 +31,9 @@ import {
 import {RefObject, useRef} from "react";
 import invariant from "tiny-invariant";
 import {RiDraftLine} from "react-icons/ri";
-import {useProfile, useSessionIsActive} from "../model/useProfile";
-import {Button} from "../components/page-components/Button";
-import {ButtonTheme} from "./Theme";
-import {Visible} from "../components/page-components/Visible";
-import {useNavigate} from "../components/useNavigate";
-import {GuestProfile} from "../model/Profile";
 import {motion} from "framer-motion";
-import {useAppContext} from "../components/useAppContext";
 import produce from "immer";
-import {pocketBase} from "../components/pocketBase";
-import {AvatarImage} from "../components/page-components/AvatarImage";
+import {pocketBase} from "../service";
 
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     const isSessionActive = useSessionIsActive();
@@ -44,10 +50,10 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
             </div>
         </Visible>
         <Visible if={isSessionActive}>
-            <div style={{display: 'flex', padding: 10,alignItems:'flex-end'}}>
-                <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1,paddingRight:10}}>
-                    <div style={{fontSize: 26, fontWeight: 200,lineHeight:1,marginBottom:10}}>{user.name}</div>
-                    <div style={{fontSize:16,fontWeight:300}}>{user.username}</div>
+            <div style={{display: 'flex', padding: 10, alignItems: 'flex-end'}}>
+                <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1, paddingRight: 10}}>
+                    <div style={{fontSize: 26, fontWeight: 200, lineHeight: 1, marginBottom: 10}}>{user.name}</div>
+                    <div style={{fontSize: 16, fontWeight: 300}}>{user.username}</div>
                 </div>
                 <AvatarImage height={80} width={80} onClick={() => navigate('camera')}/>
             </div>
@@ -57,11 +63,11 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
 
 
 export function AccountPage(props: RouteProps) {
-    const {store:appStore} = useAppContext();
+    const {store: appStore} = useAppContext();
     const containerRef = useRef<HTMLDivElement>(null);
     const isSessionActive = useSessionIsActive();
     const navigate = useNavigate();
-    return <Page style={{padding: 0, background: '#F2F2F2'}}>
+    return <Page style={{padding: 0, background: pageBackgroundColor}}>
         <Header title={''}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto'}}>
             <ProfilePanel containerRef={containerRef}/>

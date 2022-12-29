@@ -1,10 +1,6 @@
-import {RouteProps} from "../components/useRoute";
-import {Button} from "../components/page-components/Button";
-import {ButtonTheme} from "./Theme";
+import {Button, ButtonTheme, Image, RouteProps, useNavigate} from "@restaroo/lib";
 import {MdRestaurant} from "react-icons/md";
-import {useNavigate} from "../components/useNavigate";
 import restaroo from "../assets/restaroo.svg";
-import {Image} from "../components/page-components/Image";
 
 export function LandingPage(props: RouteProps) {
     const navigate = useNavigate();
