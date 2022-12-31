@@ -1,11 +1,6 @@
 import {ComponentType, memo, MemoExoticComponent, useEffect, useRef, useState} from "react";
 import noNull from "../utils/noNull";
 
-let routes: Routes = {};
-
-export function registerRoute(r: Routes) {
-    routes = r;
-}
 
 export interface ParamsAndComponent {
     params: Map<string, string>,
@@ -16,7 +11,7 @@ export interface ParamsAndComponent {
     initial: InitialPosition
 }
 
-export function useRoute(): ParamsAndComponent {
+export function useRoute(routes:Routes): ParamsAndComponent {
     const route: [string, RouteElement | MotionRouteElement][] = Object.entries(routes);
     const getParamsAndComponent = useParamsAndComponent();
     const [paramsAndComponent, setParamsRouteComponent] = useState<ParamsAndComponent>(() => getParamsAndComponent(route));

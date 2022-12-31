@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {createApp, GuestProfile} from "@restaroo/lib";
+import {createApp, GuestProfile, Routes} from "@restaroo/lib";
 import {LandingPage} from "./routes/LandingPage";
 import {DeliveryPage} from "./routes/DeliveryPage";
 import {DiningPage} from "./routes/DiningPage";
@@ -24,7 +24,9 @@ const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
-const MyApp = createApp<AppState>({
+const MyApp = createApp<AppState>()
+
+const routes:Routes = {
     '': {
         component: LandingPage,
         initial: 'bottom'
@@ -85,9 +87,7 @@ const MyApp = createApp<AppState>({
         component: CameraPage,
         initial: 'right'
     }
-})
-
-
+}
 root.render(<MyApp mobileOnly={true} stateInitValue={{
     user: GuestProfile,
     addresses: [],
@@ -97,7 +97,7 @@ root.render(<MyApp mobileOnly={true} stateInitValue={{
         return {...currentState, shoppingCart: []};
     })
     // here we can perform fetching other stuff here !
-}} pocketBase={pocketBase}/>);
+}} pocketBase={pocketBase} routes={routes}/>);
 
 
 // If you want to start measuring performance in your app, pass a function

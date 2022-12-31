@@ -1,4 +1,4 @@
-import {RouteProps, useRoute} from "./useRoute";
+import {RouteProps, Routes, useRoute} from "./useRoute";
 import {createContext, FunctionComponent, memo, useContext, useMemo, useRef} from "react";
 import {motion, Variants} from "framer-motion";
 import {createStoreInitValue, isFunction, isPromise, Store, useAfterInit, useStore, useStoreListener} from "../utils";
@@ -45,7 +45,7 @@ const variants: Variants = {
  * Router Page Container
  * @constructor
  */
-export function RouterPageContainer() {
+export function RouterPageContainer(props:{routes:Routes}) {
     const componentsRef = useRef<PathAbleComponent[]>([]);
 
     const {
@@ -55,7 +55,7 @@ export function RouterPageContainer() {
         initial,
         routeFooterComponent: RouteFooterComponent,
         routeHeaderComponent: RouterHeaderComponent
-    } = useRoute();
+    } = useRoute(props.routes);
 
     const pathStore = useStore(path);
     useAfterInit(() => pathStore.setState(path), [path])

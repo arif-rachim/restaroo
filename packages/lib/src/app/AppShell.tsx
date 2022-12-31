@@ -2,9 +2,17 @@ import {CSSProperties, ReactElement, useEffect, useRef} from "react";
 import {AppContextProvider} from "./useAppContext";
 import {AnimatePresence, motion} from "framer-motion";
 
-import {getProp, isEmptyText, Store, useStore, useStoreListener, useStoreValue} from "../components/utils";
+import {
+    getProp,
+    isEmptyText,
+    isNullOrUndefined,
+    Store,
+    useStore,
+    useStoreListener,
+    useStoreValue
+} from "../components/utils";
 import {PickerProvider, ShowPickerFunction} from "../components/input";
-import {RouterPageContainer} from "../components/route";
+import {RouterPageContainer, Routes} from "../components/route";
 import {BaseState} from "./BaseState";
 import {GuestProfile, Profile} from "./profile";
 import produce from "immer";
@@ -98,7 +106,8 @@ function useAppStoreInitialization<T extends BaseState>(initializer: T, pocketBa
         (async () => {
             let user = GuestProfile;
             let addresses: Address[] = [];
-            const hasToken = !isEmptyText(getProp(pocketBase, 'authStore', 'token'));
+            const token = getProp(pocketBase, 'authStore', 'token');
+            const hasToken = !isNullOrUndefined(getProp(pocketBase, 'authStore', 'token'));
             if (hasToken) {
                 const authData = await pocketBase.collection('users').authRefresh();
                 if (!authData.record) {
@@ -140,7 +149,7 @@ function useAppStoreInitialization<T extends BaseState>(initializer: T, pocketBa
     return store;
 }
 
-export default function AppShell<T extends BaseState>(props: { initValue: T, onProfileChange: (next: Profile, prev: (Profile | undefined), store: Store<T>) => void, pocketBase: PocketBase }) {
+export default function AppShell<T extends BaseState>(props: { initValue: T, onProfileChange: (next: Profile, prev: (Profile | undefined), store: Store<T>) => void, pocketBase: PocketBase,routes:Routes }) {
     const panelStore = useStore<{ modalPanel: ReactElement | false, slidePanel: ReactElement | false }>({
         modalPanel: false,
         slidePanel: false
@@ -150,7 +159,7 @@ export default function AppShell<T extends BaseState>(props: { initValue: T, onP
     useStoreListener(store, s => s.user, (next, prev) => props.onProfileChange(next, prev, store));
     return <AppContextProvider panelStore={panelStore} store={store} showPickerRef={showPickerRef}>
         <div style={shellStyle}>
-            <RouterPageContainer/>
+            <RouterPageContainer routes={props.routes}/>
             <SlideAndModalPanel panelStore={panelStore}/>
         </div>
         <PickerProvider ref={instance => showPickerRef.current = getProp(instance, 'showPicker')}/>
