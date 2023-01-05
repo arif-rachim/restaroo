@@ -18,7 +18,8 @@ export function AvatarImage(props: { width: number, height: number, onClick: (ev
         flexShrink: 0
     }} whileTap={{scale: 0.9}} onClick={(event) => props.onClick(event)}>
         <Image width={props.width} height={props.height}
-               alt={user.id} src={`http://127.0.0.1:8090/api/files/users/${user.id}/${user.avatar}?thumb=${props.width}x${props.height}`}
+               alt={user.id}
+               src={`http://127.0.0.1:8090/api/files/users/${user.id}/${user.avatar}?thumb=${props.width}x${props.height}`}
                errorIcon={IoPersonCircleOutline}
         />
     </motion.div>

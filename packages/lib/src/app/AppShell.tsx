@@ -2,15 +2,7 @@ import {CSSProperties, ReactElement, useEffect, useRef} from "react";
 import {AppContextProvider} from "./useAppContext";
 import {AnimatePresence, motion} from "framer-motion";
 
-import {
-    getProp,
-    isEmptyText,
-    isNullOrUndefined,
-    Store,
-    useStore,
-    useStoreListener,
-    useStoreValue
-} from "../components/utils";
+import {getProp, isNullOrUndefined, Store, useStore, useStoreListener, useStoreValue} from "../components/utils";
 import {PickerProvider, ShowPickerFunction} from "../components/input";
 import {RouterPageContainer, Routes} from "../components/route";
 import {BaseState} from "./BaseState";
@@ -149,7 +141,7 @@ function useAppStoreInitialization<T extends BaseState>(initializer: T, pocketBa
     return store;
 }
 
-export default function AppShell<T extends BaseState>(props: { initValue: T, onProfileChange: (next: Profile, prev: (Profile | undefined), store: Store<T>) => void, pocketBase: PocketBase,routes:Routes }) {
+export default function AppShell<T extends BaseState>(props: { initValue: T, onProfileChange: (next: Profile, prev: (Profile | undefined), store: Store<T>) => void, pocketBase: PocketBase, routes: Routes }) {
     const panelStore = useStore<{ modalPanel: ReactElement | false, slidePanel: ReactElement | false }>({
         modalPanel: false,
         slidePanel: false

@@ -45,7 +45,7 @@ const variants: Variants = {
  * Router Page Container
  * @constructor
  */
-export function RouterPageContainer(props:{routes:Routes}) {
+export function RouterPageContainer(props: { routes: Routes }) {
     const componentsRef = useRef<PathAbleComponent[]>([]);
 
     const {

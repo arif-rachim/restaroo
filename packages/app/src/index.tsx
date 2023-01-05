@@ -26,7 +26,7 @@ const root = ReactDOM.createRoot(
 
 const MyApp = createApp<AppState>()
 
-const routes:Routes = {
+const routes: Routes = {
     '': {
         component: LandingPage,
         initial: 'bottom'

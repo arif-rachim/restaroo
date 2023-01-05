@@ -41,7 +41,7 @@ function Application<T extends BaseState>(props: AppProps<T>) {
             height: '100%',
             overflow: 'hidden',
             alignItems: 'center',
-            justifyContent:'center',
+            justifyContent: 'center',
             boxSizing: 'border-box'
         }}>
 

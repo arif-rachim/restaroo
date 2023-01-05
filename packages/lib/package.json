@@ -16,9 +16,9 @@
   "dependencies": {
     "tiny-invariant": "*",
     "framer-motion": "*",
-    "react" : "^18.2.0",
-    "@ctrl/tinycolor" : "*",
-    "react-icons" : "*",
-    "immer" : "*"
+    "react": "^18.2.0",
+    "@ctrl/tinycolor": "*",
+    "react-icons": "*",
+    "immer": "*"
   }
 }

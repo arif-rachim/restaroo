@@ -92,7 +92,7 @@ export function LoginOrSignup(route: RouteProps) {
             <div style={{display: 'flex', marginBottom: 10}}>
                 <div style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
                     <StoreValue store={phoneNumberStore} property={['value', 'error']}
-                                selector={[s => s.value, s => s.error]}>
+                                selector={s => [s.value, s.error]}>
                         <Input title={<motion.div style={{display: 'flex', width: '100%', paddingTop: 2}}
                                                   whileTap={{scale: 0.9}}
                                                   onClick={(event) => {

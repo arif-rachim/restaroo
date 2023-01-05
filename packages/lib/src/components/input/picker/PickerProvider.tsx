@@ -1,6 +1,6 @@
 import {DatePicker} from "./DatePicker";
 import {ForwardedRef, forwardRef, memo, PropsWithChildren, useImperativeHandle, useMemo} from "react";
-import {StoreValue, useStore, useStoreValue} from "../../utils/useStore";
+import {getProp, StoreValue, useAppDimension, useStore, useStoreValue} from "../../utils";
 import {motion} from "framer-motion";
 import {TimePicker} from "./TimePicker";
 import invariant from "tiny-invariant";
@@ -8,8 +8,6 @@ import {createPicker, PickerProperties, ValueOnChangeProperties} from "./createP
 import {Country, countryList} from "./dataprovider/CountryList";
 import {Gender, genderList} from "./dataprovider/GenderList";
 import {IoMdCloseCircle} from "react-icons/io";
-import {useAppDimension} from "../../utils/useAppDimension";
-import {getProp} from "../../utils";
 
 
 export type ShowPickerFunction = (control: PickerOptions, value: any) => Promise<any>;
@@ -105,13 +103,13 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
                 <PickerContainer show={false}>
                     <StoreValue store={store}
                                 property={['value', 'onChange', 'dataProvider', 'dataToLabel', 'valueToData', 'dataToValue']}
-                                selector={[
-                                    s => owner(key as PickerOptions, s.control, s.value),
-                                    s => owner(key as PickerOptions, s.control, s.onChange),
-                                    s => owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'dataProvider' in s.control ? s.control.dataProvider : undefined),
-                                    s => owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'dataToLabel' in s.control ? s.control.dataToLabel : undefined),
-                                    s => owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'valueToData' in s.control ? s.control.valueToData : undefined),
-                                    s => owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'dataToValue' in s.control ? s.control.dataToValue : undefined),
+                                selector={s => [
+                                    owner(key as PickerOptions, s.control, s.value),
+                                    owner(key as PickerOptions, s.control, s.onChange),
+                                    owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'dataProvider' in s.control ? s.control.dataProvider : undefined),
+                                    owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'dataToLabel' in s.control ? s.control.dataToLabel : undefined),
+                                    owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'valueToData' in s.control ? s.control.valueToData : undefined),
+                                    owner(key as PickerOptions, s.control, typeof s.control === 'object' && 'dataToValue' in s.control ? s.control.dataToValue : undefined)
                                 ]}>
                         <Picker/>
                     </StoreValue>

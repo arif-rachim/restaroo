@@ -143,44 +143,30 @@ type Selector<T, S> = (param: T) => S;
 
 interface StoreValueInjectorProps<T, S> {
     store: Store<T>,
-    selector: (Selector<T, S> | Selector<T, any>[]),
-    property: (string | string[])
-}
-
-function validateSelectorAndProperty<S, T>(selector: Selector<T, S> | (Selector<T, S>[]), property: string | string[]) {
-    if (Array.isArray(selector) || Array.isArray(property)) {
-        if (!(Array.isArray(selector) && Array.isArray(property))) {
-            throw new Error('Expecting both selector and property are either both array nonull single');
-        }
-        if (selector.length !== property.length) {
-            throw new Error('Expecting both selector and property have same array length');
-        }
-    }
+    selector: Selector<T, S>,
+    property: string | string[]
 }
 
 export function StoreValue<T, S>(props: PropsWithChildren<StoreValueInjectorProps<T, S>>) {
     const {store, property, selector, children} = props;
-    validateSelectorAndProperty(selector, property);
-    const value: any = useStoreValue(store, (param) => {
-        if (Array.isArray(selector)) {
-            return selector.map(s => s(param));
-        }
-        return selector(param);
-    }, [selector]);
+    const value: any = useStoreValue(store, (param) => selector(param), [selector]);
     const cp = (children as any).props;
     const childrenProps: any = {...cp};
-
     if (Array.isArray(property)) {
-        property.forEach((props, index) => {
-            childrenProps[props] = value[index];
-        })
+        if (Array.isArray(value) && property.length === value.length) {
+            property.forEach((prop: string, index: number) => {
+                childrenProps[prop] = value[index];
+            })
+        } else {
+            console.error('Unable to match props (', property.join(','), ') against value : ', value)
+        }
     } else {
         childrenProps[property] = value;
     }
     return cloneElement((children as any), childrenProps)
 }
 
-export function StoreValueRenderer<T, S>(props: { store: Store<T>, selector: (Selector<T, S> | Selector<T, any>[]), render: (value: any) => ReactElement }) {
+export function StoreValueRenderer<T, S>(props: { store: Store<T>, selector: Selector<T, S>, render: (value: any) => ReactElement }) {
     return <StoreValue store={props.store} selector={props.selector} property={'value'}>
         <Renderer renderer={props.render}/>
     </StoreValue>

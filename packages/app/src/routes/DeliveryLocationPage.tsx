@@ -144,7 +144,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
         }}>Enter complete address
         </div>
         <div style={{marginBottom: 10}}>Tag this location for later *</div>
-        <StoreValue store={store} selector={[param => param.location, param => param.errors.location]}
+        <StoreValue store={store} selector={param => [param.location, param.errors.location]}
                     property={['value', 'error']}>
             <LocationSelector onChange={(newValue: string) => {
                 store.setState(produce(s => {
@@ -153,7 +153,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                 }));
             }}/>
         </StoreValue>
-        <StoreValue store={store} selector={[s => s.houseOrFlatNo, s => s.errors.houseOrFlatNo]}
+        <StoreValue store={store} selector={s => [s.houseOrFlatNo, s.errors.houseOrFlatNo]}
                     property={['value', 'error']}>
             <Input title={'House no. / Flat no. *'} placeholder={'Please enter house no / Flat no'}
                    style={{inputStyle: {fontSize: 16}, titleStyle: {fontSize: 13}}} onChange={(event) => {
@@ -163,7 +163,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                 }));
             }}/>
         </StoreValue>
-        <StoreValue store={store} selector={[s => s.buildingOrPremiseName, s => s.errors.buildingOrPremiseName]}
+        <StoreValue store={store} selector={s => [s.buildingOrPremiseName, s.errors.buildingOrPremiseName]}
                     property={['value', 'error']}>
             <Input title={'Building / Premise Name *'} placeholder={'Please enter building nonull premise'}
                    style={{inputStyle: {fontSize: 16}, titleStyle: {fontSize: 13}}} onChange={(event) => {
@@ -173,7 +173,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                 }));
             }}/>
         </StoreValue>
-        <StoreValue store={store} selector={[s => s.areaOrStreetName, s => s.errors.areaOrStreetName]}
+        <StoreValue store={store} selector={s => [s.areaOrStreetName, s.errors.areaOrStreetName]}
                     property={['value', 'error']}>
             <Input title={'Area / Street *'} placeholder={'Please find area nonull street address'}
                    style={{inputStyle: {fontSize: 16}, titleStyle: {fontSize: 13}}} onChange={(event) => {

@@ -1,5 +1,4 @@
 import * as dotenv from 'dotenv';
-dotenv.config({path:'.env.local'});
 import {createServer, IncomingMessage, ServerResponse} from "http";
 import {spawn} from "child_process";
 import {options} from "./middleware/options";
@@ -8,17 +7,19 @@ import {json} from "./middleware/json";
 import {get} from "./middleware/get";
 import {Middleware} from "./middleware/Middleware";
 
+dotenv.config({path: '.env.local'});
 
-function createMiddleware(){
-    const middlewares:Middleware[] = [];
+
+function createMiddleware() {
+    const middlewares: Middleware[] = [];
     return {
-        addMiddleware : (middleware:Middleware) => {
+        addMiddleware: (middleware: Middleware) => {
             middlewares.push(middleware)
         },
-        run : async (request:IncomingMessage,response: ServerResponse<IncomingMessage> & {req: IncomingMessage}) => {
+        run: async (request: IncomingMessage, response: ServerResponse<IncomingMessage> & { req: IncomingMessage }) => {
             for (const middleware of middlewares) {
-                const next:any = await (() => new Promise((resolve) => middleware(request,response,resolve)))();
-                if(next === false){
+                const next: any = await (() => new Promise((resolve) => middleware(request, response, resolve)))();
+                if (next === false) {
                     return;
                 }
             }
@@ -27,17 +28,19 @@ function createMiddleware(){
 }
 
 let pocketBasePort = parseInt(process.env.POCKET_BASE_PORT);
-let serverPort:number = parseInt(process.env.SERVER_PORT);
+let serverPort: number = parseInt(process.env.SERVER_PORT);
 
 function runPocketBase() {
 
-    const db = spawn('./db/pocketbase', ['serve',`--http=127.0.0.1:${pocketBasePort}`]);
-    db.stdout.on('data', (data:any) => console.log(data?.toString()));
-    db.stderr.on('data', (data:any) => console.log(data?.toString()));
-    db.on('error', (data:any) => console.log(data?.toString()));
-    db.on('close', (data:any) => console.log(data?.toString()));
+    const db = spawn('./db/pocketbase', ['serve', `--http=127.0.0.1:${pocketBasePort}`]);
+    db.stdout.on('data', (data: any) => console.log(data?.toString()));
+    db.stderr.on('data', (data: any) => console.log(data?.toString()));
+    db.on('error', (data: any) => console.log(data?.toString()));
+    db.on('close', (data: any) => console.log(data?.toString()));
 }
-let timeoutId:NodeJS.Timeout|number = 0;
+
+let timeoutId: NodeJS.Timeout | number = 0;
+
 function runServer() {
 
     const middleware = createMiddleware();
@@ -49,7 +52,7 @@ function runServer() {
 
     const server = createServer((req, res) => middleware.run(req, res));
     server.listen(serverPort);
-    server.on('error', (e:any) => {
+    server.on('error', (e: any) => {
         if (e.code === 'EADDRINUSE') {
             console.log('Address in use, retrying...');
             clearTimeout(timeoutId);
@@ -61,7 +64,7 @@ function runServer() {
         }
     });
     server.on("listening", () => {
-        console.log('Server is listening on ',serverPort);
+        console.log('Server is listening on ', serverPort);
     })
 
 }

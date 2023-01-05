@@ -1,11 +1,11 @@
 import {useAppContext} from "../useAppContext";
-import {GuestProfile} from "./Profile";
+import {GuestProfile, Profile} from "./Profile";
 import {useStoreValue} from "../../components/utils";
 
-export function useProfile() {
+export function useProfile(): Profile {
     return useStoreValue(useAppContext().store, s => s.user);
 }
 
-export function useSessionIsActive() {
+export function useSessionIsActive(): boolean {
     return useProfile().id !== GuestProfile.id;
 }

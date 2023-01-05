@@ -1,6 +1,5 @@
-import {RouteProps, useNavigate} from "@restaroo/lib";
+import {red, RouteProps, useAppDimension, useFooterVisible, useNavigate} from "@restaroo/lib";
 import {motion} from "framer-motion";
-import {red} from "@restaroo/lib";
 import {
     MdDeliveryDining,
     MdOutlineAccessTime,
@@ -8,8 +7,6 @@ import {
     MdOutlineDeliveryDining,
 } from "react-icons/md";
 import {IconType} from "react-icons";
-import {useAppDimension} from "@restaroo/lib";
-import {useFooterVisible} from "@restaroo/lib";
 
 function NavigationButton(props: { path: string, link: string, title: string, icon: IconType, iconSelected: IconType, width: string }) {
     const navigate = useNavigate();
@@ -59,7 +56,6 @@ const menus: Menu[] = [{
         iconSelected: MdOutlineAccessTimeFilled
     }
 ];
-
 
 
 export function FooterNavigation(props: RouteProps) {

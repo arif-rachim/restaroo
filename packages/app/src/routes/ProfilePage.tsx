@@ -84,7 +84,7 @@ export function ProfilePage(props: RouteProps) {
         <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto', flexGrow: 1}}>
             <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
                 <Card>
-                    <StoreValue store={store} selector={[s => s.name, s => s.errors.name]}
+                    <StoreValue store={store} selector={s => [s.name, s.errors.name]}
                                 property={['value', 'error']}>
                         <Input title={'Name :'} titlePosition={'left'} titleWidth={90}
                                placeholder={'Enter your name here'}
@@ -106,7 +106,7 @@ export function ProfilePage(props: RouteProps) {
                     {/*        }))*/}
                     {/*    }}/>*/}
                     {/*</StoreValue>*/}
-                    <StoreValue store={store} selector={[s => s.username, s => s.errors.username]}
+                    <StoreValue store={store} selector={s => [s.username, s.errors.username]}
                                 property={['value', 'error']}>
                         <Input title={'Phone :'} titlePosition={'left'} titleWidth={90}
                                placeholder={'Enter your phone number here'}

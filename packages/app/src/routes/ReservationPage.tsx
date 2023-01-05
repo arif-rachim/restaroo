@@ -169,7 +169,7 @@ function PersonalDetailForm(props: {
         return isEmptyObject(store.stateRef.current.errors);
     }
     return <SlideDetail closePanel={closePanel}>
-        <StoreValue store={store} selector={[s => s.firstName, s => s.errors.firstName]} property={['value', 'error']}>
+        <StoreValue store={store} selector={s => [s.firstName, s.errors.firstName]} property={['value', 'error']}>
             <Input title={'First name'} placeholder={'enter your first name'}
                    onChange={(e) => {
                        store.setState(produce(s => {
@@ -178,7 +178,7 @@ function PersonalDetailForm(props: {
                        }));
                    }} style={{inputStyle: {fontSize: 14}, titleStyle: {fontSize: 13}}}/>
         </StoreValue>
-        <StoreValue store={store} selector={[s => s.lastName, s => s.errors.lastName]} property={['value', 'error']}>
+        <StoreValue store={store} selector={s => [s.lastName, s.errors.lastName]} property={['value', 'error']}>
             <Input title={'Last name'} placeholder={'enter your first name'}
                    onChange={(e) => {
                        store.setState(produce(s => {
@@ -187,7 +187,7 @@ function PersonalDetailForm(props: {
                        }));
                    }} style={{inputStyle: {fontSize: 14}, titleStyle: {fontSize: 13}}}/>
         </StoreValue>
-        <StoreValue store={store} selector={[s => s.email, s => s.errors.email]} property={['value', 'error']}>
+        <StoreValue store={store} selector={s => [s.email, s.errors.email]} property={['value', 'error']}>
             <Input title={'Email'} placeholder={'enter your email'} onChange={(e) => {
                 store.setState(produce(s => {
                     s.email = e.target.value;
@@ -195,7 +195,7 @@ function PersonalDetailForm(props: {
                 }));
             }} style={{inputStyle: {fontSize: 14}, titleStyle: {fontSize: 13}}}/>
         </StoreValue>
-        <StoreValue store={store} selector={[s => s.phoneNo, s => s.errors.phoneNo]} property={['value', 'error']}>
+        <StoreValue store={store} selector={s => [s.phoneNo, s.errors.phoneNo]} property={['value', 'error']}>
             <Input title={'Phone'} placeholder={'enter your phone number'} onChange={(e) => {
                 store.setState(produce(s => {
                     s.phoneNo = e.target.value;

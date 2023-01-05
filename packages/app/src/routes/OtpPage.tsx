@@ -89,10 +89,10 @@ export function OtpPage(route: RouteProps) {
             </div>
             <div style={{fontSize: 15, fontWeight: 'bold', marginBottom: 20}}>{phoneNo}</div>
             <div style={{display: 'flex', flexDirection: 'column', marginBottom: 30, color: 'black'}}>
-                <StoreValue store={store} selector={[s => s.otp, s => {
+                <StoreValue store={store} selector={s => {
                     const hasError = s.errorMessage !== '';
-                    return hasError || isBusy
-                }]} property={['value', 'disabled']}>
+                    return [s.otp, hasError || isBusy];
+                }} property={['value', 'disabled']}>
                     <OtpInput value={''} valueLength={6} onChange={(newVal) => {
                         store.setState(old => ({...old, otp: newVal, errorMessage: ''}));
                     }}/>
@@ -102,9 +102,9 @@ export function OtpPage(route: RouteProps) {
                 </StoreValue>
             </div>
             <div style={{display: 'flex', marginBottom: 30}}>
-                <StoreValue store={store} selector={[s => s.countdown !== 0,
-                    s => s.countdown === 0 ? 'Resend SMS' : `Resend SMS in ${s.countdown}`
-                ]} property={['disabled', 'title']}>
+                <StoreValue store={store}
+                            selector={s => [s.countdown !== 0, s.countdown === 0 ? 'Resend SMS' : `Resend SMS in ${s.countdown}`]}
+                            property={['disabled', 'title']}>
                     <Button title={''} icon={MdOutlineSms} theme={ButtonTheme.danger} onTap={() => {
                         (async () => {
                             const token = Math.random().toString().substr(2, 6);
@@ -117,8 +117,8 @@ export function OtpPage(route: RouteProps) {
                     }} style={{fontSize: 13, marginRight: 10}} iconStyle={{fontSize: 15, width: 15, height: 15}}
                             isBusy={isBusy}/>
                 </StoreValue>
-                <StoreValue store={store} selector={[s => s.countdown !== 0,
-                    s => s.countdown === 0 ? 'Call me' : `Call me in ${s.countdown}`
+                <StoreValue store={store} selector={s => [s.countdown !== 0,
+                    s.countdown === 0 ? 'Call me' : `Call me in ${s.countdown}`
                 ]} property={['disabled', 'title']}>
                     <Button title={''} icon={IoCallOutline} theme={ButtonTheme.danger} onTap={() => {
 

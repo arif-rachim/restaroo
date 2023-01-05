@@ -1,1 +1,1 @@
-export type Handler = (params:any,resolve:(value:any) => void) => void
+export type Handler = (params: any, resolve: (value: any) => void) => void

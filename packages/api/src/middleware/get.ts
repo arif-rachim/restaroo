@@ -1,6 +1,6 @@
 import {Middleware} from "./Middleware";
 
-export const get:Middleware = (req,res,next) => {
+export const get: Middleware = (req, res, next) => {
     if (req.method === 'GET') {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');

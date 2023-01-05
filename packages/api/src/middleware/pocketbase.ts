@@ -4,7 +4,7 @@ const http = require("http");
 
 const pocketBasePort = parseInt(process.env.POCKET_BASE_PORT);
 
-export const pocketBase:Middleware = (req, res, next) => {
+export const pocketBase: Middleware = (req, res, next) => {
     const pathMethod = req.url.split('/').filter(v => v).join('/');
     const isForPocketBase = pathMethod.startsWith('_') || pathMethod.startsWith('api');
     if (isForPocketBase) {
