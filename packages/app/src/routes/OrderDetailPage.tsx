@@ -65,7 +65,7 @@ export function CardItemDetail(props: { cart: CartItem }) {
 }
 
 const tipsDataProvider = [2, 4, 8]
-export default function OrderDetailPage(props: RouteProps) {
+export function OrderDetailPage(props: RouteProps) {
     const store = useAppStore<AppState>();
     // const {store:st} = useAppContext();
     // const store:Store<AppState> = st as any;

@@ -1,7 +1,7 @@
 import {Middleware} from "./Middleware";
-
+import * as dotenv from "dotenv";
 const http = require("http");
-
+dotenv.config({path: '.env.local'});
 const pocketBasePort = parseInt(process.env.POCKET_BASE_PORT);
 
 export const pocketBase: Middleware = (req, res, next) => {
@@ -11,7 +11,7 @@ export const pocketBase: Middleware = (req, res, next) => {
         const request = http.request({
             method: req.method,
             headers: req.headers,
-            host: '127.0.0.1',
+            host: 'localhost',
             port: pocketBasePort,
             path: req.url
         }, response => {

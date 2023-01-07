@@ -32,7 +32,7 @@ let serverPort: number = parseInt(process.env.SERVER_PORT);
 
 function runPocketBase() {
 
-    const db = spawn('./db/pocketbase', ['serve', `--http=127.0.0.1:${pocketBasePort}`]);
+    const db = spawn('./db/pocketbase', ['serve', `--http=localhost:${pocketBasePort}`]);
     db.stdout.on('data', (data: any) => console.log(data?.toString()));
     db.stderr.on('data', (data: any) => console.log(data?.toString()));
     db.on('error', (data: any) => console.log(data?.toString()));

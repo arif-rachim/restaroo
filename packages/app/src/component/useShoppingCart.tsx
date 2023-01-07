@@ -69,7 +69,7 @@ export function useShoppingCart() {
      */
     async function addItemToCartByProductAndOptions(options: ProductConfigOption[], product: Product) {
         if (options.length === 0) {
-            if (product.config.length > 0) {
+            if (product.configs.length > 0) {
                 await addProductToCart(product);
             } else {
                 store.setState(produce((s) => {
@@ -105,7 +105,7 @@ export function useShoppingCart() {
                 await addItemToCartByProductAndOptions(options, product);
                 return;
             }
-            if (product.config.length > 0) {
+            if (product.configs.length > 0) {
                 await openProductRemoval(product);
             } else {
                 store.setState(produce((s) => {

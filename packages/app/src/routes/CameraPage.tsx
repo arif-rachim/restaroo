@@ -28,7 +28,7 @@ function dataURItoBlob(dataURI: string) {
     return new Blob([ia], {type: mimeString});
 }
 
-export default function CameraPage() {
+export function CameraPage() {
     const {appDimension} = useAppDimension();
     const {store: appStore} = useAppContext();
     const [dataUri, setDataUri] = useState('');

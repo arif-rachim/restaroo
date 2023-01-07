@@ -189,7 +189,7 @@ export function DeliveryPage(props: RouteProps) {
                                 flexDirection: 'column',
                                 overflow: 'hidden'
                             }}>
-                                <img src={process.env.PUBLIC_URL + product.imageAddress} width={130} height={130}
+                                <img src={process.env.PUBLIC_URL + product.image} width={130} height={130}
                                      style={{
                                          width: 130,
                                          height: 130,

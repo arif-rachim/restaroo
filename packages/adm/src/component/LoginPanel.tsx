@@ -14,7 +14,7 @@ export default function LoginPanel() {
         height: '100%'
     }}>
         <div style={{display: 'flex', flexDirection: 'column', width: 350}}>
-            <Input titlePosition={'left'} titleWidth={100} title={'Phone No'} placeholder={'0509018075'}/>
+            <Input titlePosition={'left'} titleWidth={100} title={'Phone No'} placeholder={'0509018075'} style={{inputStyle:{fontSize:16},titleStyle:{fontSize:16}}}/>
             <Button onTap={() => {
             }} title={'Request OTP'} icon={IoLogIn} theme={ButtonTheme.danger}></Button>
             <Input titlePosition={'left'} titleWidth={100} title={'OTP'} placeholder={'Please enter OTP'}/>

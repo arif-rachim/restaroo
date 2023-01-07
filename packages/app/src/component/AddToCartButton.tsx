@@ -128,7 +128,7 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
         options: []
     });
     const validate = useCallback(() => {
-        return product.config.filter(c => c.required).map(c => {
+        return product.configs.filter(c => c.required).map(c => {
             for (const requiredOption of c.options) {
                 const isSelected = store.stateRef.current.options.findIndex(o => o.name === requiredOption.name) >= 0;
                 if (isSelected) {
@@ -137,12 +137,12 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
             }
             return `Selecting a${['a', 'i', 'u', 'e', 'o'].includes(c.name.substring(0, 1).toLowerCase()) ? 'n' : ''} ${c.name} is required.`
         }).filter(m => m);
-    }, [product.config, store.stateRef]);
+    }, [product.configs, store.stateRef]);
     return <SlideDetail closePanel={closePanel} style={{backgroundColor: pageBackgroundColor, padding: 0}}>
         <div style={{flexGrow: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', paddingBottom: 70}}>
             <Card style={{padding: 0, margin: 10}}>
                 <div style={{marginBottom: 10}}>
-                    <Image src={process.env.PUBLIC_URL + product.imageAddress} height={appDimension.width - 20}
+                    <Image src={process.env.PUBLIC_URL + product.image} height={appDimension.width - 20}
                            width={appDimension.width - 20}
                            style={{borderRadius: 10}}
                     />
@@ -153,7 +153,7 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
                     <div style={{fontSize: 16, marginBottom: 20}}>{product.description}</div>
                 </div>
             </Card>
-            {product.config.map(config => {
+            {product.configs.map(config => {
                 return <ProductConfigCard config={config} key={config.name} store={store} product={product}/>
             })}
         </div>

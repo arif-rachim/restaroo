@@ -11,8 +11,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Sumedang tofu with spicy, sweet and sour sauce made from palm sugar and tamarind.',
         servesFor: 1,
-        imageAddress: '/assets/product/tahu-gejrot-cirebon.jpeg',
-        config: []
+        image: '/assets/product/tahu-gejrot-cirebon.jpeg',
+        configs: []
     },
     {
         id: 'gorengan-tempe-mendoan',
@@ -23,8 +23,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Three pieces of friend tempe.',
         servesFor: 1,
-        imageAddress: '/assets/product/gorengan-tempe-mendoan.jpeg',
-        config: []
+        image: '/assets/product/gorengan-tempe-mendoan.jpeg',
+        configs: []
     },
     {
         id: 'gorengan-bakwan-sayur',
@@ -35,8 +35,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Three pieces of vegetables fritters',
         servesFor: 1,
-        imageAddress: '/assets/product/gorengan-bakwan-sayur.jpeg',
-        config: []
+        image: '/assets/product/gorengan-bakwan-sayur.jpeg',
+        configs: []
     },
     {
         id: 'gorengan-tahu-isi',
@@ -47,8 +47,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Three pieces of stuffed tofu.',
         servesFor: 1,
-        imageAddress: '/assets/product/gorengan-tahu-isi.jpeg',
-        config: []
+        image: '/assets/product/gorengan-tahu-isi.jpeg',
+        configs: []
     },
     {
         id: 'gorengan-bakwan-jagung',
@@ -59,8 +59,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Bakwan Jagung nonull corn fritters, is a simple yet delicious Indonesian deep fried snack that\'s perfect asa side dish nonull for teatime',
         servesFor: 1,
-        imageAddress: '/assets/product/gorengan-bakwan-jagung.jpeg',
-        config: []
+        image: '/assets/product/gorengan-bakwan-jagung.jpeg',
+        configs: []
     },
     {
         id: 'gorengan-mix',
@@ -71,8 +71,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Can\'t decide which gorengan to have? Choose 3 out of 4 types of gorengans',
         servesFor: 1,
-        imageAddress: '/assets/product/gorengan-mix.jpeg',
-        config: [
+        image: '/assets/product/gorengan-mix.jpeg',
+        configs: [
             {
                 name: 'Gorengan Types',
                 maximumSelection: 3,
@@ -111,8 +111,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Crispy fish cake with egg noodle, chopped cucumber, served in sweet and sour sauce made from palm sugar and tamarind',
         servesFor: 1,
-        imageAddress: '/assets/product/pempek-palembang.jpeg',
-        config: []
+        image: '/assets/product/pempek-palembang.jpeg',
+        configs: []
     },
     {
         id: 'siomay-bandung',
@@ -123,8 +123,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Steamed fish cake with tofu, boiled potato, bitter gourd and steamed cabbage with peanut sauce',
         servesFor: 1,
-        imageAddress: '/assets/product/siomay-bandung.jpeg',
-        config: []
+        image: '/assets/product/siomay-bandung.jpeg',
+        configs: []
     },
     {
         id: 'gado-gado',
@@ -135,8 +135,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Indonesian mix vegetable salad with peanut dressing and crackers',
         servesFor: 1,
-        imageAddress: '/assets/product/gado-gado.jpeg',
-        config: []
+        image: '/assets/product/gado-gado.jpeg',
+        configs: []
     },
     {
         id: 'martabak-telor',
@@ -147,8 +147,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Indonesian stuffed savory pancakes filled with savory egg-beef mix and curry spices served with pickle.',
         servesFor: 1,
-        imageAddress: '/assets/product/martabak-telor.jpeg',
-        config: []
+        image: '/assets/product/martabak-telor.jpeg',
+        configs: []
     },/// THIS IS WHERE THE MAIN COURSE BEGIN
     {
         id: 'seafood-bakar-platter',
@@ -159,8 +159,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Package of squid, shrimp, clams and mussles charcoal-grilled served with unlimited rice, spicy chili paste and sambal matah - Good for 2-3 persons.',
         servesFor: 2,
-        imageAddress: '/assets/product/seafood-bakar-platter.jpeg',
-        config: [
+        image: '/assets/product/seafood-bakar-platter.jpeg',
+        configs: [
             {
                 name: 'Style',
                 required: true,
@@ -189,8 +189,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'White rice, served with tender jackfruit curry, steamed green vegetables, spicy egg, chili green paste with cow feet curry.',
         servesFor: 1,
-        imageAddress: '/assets/product/nasi-padang.jpeg',
-        config: [{
+        image: '/assets/product/nasi-padang.jpeg',
+        configs: [{
             name: 'Sides',
             required: true,
             maximumSelection: 1,
@@ -232,8 +232,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Charcoal grilled chicken skewer with rice cake, peanut sauce and pickle',
         servesFor: 1,
-        imageAddress: '/assets/product/sate-ayam-madura.jpeg',
-        config: []
+        image: '/assets/product/sate-ayam-madura.jpeg',
+        configs: []
     },
     {
         id: 'sate-kambing-khas-solo',
@@ -244,8 +244,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Charcoal grilled lamb skewer, Solonese style with rice cake, peanut sauce and pickle',
         servesFor: 1,
-        imageAddress: '/assets/product/sate-kambing-khas-solo.jpeg',
-        config: []
+        image: '/assets/product/sate-kambing-khas-solo.jpeg',
+        configs: []
     },
     {
         id: 'sate-padang',
@@ -256,8 +256,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Charcoal-grilled beef skewer served with rice cake and spicy cassava chips with aromatic curry gravy',
         servesFor: 1,
-        imageAddress: '/assets/product/sate-padang.jpeg',
-        config: [
+        image: '/assets/product/sate-padang.jpeg',
+        configs: [
             {
                 name: 'Meat',
                 required: true,
@@ -290,8 +290,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Indonesian style stir fried homemade egg noodle with seafood, meatball, vegetables and egg',
         servesFor: 1,
-        imageAddress: '/assets/product/mie-dukduk.jpeg',
-        config: [
+        image: '/assets/product/mie-dukduk.jpeg',
+        configs: [
             {
                 name: 'Meat',
                 required: true,
@@ -347,8 +347,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Indonesian style fried rice, served with chicken satay, shredded chicken, meatball, egg, shrimp crackers and pickle',
         servesFor: 1,
-        imageAddress: '/assets/product/nasi-goreng-spesial.jpeg',
-        config: [
+        image: '/assets/product/nasi-goreng-spesial.jpeg',
+        configs: [
             {
                 name: 'Spicy level',
                 required: true,
@@ -387,8 +387,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Freshly homemadre egg noodle, served with green mustard, meat ball, fried dumpling, chicken and mushroom topping',
         servesFor: 1,
-        imageAddress: '/assets/product/mie-ayam-jamur.jpeg',
-        config: []
+        image: '/assets/product/mie-ayam-jamur.jpeg',
+        configs: []
     },
     {
         id: 'ayam-bakar-kalasan',
@@ -399,8 +399,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Crispy grilled chicken with sweet soy sauce, served with rice, salad and chili paste',
         servesFor: 1,
-        imageAddress: '/assets/product/ayam-bakar-kalasan.jpeg',
-        config: [{
+        image: '/assets/product/ayam-bakar-kalasan.jpeg',
+        configs: [{
             name: 'Meat',
             required: true,
             maximumSelection: 1,
@@ -433,8 +433,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Indonesian pride instant noodle with poached egg, beef corned and cheddar cheese.',
         servesFor: 1,
-        imageAddress: '/assets/product/internet.jpeg',
-        config: [
+        image: '/assets/product/internet.jpeg',
+        configs: [
             {
                 name: 'Type',
                 required: true,
@@ -490,8 +490,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Spicy Indonesian charcoal-grilled chicken originated from Taliwang in West Nusa Tenggara, Indonesia. Served with rice wrapped in banana leaf, plecing kangkung, fried tempe and tofu and spicy chili paste',
         servesFor: 1,
-        imageAddress: '/assets/product/ayam-bakar-taliwang.jpeg',
-        config: [
+        image: '/assets/product/ayam-bakar-taliwang.jpeg',
+        configs: [
             {
                 name: 'Meat',
                 required: true,
@@ -526,8 +526,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Oxtail clear soup with gnemon crackers, pickle and chili paste, served with white rice.',
         servesFor: 1,
-        imageAddress: '/assets/product/sup-buntut-rempah.jpeg',
-        config: [
+        image: '/assets/product/sup-buntut-rempah.jpeg',
+        configs: [
             {
                 name: 'Oxtail Soup Type',
                 required: true,
@@ -582,8 +582,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Fried chicken that is smashed with the pestle against mortar to make it softer, served with white rice, sambal, vegetables, fried tofu and tempe.',
         servesFor: 1,
-        imageAddress: '/assets/product/ayam-penyet.jpeg',
-        config: [
+        image: '/assets/product/ayam-penyet.jpeg',
+        configs: [
             {
                 name: 'Meat',
                 required: true,
@@ -645,8 +645,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Char grilled BBQ short ribs with peanut and steamed rice in Makassar\'s style',
         servesFor: 1,
-        imageAddress: '/assets/product/konro-bakar-makasar.jpeg',
-        config: []
+        image: '/assets/product/konro-bakar-makasar.jpeg',
+        configs: []
     },
     {
         id: 'es-kopi-luwak',
@@ -657,8 +657,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Kopi luwak is the world\'s most exclusive and most expensive coffee. The main factor of its high price is its unique method production',
         servesFor: 1,
-        imageAddress: '/assets/product/es-kopi-luwak.jpeg',
-        config: []
+        image: '/assets/product/es-kopi-luwak.jpeg',
+        configs: []
     },
     {
         id: 'bir-pletok-betawi',
@@ -669,8 +669,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Non alcoholic traditional drink of Indonesia. Made from several spices namely ginger, pandan leaves, boiled sappan wood, and lemongrass',
         servesFor: 1,
-        imageAddress: '/assets/product/bir-pletok-betawi.jpeg',
-        config: [
+        image: '/assets/product/bir-pletok-betawi.jpeg',
+        configs: [
             {
                 name: 'Hot nonull Cold',
                 maximumSelection: 1,
@@ -709,8 +709,8 @@ export const products: Product[] = [
         currency: 'AED',
         description: 'Mix avocado, coconut and jackfruit, served with sweetened condensed milk and crushed ice',
         servesFor: 1,
-        imageAddress: '/assets/product/es-teler-rempah.jpeg',
-        config: [
+        image: '/assets/product/es-teler-rempah.jpeg',
+        configs: [
             {
                 name: 'Hot nonull Cold',
                 maximumSelection: 1,

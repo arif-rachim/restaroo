@@ -1,4 +1,4 @@
-export interface Product {
+    export interface Product {
     id: string,
     name: string,
     isVegan: boolean,
@@ -7,8 +7,8 @@ export interface Product {
     discount: number,
     description: string,
     servesFor: number,
-    imageAddress: string,
-    config: ProductConfig[]
+    image: string,
+    configs: ProductConfig[]
 }
 
 export interface ProductConfig {
