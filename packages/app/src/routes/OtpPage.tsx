@@ -109,7 +109,6 @@ export function OtpPage(route: RouteProps) {
                         (async () => {
                             const token = Math.random().toString().substr(2, 6);
                             const result = await fetchService('otp', {phone: phoneNo, otp: token, app: APP_NAME});
-                            console.log('WE HAVE RESULT ', result);
                             store.setState(old => ({
                                 otp: '', countdown: 20, errorMessage: '', token
                             }));

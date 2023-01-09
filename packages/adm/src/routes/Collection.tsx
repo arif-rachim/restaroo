@@ -12,16 +12,16 @@ export function Collection(props:RouteProps){
         (async () => {
             try{
                 const collection = await pocketBase.collections.getOne(catalog);
+                debugger;
             }catch(err:any){
                 const {status,data:{message}} = err;
                 if(status === 401){
-                    navigate('/login');
                     // here we need to tell that this shit require status
                 }
             }
         })();
     },[catalog]);
-    return <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
+    return <div style={{display:'flex',flexDirection:'column',height:'100%',marginTop:55}}>
         <div>
             <div style={{fontSize:16}}>Catalog Header</div>
         </div>

@@ -6,11 +6,9 @@ import {
     Card,
     CardRow,
     CardTitle,
-    GuestProfile,
     Header,
     pageBackgroundColor,
     RouteProps,
-    useAppContext,
     useNavigate,
     useProfile,
     useSessionIsActive,
@@ -32,8 +30,8 @@ import {RefObject, useRef} from "react";
 import invariant from "tiny-invariant";
 import {RiDraftLine} from "react-icons/ri";
 import {motion} from "framer-motion";
-import produce from "immer";
 import {pocketBase} from "../service";
+import {useLogout} from "@restaroo/lib";
 
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     const isSessionActive = useSessionIsActive();
@@ -63,10 +61,10 @@ function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
 
 
 export function AccountPage(props: RouteProps) {
-    const {store: appStore} = useAppContext();
     const containerRef = useRef<HTMLDivElement>(null);
     const isSessionActive = useSessionIsActive();
     const navigate = useNavigate();
+    const logout = useLogout(pocketBase);
     return <Page style={{padding: 0, background: pageBackgroundColor}}>
         <Header title={''}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto'}}>
@@ -127,12 +125,9 @@ export function AccountPage(props: RouteProps) {
                     <CardRow icon={RiDraftLine} title={'Send feedback'}/>
                     <CardRow icon={IoStarOutline} title={'Rate us on play store'}/>
                     {isSessionActive &&
-                        <CardRow icon={IoLogOutOutline} title={'Log out'} onTap={async () => {
+                        <CardRow icon={IoLogOutOutline} title={'Log out'} onTap={() => {
                             // here we need to perform logout
-                            pocketBase.authStore.clear();
-                            appStore.setState(produce(s => {
-                                s.user = GuestProfile
-                            }));
+                            logout();
                             navigate('delivery');
                         }}/>
                     }

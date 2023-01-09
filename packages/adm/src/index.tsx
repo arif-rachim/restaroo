@@ -6,8 +6,9 @@ import {BaseState, createApp, GuestProfile, Routes} from "@restaroo/lib";
 import {pocketBase} from "./service";
 import Home from "./routes/Home";
 import {Collection} from "./routes/Collection";
-import {LoginOrSignup} from "./routes/LoginOrSignup";
-import {OtpPage} from "./routes/OtpPage";
+import "antd/dist/reset.css";
+import {secured} from "./component/SecuredPage";
+import {Header} from "./component/Header";
 
 interface AppState extends BaseState {
 }
@@ -18,19 +19,13 @@ const routes: Routes = {
     '': {
         component: Home,
         initial: 'top',
+        headerComponent : Header
     },
     'collection/$collection' : {
-        component : Collection,
-        initial : 'right'
-    },
-    'login': {
-        component: LoginOrSignup,
-        initial: "bottom"
-    },
-    'otp/$phoneNo': {
-        component: OtpPage,
-        initial: 'right'
-    },
+        component : secured(Collection),
+        initial : 'right',
+        headerComponent : Header
+    }
 }
 
 const root = ReactDOM.createRoot(
