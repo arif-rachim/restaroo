@@ -132,7 +132,7 @@ function useAppStoreInitialization<T extends BaseState>(initializer: T, pocketBa
                 }));
             }
 
-            store.setState(produce((s: BaseState) => {
+            store.set(produce((s: BaseState) => {
                 s.addresses = addresses;
                 s.user = user;
             }))

@@ -76,7 +76,7 @@ export function OrderDetailPage(props: RouteProps) {
     useFocusListener(props.path, () => {
         (async () => {
             const address: Address = await getNearestAddress();
-            nearestAddressStore.setState(address);
+            nearestAddressStore.set(address);
         })();
     })
     const headerRef = useRef<{ showShadow: (param: boolean) => void }>();
@@ -145,7 +145,7 @@ export function OrderDetailPage(props: RouteProps) {
                                                }}
                                                whileTap={{scale: 0.95}}
                                                onClick={() => {
-                                                   tipsStore.setState(tip)
+                                                   tipsStore.set(tip)
                                                }}
                             >AED {tip}</motion.div>
                         })}

@@ -34,7 +34,7 @@ export function OtpPage(route: RouteProps) {
         (async () => {
             const token = Math.random().toString().substr(2, 6);
             await fetchService('otp', {phone: phoneNo, otp: token, app: APP_NAME});
-            store.setState(old => ({
+            store.set(old => ({
                 otp: '', countdown: 20, errorMessage: '', token
             }));
         })();
@@ -44,14 +44,14 @@ export function OtpPage(route: RouteProps) {
     useStoreListener(store, s => s.otp, async (next, prev) => {
         if (next.length === 6) {
             setIsBusy(true);
-            store.setState(produce(s => {
+            store.set(produce(s => {
                 s.otp = '';
             }));
 
-            const {valid, profile} = await validateToken(next, phoneNo ?? '', store.stateRef.current.token);
+            const {valid, profile} = await validateToken(next, phoneNo ?? '', store.get().token);
             if (!valid) {
                 setIsBusy(false);
-                store.setState(produce(s => {
+                store.set(produce(s => {
                     s.otp = '';
                     s.countdown = 0;
                     s.errorMessage = 'Token is not valid';
@@ -62,7 +62,7 @@ export function OtpPage(route: RouteProps) {
             if (profile.name === '') {
                 navigate(`profile`);
             } else {
-                appStore.setState(produce(s => {
+                appStore.set(produce(s => {
                     s.user = profile;
                 }))
                 navigate('delivery');
@@ -71,7 +71,7 @@ export function OtpPage(route: RouteProps) {
     })
     useEffect(() => {
         const intervalId = setInterval(() => {
-            store.setState(s => {
+            store.set(s => {
                 if (s.countdown > 0) {
                     return {...s, countdown: s.countdown - 1};
                 }
@@ -94,7 +94,7 @@ export function OtpPage(route: RouteProps) {
                     return [s.otp, hasError || isBusy];
                 }} property={['value', 'disabled']}>
                     <OtpInput value={''} valueLength={6} onChange={(newVal) => {
-                        store.setState(old => ({...old, otp: newVal, errorMessage: ''}));
+                        store.set(old => ({...old, otp: newVal, errorMessage: ''}));
                     }}/>
                 </StoreValue>
                 <StoreValue store={store} selector={s => s.errorMessage} property={'error'}>
@@ -109,7 +109,7 @@ export function OtpPage(route: RouteProps) {
                         (async () => {
                             const token = Math.random().toString().substr(2, 6);
                             const result = await fetchService('otp', {phone: phoneNo, otp: token, app: APP_NAME});
-                            store.setState(old => ({
+                            store.set(old => ({
                                 otp: '', countdown: 20, errorMessage: '', token
                             }));
                         })();

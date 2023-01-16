@@ -27,8 +27,8 @@ export function LoginOrSignup(route: RouteProps) {
     const countryStore = useStore('+971');
     const phoneNumberStore = useStore({value: '', error: ''});
     const storeValid = useCallback(() => {
-        if (phoneNumberStore.stateRef.current.value === '') {
-            phoneNumberStore.setState(old => ({...old, error: 'Phone no is required'}));
+        if (phoneNumberStore.get().value === '') {
+            phoneNumberStore.set(old => ({...old, error: 'Phone no is required'}));
             return false;
         }
         return true;
@@ -104,9 +104,9 @@ export function LoginOrSignup(route: RouteProps) {
                                                       event.stopPropagation();
                                                       const country = await showPicker({
                                                           picker: 'country',
-                                                          value: countryStore.stateRef.current
+                                                          value: countryStore.get()
                                                       });
-                                                      countryStore.setState(country);
+                                                      countryStore.set(country);
                                                   }}>
                             <div style={{marginTop: 2, marginRight: 5}}><IoChevronDown/></div>
                             <StoreValue store={countryStore} selector={s => s} property={'value'}>
@@ -117,7 +117,7 @@ export function LoginOrSignup(route: RouteProps) {
                                inputMode={"tel"}
                                type={'tel'}
                                onChange={(event) => {
-                                   phoneNumberStore.setState({value: event.target.value, error: ''});
+                                   phoneNumberStore.set({value: event.target.value, error: ''});
                                }}
                         />
                     </StoreValue>
@@ -125,8 +125,8 @@ export function LoginOrSignup(route: RouteProps) {
             </div>
             <Button title={'Continue'} onTap={() => {
                 if (storeValid()) {
-                    invariant(countryStore.stateRef.current);
-                    navigate(`otp/${countryStore.stateRef.current}${phoneNumberStore.stateRef.current.value}`)
+                    invariant(countryStore.get());
+                    navigate(`otp/${countryStore.get()}${phoneNumberStore.get().value}`)
                 }
             }} theme={ButtonTheme.danger} icon={IoLogInOutline} style={{marginBottom: 30}}/>
             <div style={{

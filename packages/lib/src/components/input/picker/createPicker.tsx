@@ -37,7 +37,7 @@ export function createPicker<T>(props: PickerProperties<T>) {
 
         const store = useStore(data);
         useAfterInit(() => {
-            store.setState(data);
+            store.set(data);
         }, [data, store]);
 
         const {appDimension} = useAppDimension();
@@ -61,7 +61,7 @@ export function createPicker<T>(props: PickerProperties<T>) {
                     return dataProvider.indexOf(s);
                 }}>
                     <Picker data={dataProvider.map((data, index) => ({key: index, value: dataToLabel(data)}))}
-                            onChange={index => store.setState(dataProvider[index])} fontSize={20} width={'100%'}
+                            onChange={index => store.set(dataProvider[index])} fontSize={20} width={'100%'}
                     />
                 </StoreValue>
 
@@ -77,9 +77,10 @@ export function createPicker<T>(props: PickerProperties<T>) {
 
             <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
                 <Button title={'Continue'} onTap={() => {
-                    invariant(store.stateRef.current);
+                    const value = store.get();
+                    invariant(value);
                     invariant(onChange)
-                    onChange(dataToValue(store.stateRef.current))
+                    onChange(dataToValue(value))
                 }} icon={AiOutlineSelect}
                         theme={ButtonTheme.promoted}/>
             </div>

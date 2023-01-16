@@ -46,7 +46,7 @@ export function ProfilePage(props: RouteProps) {
         });
     useFocusListener(props.path, () => {
         const model = pocketBase.authStore.model;
-        store.setState(produce(s => {
+        store.set(produce(s => {
             s.verified = model?.verified;
             s.updated = new Date(model?.updated ?? '');
             s.created = new Date(model?.created ?? '');
@@ -61,11 +61,11 @@ export function ProfilePage(props: RouteProps) {
         }))
     })
     const validate = useCallback(() => {
-        store.setState(produce(s => {
+        store.set(produce(s => {
             s.errors.name = isEmptyText(s.name) ? 'Name is required' : '';
             s.errors.phoneNo = isEmptyText(s.username) ? 'Phone number is required' : '';
         }));
-        return isEmptyObject(store.stateRef.current.errors);
+        return isEmptyObject(store.get().errors);
     }, [store]);
 
     return <Page style={{backgroundColor: pageBackgroundColor}}>
@@ -89,7 +89,7 @@ export function ProfilePage(props: RouteProps) {
                         <Input title={'Name :'} titlePosition={'left'} titleWidth={90}
                                placeholder={'Enter your name here'}
                                style={{containerStyle: {marginBottom: 10}}} onChange={(element) => {
-                            store.setState(produce(s => {
+                            store.set(produce(s => {
                                 s.name = element.target.value;
                                 s.errors.name = '';
                             }))
@@ -100,7 +100,7 @@ export function ProfilePage(props: RouteProps) {
                     {/*            property={['value', 'error']}>*/}
                     {/*    <Input title={'Email :'} titlePosition={'left'} titleWidth={90} placeholder={'Enter your email address here'}*/}
                     {/*           style={{containerStyle: {marginBottom: 10}}} onChange={(element) => {*/}
-                    {/*        store.setState(produce(s => {*/}
+                    {/*        store.set(produce(s => {*/}
                     {/*            s.email = element.target.value;*/}
                     {/*            s.errors.email = '';*/}
                     {/*        }))*/}
@@ -111,7 +111,7 @@ export function ProfilePage(props: RouteProps) {
                         <Input title={'Phone :'} titlePosition={'left'} titleWidth={90}
                                placeholder={'Enter your phone number here'}
                                style={{containerStyle: {marginBottom: 10}}} onChange={(element) => {
-                            store.setState(produce(s => {
+                            store.set(produce(s => {
                                 s.username = element.target.value;
                                 s.errors.phoneNo = '';
                             }))
@@ -125,7 +125,7 @@ export function ProfilePage(props: RouteProps) {
                     onTap={async () => {
                         if (validate()) {
                             setBusy(true);
-                            const state = store.stateRef.current;
+                            const state = store.get();
                             const profile: Profile = {
                                 name: state.name,
                                 username: state.username,
@@ -143,7 +143,7 @@ export function ProfilePage(props: RouteProps) {
                                 // do something
                                 return;
                             }
-                            appStore.setState(produce(s => {
+                            appStore.set(produce(s => {
                                 s.user = result
                             }));
                             navigate('delivery');

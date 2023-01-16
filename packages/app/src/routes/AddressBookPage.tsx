@@ -63,7 +63,7 @@ export function AddressBookPage() {
                                         event.preventDefault();
                                         event.stopPropagation();
                                         await pocketBase.collection('address').delete(address.id)
-                                        appStore.setState(produce(s => {
+                                        appStore.set(produce(s => {
                                             const addressIndex = s.addresses.findIndex(a => a.id === address.id);
                                             s.addresses.splice(addressIndex, 1);
                                         }))

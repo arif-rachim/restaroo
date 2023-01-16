@@ -86,7 +86,7 @@ export function DeliveryPage(props: RouteProps) {
         (async () => {
             const {position} = await getCurrentPosition();
             if (position) {
-                positionStore.setState(position);
+                positionStore.set(position);
             }
         })();
         // eslint-disable-next-line
@@ -109,8 +109,8 @@ export function DeliveryPage(props: RouteProps) {
 
                      const titleArray = titleRef.current.filter(title => title.offsetY <= scrollTop);
                      const title = titleArray[titleArray.length - 1].title;
-                     if (selectedTitle.stateRef.current !== title) {
-                         selectedTitle.setState(title);
+                     if (selectedTitle.get() !== title) {
+                         selectedTitle.set(title);
                      }
                      if (scrollTop > 5) {
                          header.style.backgroundColor = '#FFF';
@@ -132,17 +132,17 @@ export function DeliveryPage(props: RouteProps) {
                          header.style.transform = `translateY(-110px)`;
                          if (scrollDown) {
                              showFooter(false);
-                             pushDownShoppingCartButton.setState(true);
+                             pushDownShoppingCartButton.set(true);
                              clearTimeout(timeoutId);
                              timeoutId = setTimeout(() => {
                                  clearTimeout(timeoutId);
                                  showFooter(true);
-                                 pushDownShoppingCartButton.setState(false);
+                                 pushDownShoppingCartButton.set(false);
                              }, 1000);
                          }
                          // else {
                          //     showFooter(true);
-                         //     pushDownShoppingCartButton.setState(false);
+                         //     pushDownShoppingCartButton.set(false);
                          // }
                      } else {
                          header.style.transform = 'translateY(0px)';

@@ -63,10 +63,10 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
         const showPicker: ShowPickerFunction = (control: PickerOptions, value: any) => {
             return new Promise(resolve => {
                 const onClose = (value: any) => {
-                    store.setState(NO_PICKER);
+                    store.set(NO_PICKER);
                     resolve(value);
                 }
-                store.setState({control, value, onChange: onClose})
+                store.set({control, value, onChange: onClose})
             })
         }
         return {showPicker}
@@ -74,7 +74,7 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
     const show = useStoreValue(store, param => param.control !== undefined)
 
     function close() {
-        const current = store.stateRef.current;
+        const current = store.get();
         invariant(current.onChange);
         current.onChange(current.value);
     }

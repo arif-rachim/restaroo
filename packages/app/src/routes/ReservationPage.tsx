@@ -160,19 +160,19 @@ function PersonalDetailForm(props: {
         errors: {firstName: '', lastName: '', phoneNo: '', email: ''}
     });
     const validate = () => {
-        store.setState(produce(s => {
+        store.set(produce(s => {
             s.errors.email = isEmptyText(s.email) ? 'Email is required' : '';
             s.errors.phoneNo = isEmptyText(s.phoneNo) ? 'Phone is required' : '';
             s.errors.firstName = isEmptyText(s.firstName) ? 'First name is required' : '';
             s.errors.lastName = isEmptyText(s.lastName) ? 'Last name is required' : '';
         }));
-        return isEmptyObject(store.stateRef.current.errors);
+        return isEmptyObject(store.get().errors);
     }
     return <SlideDetail closePanel={closePanel}>
         <StoreValue store={store} selector={s => [s.firstName, s.errors.firstName]} property={['value', 'error']}>
             <Input title={'First name'} placeholder={'enter your first name'}
                    onChange={(e) => {
-                       store.setState(produce(s => {
+                       store.set(produce(s => {
                            s.firstName = e.target.value;
                            s.errors.firstName = '';
                        }));
@@ -181,7 +181,7 @@ function PersonalDetailForm(props: {
         <StoreValue store={store} selector={s => [s.lastName, s.errors.lastName]} property={['value', 'error']}>
             <Input title={'Last name'} placeholder={'enter your first name'}
                    onChange={(e) => {
-                       store.setState(produce(s => {
+                       store.set(produce(s => {
                            s.lastName = e.target.value;
                            s.errors.lastName = '';
                        }));
@@ -189,7 +189,7 @@ function PersonalDetailForm(props: {
         </StoreValue>
         <StoreValue store={store} selector={s => [s.email, s.errors.email]} property={['value', 'error']}>
             <Input title={'Email'} placeholder={'enter your email'} onChange={(e) => {
-                store.setState(produce(s => {
+                store.set(produce(s => {
                     s.email = e.target.value;
                     s.errors.email = '';
                 }));
@@ -197,7 +197,7 @@ function PersonalDetailForm(props: {
         </StoreValue>
         <StoreValue store={store} selector={s => [s.phoneNo, s.errors.phoneNo]} property={['value', 'error']}>
             <Input title={'Phone'} placeholder={'enter your phone number'} onChange={(e) => {
-                store.setState(produce(s => {
+                store.set(produce(s => {
                     s.phoneNo = e.target.value;
                     s.errors.phoneNo = '';
                 }));
@@ -206,10 +206,10 @@ function PersonalDetailForm(props: {
         <Button onTap={() => {
             if (validate()) {
                 const data = {
-                    firstName: store.stateRef.current.firstName,
-                    lastName: store.stateRef.current.lastName,
-                    phoneNo: store.stateRef.current.phoneNo,
-                    email: store.stateRef.current.email,
+                    firstName: store.get().firstName,
+                    lastName: store.get().lastName,
+                    phoneNo: store.get().phoneNo,
+                    email: store.get().email,
                 };
                 props.closePanel(data);
             }
@@ -283,7 +283,7 @@ export function ReservationPage(props: RouteProps) {
         }
     })
     useEffect(() => {
-        store.setState(produce(s => {
+        store.set(produce(s => {
             s.firstName = user.name;
             s.email = user.email;
             s.phoneNo = user.username;
@@ -302,7 +302,7 @@ export function ReservationPage(props: RouteProps) {
                 <div style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>What Day ?</div>
                 <StoreValue store={store} property={'value'} selector={s => s.dateTime}>
                     <DateSelector onChange={(date) => {
-                        store.setState(produce(s => {
+                        store.set(produce(s => {
                             s.dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), s.dateTime.getHours(), s.dateTime.getMinutes(), 0);
                         }));
                     }}/>
@@ -313,7 +313,7 @@ export function ReservationPage(props: RouteProps) {
                 <div style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>How Many People ?</div>
                 <StoreValue store={store} property={'value'} selector={s => s.people}>
                     <NumberOfPeopleSelector onChange={(value) => {
-                        store.setState(produce(s => {
+                        store.set(produce(s => {
                             s.people = value;
                         }));
                     }}/>
@@ -324,7 +324,7 @@ export function ReservationPage(props: RouteProps) {
                 <div style={{fontSize: 18, fontWeight: 'bold', marginBottom: 10}}>What Time ?</div>
                 <StoreValue store={store} property={'value'} selector={s => s.dateTime}>
                     <TimeSelector closingTime={closingTime} openingTime={openingTime} onChange={(time) => {
-                        store.setState(produce(s => {
+                        store.set(produce(s => {
                             s.dateTime = new Date(s.dateTime.getFullYear(), s.dateTime.getMonth(), s.dateTime.getDate(), time.getHours(), time.getMinutes(), 0);
                         }));
                     }}/>
@@ -346,9 +346,9 @@ export function ReservationPage(props: RouteProps) {
                                 dataToLabel: d => d,
                                 dataToValue: v => v,
                                 valueToData: v => v,
-                            }, value: store.stateRef.current.seatingPreferences
+                            }, value: store.get().seatingPreferences
                         });
-                        store.setState(produce(s => {
+                        store.set(produce(s => {
                             s.seatingPreferences = result;
                         }));
                     }} whileTap={{scale: 0.9}}>Change
@@ -371,14 +371,14 @@ export function ReservationPage(props: RouteProps) {
                     <motion.div style={{color: 'red', marginLeft: 10}} onTap={async () => {
                         const result: any = await context.showSlidePanel(closePanel => {
                             return <PersonalDetailForm closePanel={closePanel}
-                                                       firstName={store.stateRef.current.firstName}
-                                                       lastName={store.stateRef.current.lastName}
-                                                       phoneNo={store.stateRef.current.phoneNo}
-                                                       email={store.stateRef.current.email}
+                                                       firstName={store.get().firstName}
+                                                       lastName={store.get().lastName}
+                                                       phoneNo={store.get().phoneNo}
+                                                       email={store.get().email}
                             />
                         });
 
-                        store.setState(old => ({...old, ...result}))
+                        store.set(old => ({...old, ...result}))
 
                     }} whileTap={{scale: 0.9}}>Change
                     </motion.div>
@@ -389,7 +389,7 @@ export function ReservationPage(props: RouteProps) {
                     <div style={{flexGrow: 1}}>Receive booking updates on SMS</div>
                     <StoreValue store={store} selector={s => s.updateOnWhatsapp === true} property={'value'}>
                         <Switch onChange={value => {
-                            store.setState(produce(s => {
+                            store.set(produce(s => {
                                 s.updateOnWhatsapp = value;
                             }));
                         }}/>

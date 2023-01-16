@@ -30,7 +30,7 @@ export function TimePicker(props: { value?: Date, onChange?: (value: Date) => vo
     const store = useStore(() => dateToTime(value));
     useAfterInit(() => {
         const newState = dateToTime(value);
-        store.setState(newState);
+        store.set(newState);
     }, [value, store]);
     const {appDimension} = useAppDimension();
     return <div style={{
@@ -49,7 +49,7 @@ export function TimePicker(props: { value?: Date, onChange?: (value: Date) => vo
                             key: index,
                             value: `${(index).toString().padStart(2, '0')}`
                         }))}
-                        onChange={hours => store.setState(old => ({...old, hours}))}
+                        onChange={hours => store.set(old => ({...old, hours}))}
                 />
             </StoreValue>
             <StoreValue store={store} property={'value'} selector={s => s.minutes}>
@@ -57,7 +57,7 @@ export function TimePicker(props: { value?: Date, onChange?: (value: Date) => vo
                     key: index,
                     value: `${(index).toString().padStart(2, '0')}`
                 }))}
-                        onChange={minutes => store.setState(old => ({...old, minutes}))}
+                        onChange={minutes => store.set(old => ({...old, minutes}))}
                 />
             </StoreValue>
             <div style={{
@@ -69,7 +69,7 @@ export function TimePicker(props: { value?: Date, onChange?: (value: Date) => vo
             }}/>
         </div>
         <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
-            <Button title={'OK'} onTap={() => onChange(timeToDate(store.stateRef.current))} icon={IoCalendar}
+            <Button title={'OK'} onTap={() => onChange(timeToDate(store.get()))} icon={IoCalendar}
                     theme={ButtonTheme.promoted}/>
         </div>
     </div>

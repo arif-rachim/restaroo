@@ -125,13 +125,13 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
         }
     }>({...address, errors: {areaOrStreetName: '', buildingOrPremiseName: '', houseOrFlatNo: '', location: ''}});
     const isValid = useCallback(() => {
-        store.setState(produce(s => {
+        store.set(produce(s => {
             s.errors.areaOrStreetName = isEmptyText(s.areaOrStreetName) ? 'Area nonull Street name is required' : '';
             s.errors.buildingOrPremiseName = isEmptyText(s.buildingOrPremiseName) ? 'Building nonull Premise name is required' : '';
             s.errors.houseOrFlatNo = isEmptyText(s.houseOrFlatNo) ? 'house nonull Flat number is required' : '';
             s.errors.location = isEmptyText(s.location) ? 'Location is required' : '';
         }));
-        return isEmptyObject(store.stateRef.current.errors);
+        return isEmptyObject(store.get().errors);
     }, [store]);
     const [busy, setBusy] = useState(false);
     return <SlideDetail closePanel={closePanel}>
@@ -147,7 +147,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
         <StoreValue store={store} selector={param => [param.location, param.errors.location]}
                     property={['value', 'error']}>
             <LocationSelector onChange={(newValue: string) => {
-                store.setState(produce(s => {
+                store.set(produce(s => {
                     s.location = newValue;
                     s.errors.location = '';
                 }));
@@ -157,7 +157,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                     property={['value', 'error']}>
             <Input title={'House no. / Flat no. *'} placeholder={'Please enter house no / Flat no'}
                    style={{inputStyle: {fontSize: 16}, titleStyle: {fontSize: 13}}} onChange={(event) => {
-                store.setState(produce(s => {
+                store.set(produce(s => {
                     s.houseOrFlatNo = event.target.value;
                     s.errors.houseOrFlatNo = '';
                 }));
@@ -167,7 +167,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                     property={['value', 'error']}>
             <Input title={'Building / Premise Name *'} placeholder={'Please enter building nonull premise'}
                    style={{inputStyle: {fontSize: 16}, titleStyle: {fontSize: 13}}} onChange={(event) => {
-                store.setState(produce(s => {
+                store.set(produce(s => {
                     s.buildingOrPremiseName = event.target.value;
                     s.errors.buildingOrPremiseName = '';
                 }));
@@ -177,7 +177,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                     property={['value', 'error']}>
             <Input title={'Area / Street *'} placeholder={'Please find area nonull street address'}
                    style={{inputStyle: {fontSize: 16}, titleStyle: {fontSize: 13}}} onChange={(event) => {
-                store.setState(produce(s => {
+                store.set(produce(s => {
                     s.areaOrStreetName = event.target.value;
                     s.errors.areaOrStreetName = '';
                 }));
@@ -186,7 +186,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
         <StoreValue store={store} selector={s => s.landmark} property={'value'}>
             <Input title={'Landmark'} placeholder={'(Optional)'}
                    style={{inputStyle: {fontSize: 16}, titleStyle: {fontSize: 13}}} onChange={(event) => {
-                store.setState(produce(s => {
+                store.set(produce(s => {
                     s.landmark = event.target.value;
                 }));
             }}/>
@@ -196,7 +196,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                 (async () => {
                     setBusy(true);
                     // eslint-disable-next-line
-                    const currentAddress = store.stateRef.current;
+                    const currentAddress = store.get();
                     if (currentAddress.id) {
                         const record: any = await pocketBase.collection('address').update(currentAddress.id, {
                             "location": currentAddress.location,
@@ -207,7 +207,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                             "lat": currentAddress.lat,
                             "lng": currentAddress.lng,
                         });
-                        appStore.setState(produce(s => {
+                        appStore.set(produce(s => {
                             const indexToReplace = s.addresses.findIndex(s => s.id === record.id);
                             s.addresses.splice(indexToReplace, 1, {
                                 id: record.id,
@@ -229,10 +229,10 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                             "landmark": currentAddress.landmark,
                             "lat": currentAddress.lat,
                             "lng": currentAddress.lng,
-                            "user": appStore.stateRef.current.user.id
+                            "user": appStore.get().user.id
                         });
 
-                        appStore.setState(produce(s => {
+                        appStore.set(produce(s => {
                             s.addresses.push({
                                 id: record.id,
                                 areaOrStreetName: record.areaOrStreetName,
@@ -247,7 +247,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                     }
 
                     setBusy(false);
-                    closePanel(store.stateRef.current);
+                    closePanel(store.get());
                 })();
             }
         }} theme={ButtonTheme.danger} icon={IoSaveOutline} isBusy={busy}/>

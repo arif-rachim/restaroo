@@ -11,9 +11,9 @@ export function HomePage() {
                        onFocus={async () => {
                            const value = await appContext.showPicker({
                                picker: 'date',
-                               value: store.stateRef.current.dateTime
+                               value: store.get().dateTime
                            });
-                           store.setState({dateTime: value})
+                           store.set({dateTime: value})
                        }} inputMode={'none'} readOnly={true}/>
             </StoreValue>
             <StoreValue store={store} property={'value'} selector={s => dateToHhMm(s.dateTime)}>
@@ -21,9 +21,9 @@ export function HomePage() {
                        onFocus={async () => {
                            const value = await appContext.showPicker({
                                picker: 'time',
-                               value: store.stateRef.current.dateTime
+                               value: store.get().dateTime
                            });
-                           store.setState({dateTime: value})
+                           store.set({dateTime: value})
                        }} inputMode={'none'} readOnly={true}/>
             </StoreValue>
         </div>

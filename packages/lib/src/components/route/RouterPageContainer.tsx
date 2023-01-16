@@ -58,7 +58,8 @@ export function RouterPageContainer(props: { routes: Routes }) {
     } = useRoute(props.routes);
 
     const pathStore = useStore(path);
-    useAfterInit(() => pathStore.setState(path), [path])
+
+    useAfterInit(() => pathStore.set(path), [path])
 
     const Component = useMemo(() => memo(function RouteComponentContainer(props: { isFocused: boolean } & RouteProps) {
         const {isFocused} = props;

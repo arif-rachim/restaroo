@@ -42,7 +42,7 @@ export function useShoppingCart() {
             return;
         }
 
-        store.setState(produce((s) => {
+        store.set(produce((s) => {
             const existingCartItem = s.shoppingCart.find(c => c.product.id === cartItem.product.id && optionsToString(c.options) === optionsToString(cartItem.options));
             if (existingCartItem) {
                 existingCartItem.total = existingCartItem.total + cartItem.total;
@@ -54,7 +54,7 @@ export function useShoppingCart() {
     }
 
     function getTotalItemsInCart() {
-        return store.stateRef.current.shoppingCart.reduce((total, c) => (total + c.total), 0);
+        return store.get().shoppingCart.reduce((total, c) => (total + c.total), 0);
     }
 
     /**
@@ -72,7 +72,7 @@ export function useShoppingCart() {
             if (product.configs.length > 0) {
                 await addProductToCart(product);
             } else {
-                store.setState(produce((s) => {
+                store.set(produce((s) => {
                     const existingCartItem = s.shoppingCart.find(c => c.product.id === product.id);
                     if (existingCartItem) {
                         existingCartItem.total = existingCartItem.total + 1;
@@ -88,7 +88,7 @@ export function useShoppingCart() {
                 }));
             }
         } else {
-            store.setState(produce((s) => {
+            store.set(produce((s) => {
                 const existingCartItem = s.shoppingCart.find(c => c.product.id === product.id && optionsToString(c.options) === optionsToString(options));
                 if (existingCartItem) {
                     existingCartItem.totalPrice = (existingCartItem.totalPrice / existingCartItem.total) * (existingCartItem.total + 1);
@@ -100,7 +100,7 @@ export function useShoppingCart() {
 
     async function removeItemFromCartByProductAndOptions(options: ProductConfigOption[], product: Product) {
         if (options.length === 0) {
-            const index = store.stateRef.current.shoppingCart.findIndex(c => c.product.id === product.id);
+            const index = store.get().shoppingCart.findIndex(c => c.product.id === product.id);
             if (index < 0) {
                 await addItemToCartByProductAndOptions(options, product);
                 return;
@@ -108,7 +108,7 @@ export function useShoppingCart() {
             if (product.configs.length > 0) {
                 await openProductRemoval(product);
             } else {
-                store.setState(produce((s) => {
+                store.set(produce((s) => {
                     const index = s.shoppingCart.findIndex(c => c.product.id === product.id);
                     const existingCartItem = s.shoppingCart[index];
                     invariant(existingCartItem);
@@ -121,7 +121,7 @@ export function useShoppingCart() {
                 }));
             }
         } else {
-            store.setState(produce((s) => {
+            store.set(produce((s) => {
                 const index = s.shoppingCart.findIndex(c => c.product.id === product.id && optionsToString(c.options) === optionsToString(options));
                 const existingCartItem = s.shoppingCart[index];
                 if (existingCartItem.total > 1) {

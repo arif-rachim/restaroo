@@ -22,20 +22,20 @@ export interface Action {
     [key: string]: any
 }
 
+type SetState<S> = (param: S | ((currentState: S) => S)) => void;
+
 export interface Store<S> {
-    stateRef: MutableRefObject<S>,
     addListener: (state: Listener<S>) => () => void,
     dispatch: (action: Action) => void,
-    setState: (newStateOrCallback: S | ((currentState: S) => S)) => void
+    set: SetState<S>,
+    get: () => S;
 }
 
-
 export function createStoreInitValue<T>(param: T): Store<T> {
-    return {
-        stateRef: {current: param}, setState: () => {
+    return { set: () => {
         }, dispatch: () => {
         }, addListener: () => () => {
-        }
+        }, get: () => param
     };
 }
 
@@ -53,6 +53,9 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
         return stateInitial as S;
     });
     const stateRef = useRef<S>(initialState);
+    const value = useCallback(function value() {
+        return stateRef.current;
+    }, []);
 
     const dispatch = useCallback(function dispatch(action: Action) {
         if (reducerRef.current === undefined) {
@@ -86,18 +89,26 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
         listenerRef.current.push(selector);
         return () => listenerRef.current = listenerRef.current.filter(l => l !== selector)
     }, []);
-    return useMemo(() => ({dispatch, stateRef, addListener, setState}), [addListener, dispatch, setState]);
+
+    return useMemo(() => ({
+        dispatch,
+        stateRef,
+        addListener,
+        set:setState,
+        get:value
+    }), [addListener, dispatch, setState, value]);
 }
 
 export function useStoreListener<T, S>(store: Store<T>, selector: (param: T) => S, listener: (next: S, prev?: S) => void, deps?: DependencyList | undefined) {
-    const {addListener, stateRef} = store;
+
     const propsRef = useRef({selector, listener});
     propsRef.current = {selector, listener};
     deps = noNull(deps, []);
     useEffect(() => {
-        const next = propsRef.current.selector(stateRef.current);
+        const t:T = store.get();
+        const next = propsRef.current.selector(t);
         propsRef.current.listener(next);
-        return addListener((nextState: T, prevState: T) => {
+        return store.addListener((nextState: T, prevState: T) => {
             const {selector} = propsRef.current;
             const current = selector(prevState);
             const next = selector(nextState);
@@ -110,7 +121,7 @@ export function useStoreListener<T, S>(store: Store<T>, selector: (param: T) => 
 }
 
 export function useStoreValue<T, S>(store: Store<T>, selector: (param: T) => S, deps?: DependencyList | undefined) {
-    const [value, setValue] = useState<S>(() => selector(store.stateRef.current));
+    const [value, setValue] = useState<S>(() => selector(store.get()));
     useStoreListener(store, selector, (next, prev) => {
         setValue(old => {
             if (arrayIsMatch(old, next)) {

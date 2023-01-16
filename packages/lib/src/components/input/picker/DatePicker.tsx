@@ -55,7 +55,7 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
     const store = useStore(() => dateToCalendar(value));
     useAfterInit(() => {
         const newState = dateToCalendar(value);
-        store.setState(newState);
+        store.set(newState);
     }, [value, store]);
 
 
@@ -74,17 +74,17 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
             <StoreValue store={store} property={'value'} selector={s => s.day}>
                 <Picker width={70}
                         data={Array.from({length: 31}).map((_, index) => ({key: index, value: `${index + 1}`}))}
-                        onChange={day => store.setState(old => ({...old, day}))}
+                        onChange={day => store.set(old => ({...old, day}))}
                 />
             </StoreValue>
             <StoreValue store={store} property={'value'} selector={s => s.month}>
                 <Picker data={MONTHS}
-                        onChange={month => store.setState(old => ({...old, month}))}
+                        onChange={month => store.set(old => ({...old, month}))}
                 />
             </StoreValue>
             <StoreValue store={store} property={'value'} selector={s => s.year}>
                 <Picker width={120} data={YEARS}
-                        onChange={year => store.setState(old => ({...old, year}))}
+                        onChange={year => store.set(old => ({...old, year}))}
                 />
             </StoreValue>
             <div style={{
@@ -98,7 +98,7 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
         </div>
 
         <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
-            <Button title={'OK'} onTap={() => onChange(calendarToDate(store.stateRef.current))} icon={IoCalendar}
+            <Button title={'OK'} onTap={() => onChange(calendarToDate(store.get()))} icon={IoCalendar}
                     theme={ButtonTheme.promoted}/>
         </div>
     </div>

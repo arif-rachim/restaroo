@@ -17,7 +17,7 @@ export function useLogout(pocketBase:any){
     const {store} = useAppContext();
     return function logout(){
         pocketBase.authStore.clear();
-        store.setState(produce(s => {
+        store.set(produce(s => {
             s.user = GuestProfile
         }));
     }

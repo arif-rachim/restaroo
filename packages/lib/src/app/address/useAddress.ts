@@ -10,7 +10,7 @@ export function useAddress() {
 
     async function removeAddress(addressId: string) {
 
-        store.setState(produce(s => {
+        store.set(produce(s => {
             const indexToRemove = s.addresses.findIndex(s => s.id === addressId);
             s.addresses.splice(indexToRemove, 1);
         }));

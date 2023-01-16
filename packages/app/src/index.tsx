@@ -93,7 +93,7 @@ root.render(<MyApp mobileOnly={true} stateInitValue={{
     addresses: [],
     shoppingCart: []
 }} onProfileChange={(next, prev, store) => {
-    store.setState(currentState => {
+    store.set(currentState => {
         return {...currentState, shoppingCart: []};
     })
     // here we can perform fetching other stuff here !

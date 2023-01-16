@@ -44,7 +44,7 @@ export function CameraPage() {
                     let blob = dataURItoBlob(dataUri); //Converts to blob using link above
                     formData.append("avatar", blob);
                     const record = await pocketBase.collection('users').update(user.id, formData);
-                    appStore.setState(produce(s => {
+                    appStore.set(produce(s => {
                         s.user.avatar = record.avatar;
                     }));
                     window.history.back();

@@ -130,7 +130,7 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
     const validate = useCallback(() => {
         return product.configs.filter(c => c.required).map(c => {
             for (const requiredOption of c.options) {
-                const isSelected = store.stateRef.current.options.findIndex(o => o.name === requiredOption.name) >= 0;
+                const isSelected = store.get().options.findIndex(o => o.name === requiredOption.name) >= 0;
                 if (isSelected) {
                     return '';
                 }
@@ -180,11 +180,11 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
                 alignItems: 'center'
             }} whileTap={{scale: 0.98}}>
                 <motion.div style={{padding: 10}} whileTap={{scale: 0.95}} onTap={() => {
-                    if (store.stateRef.current.total === 1) {
+                    if (store.get().total === 1) {
                         closePanel(false);
                         return;
                     }
-                    store.setState(produce(s => {
+                    store.set(produce(s => {
                         s.total = s.total > 1 ? s.total - 1 : 1;
                     }))
                 }}>
@@ -196,7 +196,7 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
                     </StoreValue>
                 </div>
                 <motion.div style={{padding: 10}} onTap={() => {
-                    store.setState(produce(s => {
+                    store.set(produce(s => {
                         s.total = s.total > 0 ? s.total + 1 : 1;
                     }))
                 }}>
@@ -231,7 +231,7 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
                         })
                         return;
                     }
-                    const {total, options} = store.stateRef.current;
+                    const {total, options} = store.get();
                     const totalPrice = total * (product.price + (options.reduce((total, option) => (total + option.price), 0)))
                     closePanel({product, total, totalPrice, options});
 
@@ -273,7 +273,7 @@ function ProductConfigItem(props: { product: Product, option: ProductConfigOptio
                        style={{display: 'flex', padding: '5px 10px 10px 10px'}}
                        whileTap={{scale: 0.95}}
                        onTap={() => {
-                           store.setState(produce((s: { total: number, options: ProductConfigOption[] }) => {
+                           store.set(produce((s: { total: number, options: ProductConfigOption[] }) => {
                                const {required, maximumSelection} = config;
                                const index = s.options.findIndex(o => o.name === option.name);
                                const alreadySelected = index >= 0;

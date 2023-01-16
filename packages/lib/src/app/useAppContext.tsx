@@ -62,22 +62,22 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
     const showModal = useCallback((factory: FactoryFunction<any>) => {
         return new Promise<any>(resolve => {
             const closePanel = (value: any) => {
-                panelStore.setState(old => ({...old, modalPanel: false}))
+                panelStore.set(old => ({...old, modalPanel: false}))
                 resolve(value);
             }
             const element = factory(closePanel);
-            panelStore.setState(old => ({...old, modalPanel: element}))
+            panelStore.set(old => ({...old, modalPanel: element}))
         })
     }, [panelStore]);
 
     const showSlidePanel = useCallback((factory: FactoryFunction<any>) => {
         return new Promise<any>(resolve => {
             const closePanel = (value: any) => {
-                panelStore.setState(old => ({...old, slidePanel: false}))
+                panelStore.set(old => ({...old, slidePanel: false}))
                 resolve(value);
             }
             const element = factory(closePanel);
-            panelStore.setState(old => ({...old, slidePanel: element}))
+            panelStore.set(old => ({...old, slidePanel: element}))
         })
     }, [panelStore]);
 
@@ -87,10 +87,10 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
     }, [showPickerRef]);
 
     const contextValue = useMemo(() => {
-        const showHeader = headerVisibleStore.setState;
-        const showFooter = footerVisibleStore.setState;
+        const showHeader = headerVisibleStore.set;
+        const showFooter = footerVisibleStore.set;
         return {showModal, store, showPicker, showSlidePanel, showHeader, showFooter}
-    }, [showModal, showSlidePanel, showPicker, store, headerVisibleStore.setState, footerVisibleStore.setState]);
+    }, [showModal, showSlidePanel, showPicker, store, headerVisibleStore.set, footerVisibleStore.set]);
 
     return <AppContext.Provider value={(contextValue as any)}>
         <HeaderFooterVisibilityContext.Provider value={{headerVisibleStore, footerVisibleStore}}>
