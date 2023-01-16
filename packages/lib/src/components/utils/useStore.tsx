@@ -11,22 +11,24 @@ import {
     useState
 } from "react";
 import noNull from "./noNull";
+import invariant from "tiny-invariant";
 
-type Listener = (next: any, prev: any) => void
+type Listener<T> = (next: T, prev: T) => void
 
 export interface Action {
     type: string,
-    payload: any,
+    payload: unknown,
 
     [key: string]: any
 }
 
 export interface Store<S> {
     stateRef: MutableRefObject<S>,
-    addListener: (state: any) => () => void,
+    addListener: (state: Listener<S>) => () => void,
     dispatch: (action: Action) => void,
     setState: (newStateOrCallback: S | ((currentState: S) => S)) => void
 }
+
 
 export function createStoreInitValue<T>(param: T): Store<T> {
     return {
@@ -39,14 +41,14 @@ export function createStoreInitValue<T>(param: T): Store<T> {
 
 export function useStore<S>(initializer: S | (() => S), reducer?: (action: Action) => (oldState: S) => S): Store<S> {
 
-    const listenerRef = useRef<Listener[]>([]);
+    const listenerRef = useRef<Listener<S>[]>([]);
     const reducerRef = useRef(reducer)
     reducerRef.current = reducer;
 
     const [initialState] = useState<S>(() => {
-        let stateInitial: any = initializer;
+        let stateInitial = initializer;
         if (isFunction(initializer)) {
-            stateInitial = (initializer as any)();
+            stateInitial = (initializer as () => S)();
         }
         return stateInitial as S;
     });
@@ -80,12 +82,11 @@ export function useStore<S>(initializer: S | (() => S), reducer?: (action: Actio
         listenerRef.current.forEach(l => l.call(null, newState, prevState));
     }, []);
 
-    const addListener = useCallback(function addListener(selector: (param: S, next: S) => any) {
+    const addListener = useCallback(function addListener(selector: (param: S, next: S) => void) {
         listenerRef.current.push(selector);
         return () => listenerRef.current = listenerRef.current.filter(l => l !== selector)
     }, []);
-
-    return useMemo(() => ({dispatch, stateRef, addListener, setState}), [addListener, dispatch, setState])
+    return useMemo(() => ({dispatch, stateRef, addListener, setState}), [addListener, dispatch, setState]);
 }
 
 export function useStoreListener<T, S>(store: Store<T>, selector: (param: T) => S, listener: (next: S, prev?: S) => void, deps?: DependencyList | undefined) {
@@ -96,8 +97,7 @@ export function useStoreListener<T, S>(store: Store<T>, selector: (param: T) => 
     useEffect(() => {
         const next = propsRef.current.selector(stateRef.current);
         propsRef.current.listener(next);
-
-        return addListener((nextState: any, prevState: any) => {
+        return addListener((nextState: T, prevState: T) => {
             const {selector} = propsRef.current;
             const current = selector(prevState);
             const next = selector(nextState);
@@ -122,7 +122,7 @@ export function useStoreValue<T, S>(store: Store<T>, selector: (param: T) => S, 
     return value;
 }
 
-function arrayIsMatch(next: any, prev: any) {
+function arrayIsMatch(next: unknown, prev: unknown) {
     if (Array.isArray(next) && Array.isArray(prev) && next.length === prev.length) {
         for (let i = 0; i < next.length; i++) {
             if (next[i] !== prev[i]) {
@@ -135,7 +135,7 @@ function arrayIsMatch(next: any, prev: any) {
 }
 
 
-function isFunction(functionToCheck: any) {
+function isFunction(functionToCheck: unknown) {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
 
@@ -149,9 +149,10 @@ interface StoreValueInjectorProps<T, S> {
 
 export function StoreValue<T, S>(props: PropsWithChildren<StoreValueInjectorProps<T, S>>) {
     const {store, property, selector, children} = props;
-    const value: any = useStoreValue(store, (param) => selector(param), [selector]);
+    type StoreValueType = ReturnType<typeof selector>;
+    const value: StoreValueType = useStoreValue(store, (param) => selector(param), [selector]);
     const cp = (children as any).props;
-    const childrenProps: any = {...cp};
+    const childrenProps = {...cp};
     if (Array.isArray(property)) {
         if (Array.isArray(value) && property.length === value.length) {
             property.forEach((prop: string, index: number) => {
@@ -166,14 +167,16 @@ export function StoreValue<T, S>(props: PropsWithChildren<StoreValueInjectorProp
     return cloneElement((children as any), childrenProps)
 }
 
-export function StoreValueRenderer<T, S>(props: { store: Store<T>, selector: Selector<T, S>, render: (value: any) => ReactElement }) {
+export function StoreValueRenderer<T, S>(props: { store: Store<T>, selector: Selector<T, S>, render: (value: S) => ReactElement }) {
     return <StoreValue store={props.store} selector={props.selector} property={'value'}>
         <Renderer renderer={props.render}/>
     </StoreValue>
 }
 
-function Renderer<T>(props: { renderer: (value?: T) => ReactElement, value?: T }) {
-    return props.renderer(props.value);
+function Renderer<T>(props: { renderer: (value: T) => ReactElement, value?: T }) {
+    const value = props.value;
+    invariant(value)
+    return props.renderer(value);
 }
 
 const isMatch = (a: any, b: any) => {
