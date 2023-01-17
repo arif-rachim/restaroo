@@ -5,6 +5,11 @@ import {BaseState, createApp, GuestProfile, Routes} from "@restaroo/lib";
 import {pocketBase} from "./service";
 import Home from "./routes/Home";
 import "antd/dist/reset.css";
+import {secured} from "./components/secured";
+import {User} from "./routes/User";
+import {Product} from "./routes/Product";
+import {Order} from "./routes/Order";
+import {CollectionRoute} from "./routes/CollectionRoute";
 
 interface AppState extends BaseState {
 }
@@ -13,8 +18,24 @@ const MyApp = createApp<AppState>();
 
 const routes: Routes = {
     '': {
-        component: Home,
-        initial: 'top'
+        component: secured(Home),
+        initial: 'left'
+    },
+    'user' : {
+        component : User,
+        initial : 'right'
+    },
+    'product' : {
+        component : Product,
+        initial : 'right'
+    },
+    'order' : {
+        component:Order,
+        initial:"right"
+    },
+    'collection/$collection' : {
+        component : CollectionRoute,
+        initial : 'right'
     }
 }
 
