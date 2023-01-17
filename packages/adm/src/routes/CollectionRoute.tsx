@@ -1,6 +1,8 @@
 import {RouteProps} from "@restaroo/lib";
 import {useEffect} from "react";
 import {pocketBase} from "../service";
+
+// @ts-ignore
 import {schema} from "@restaroo/mdl";
 
 
