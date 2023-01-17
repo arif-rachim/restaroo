@@ -7,7 +7,7 @@
   "module": "dist/module.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "start": "ts-node src/index.ts && parcel build",
+    "start": "ts-node src/index.ts && parcel watch",
     "typecheck": "tsc --noEmit src/index.ts"
   },
   "author": "",
