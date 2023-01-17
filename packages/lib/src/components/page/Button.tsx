@@ -5,7 +5,18 @@ import {AiOutlineLoading3Quarters} from "react-icons/ai";
 import {CSSProperties} from "react";
 import noNull from "../utils/noNull";
 
-export function Button(props: { onTap: () => void, title: string | JSX.Element, icon: IconType, theme: ButtonTheme, style?: MotionStyle, iconStyle?: CSSProperties, isBusy?: boolean, disabled?: boolean }) {
+export interface ButtonProps {
+    onTap: () => void,
+    title: string | JSX.Element,
+    icon: IconType,
+    theme: ButtonTheme,
+    style?: MotionStyle,
+    iconStyle?: CSSProperties,
+    isBusy?: boolean,
+    disabled?: boolean
+}
+
+export function Button(props: ButtonProps) {
     const isBusy = props.isBusy;
     const disabled = props.disabled;
     const Icon: IconType = isBusy ? AiOutlineLoading3Quarters : props.icon;

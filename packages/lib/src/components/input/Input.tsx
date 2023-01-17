@@ -9,7 +9,7 @@ interface InputStyle {
     errorStyle?: CSSProperties
 }
 
-export function Input(props: {
+export interface InputProps {
     title: string | ReactElement,
     placeholder: string,
     value?: string,
@@ -24,7 +24,9 @@ export function Input(props: {
     titleWidth?: number | string,
     onFocus?: FocusEventHandler<HTMLInputElement>,
     readOnly?: boolean
-}) {
+}
+
+export function Input(props: InputProps) {
 
     const {error, value, defaultValue, style, type, inputMode, titlePosition, titleWidth, onFocus} = props;
     const inlineTitle = titlePosition === 'left';

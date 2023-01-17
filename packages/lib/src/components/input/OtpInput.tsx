@@ -121,6 +121,7 @@ export function OtpInput(props: { value: string, valueLength: number, onChange: 
     return (
         <div style={{
             display: 'flex',
+            justifyContent:'center',
             width: '100%',
             maxWidth: 360,
             columnGap: 10

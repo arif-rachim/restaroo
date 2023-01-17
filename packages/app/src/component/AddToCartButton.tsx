@@ -137,7 +137,7 @@ export function ProductDetail(props: { product: Product, closePanel: (result: an
             }
             return `Selecting a${['a', 'i', 'u', 'e', 'o'].includes(c.name.substring(0, 1).toLowerCase()) ? 'n' : ''} ${c.name} is required.`
         }).filter(m => m);
-    }, [product.configs, store.stateRef]);
+    }, [product.configs,store]);
     return <SlideDetail closePanel={closePanel} style={{backgroundColor: pageBackgroundColor, padding: 0}}>
         <div style={{flexGrow: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', paddingBottom: 70}}>
             <Card style={{padding: 0, margin: 10}}>

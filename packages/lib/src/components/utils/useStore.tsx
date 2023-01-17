@@ -1,7 +1,6 @@
 import {
     cloneElement,
     DependencyList,
-    MutableRefObject,
     PropsWithChildren,
     ReactElement,
     useCallback,
@@ -122,7 +121,7 @@ export function useStoreListener<T, S>(store: Store<T>, selector: (param: T) => 
 
 export function useStoreValue<T, S>(store: Store<T>, selector: (param: T) => S, deps?: DependencyList | undefined) {
     const [value, setValue] = useState<S>(() => selector(store.get()));
-    useStoreListener(store, selector, (next, prev) => {
+    useStoreListener(store, selector, (next) => {
         setValue(old => {
             if (arrayIsMatch(old, next)) {
                 return old;
