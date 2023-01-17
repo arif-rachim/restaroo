@@ -6,11 +6,10 @@
   "private": true,
   "homepage": "http://localhost:8080",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=8080 react-scripts start",
     "build": "react-scripts build&&rm -rf docs&&mv build docs",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "start:https": "ngrok http 3000"
+    "eject": "react-scripts eject"
   },
   "author": "",
   "license": "ISC",

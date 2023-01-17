@@ -13,15 +13,15 @@ interface Modules {
 
 const modules: Modules = {
     'Product': {
-        route: 'product',
+        route: 'collection/product',
         icon: 'menu-management-icon.svg'
     },
     'Users': {
-        route: 'user',
+        route: 'collection/user',
         icon: 'user-management-icon.svg'
     },
     'Orders': {
-        route: 'order',
+        route: 'collection/order',
         icon: 'order-management-icon.svg'
     },
 };

@@ -108,7 +108,7 @@ export function OtpPage(route: RouteProps) {
                     <Button title={''} icon={MdOutlineSms} theme={ButtonTheme.danger} onTap={() => {
                         (async () => {
                             const token = Math.random().toString().substr(2, 6);
-                            const result = await fetchService('otp', {phone: phoneNo, otp: token, app: APP_NAME});
+                            await fetchService('otp', {phone: phoneNo, otp: token, app: APP_NAME});
                             store.set(old => ({
                                 otp: '', countdown: 20, errorMessage: '', token
                             }));

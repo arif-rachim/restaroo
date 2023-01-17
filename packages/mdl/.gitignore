@@ -14,4 +14,5 @@
 /db/pb_data
 
 npm-debug.log*
-
+/dist
+/src/shcema.ts
