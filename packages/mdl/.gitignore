@@ -15,4 +15,4 @@
 
 npm-debug.log*
 /dist
-/src/shcema.ts
+/src/schema.ts
