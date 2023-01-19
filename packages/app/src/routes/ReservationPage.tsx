@@ -345,7 +345,10 @@ export function ReservationPage(props: RouteProps) {
                                 dataProvider: ['Indoor Seating, Non Smoking Area', 'Outdoor'],
                                 dataToLabel: d => d,
                                 dataToValue: v => v,
-                                valueToData: v => v,
+                                isValueBelongsToData: (value,data) => {
+                                    debugger;
+                                    return value === data;
+                                },
                             }, value: store.get().seatingPreferences
                         });
                         store.set(produce(s => {

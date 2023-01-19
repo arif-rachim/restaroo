@@ -28,7 +28,10 @@ export interface InputProps {
 
 export function Input(props: InputProps) {
 
-    const {error, value, defaultValue, style, type, inputMode, titlePosition, titleWidth, onFocus} = props;
+    const {error, value, defaultValue, style, type, inputMode, titlePosition, titleWidth, onFocus,onChange,title,readOnly} = props;
+    if(value !== undefined && onChange === undefined && readOnly !== true){
+        console.error(`You probably wants to set '${title}' to readOnly mode since we have 'value' but there is no 'onChange' registered`);
+    }
     const inlineTitle = titlePosition === 'left';
     return <label style={{
         display: 'flex',

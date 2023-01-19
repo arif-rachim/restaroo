@@ -12,7 +12,7 @@ export interface Table{
     updateRule: string;// "",
     deleteRule: string;// "",
     schema : (TextSchema|NumberSchema|RelationSchema|FileSchema|BoolSchema)[];
-    options : unknown;
+    options:unknown;
 }
 
 interface Schema{
@@ -22,7 +22,6 @@ interface Schema{
     type:string;// "text",
     required: boolean;// true,
     unique: boolean;// false,
-    options : unknown;
 }
 
 export interface TextSchema extends Schema{
@@ -63,4 +62,5 @@ export interface FileSchema extends Schema{
 }
 export interface BoolSchema extends Schema{
     type : 'bool';
+    options : unknown;
 }

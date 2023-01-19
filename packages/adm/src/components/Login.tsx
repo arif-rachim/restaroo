@@ -72,7 +72,6 @@ export function Login() {
 
                             <StoreValue store={store} selector={s => s.phoneNumber} property={'value'}>
                                 <DInput titlePosition={'left'} style={{titleStyle:{margin:0,padding:0},containerStyle:{alignItems:'flex-start'}}}  title={<StoreValue store={store} selector={s => s.countryCode} property={'value'} >
-
                                     <DInput titlePosition={'left'}  titleWidth={100} title={'Phone Number'} placeholder={'Select Country Code'} onFocus={async () => {
                                         const country = await showPicker({
                                             value:store.get().countryCode,
@@ -81,7 +80,7 @@ export function Login() {
                                         store.set(produce(s => {
                                             s.countryCode = country
                                         }))
-                                    }} style={{errorStyle:{height:0},containerStyle:{padding:0,margin:0},titleStyle:{margin:0,padding:0,marginRight:5},inputStyle:{width:60,marginRight:5}}}></DInput>
+                                    }} style={{errorStyle:{height:0},containerStyle:{padding:0,margin:0},titleStyle:{margin:0,padding:0,marginRight:5},inputStyle:{width:60,marginRight:5}}} readOnly={true}/>
                                 </StoreValue>} placeholder={'50123456'}
                                        onChange={e => store.set(produce(s => {
                                            s.phoneNumber = e.target.value.toUpperCase();

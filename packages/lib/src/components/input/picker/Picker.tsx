@@ -10,8 +10,8 @@ export interface KeyValue {
 const ROW_HEIGHT = 50;
 const VISIBLE_ROW = 7;
 
-export function Picker(props: { value?: number, onChange?: (param: number) => void, data: KeyValue[], width?: number | string, fontSize?: number | string }) {
-    const {value, data, width, onChange, fontSize} = props;
+export function Picker(props: { value?: number, onChange?: (param: number) => void, data: KeyValue[], width?: number | string, fontSize?: number | string,onRowClick?:(index:number) => void}) {
+    const {value, data, width, onChange, fontSize,onRowClick} = props;
     const compKey = useId();
 
     useEffect(() => {
@@ -59,7 +59,11 @@ export function Picker(props: { value?: number, onChange?: (param: number) => vo
                 display: 'flex',
                 height: ROW_HEIGHT,
                 scrollSnapAlign: 'start'
-            }} id={`${compKey}container`}>
+            }} id={`${compKey}container`} onClick={() => {
+                if (onRowClick) {
+                    onRowClick(index);
+                }
+            }}>
                 <div id={`${compKey}${item.key}`}>{item.value}</div>
             </div>
         })}

@@ -9,18 +9,17 @@ body {
 
 }
 
-/** {*/
-/*    overscroll-behavior: contain;*/
-/*}*/
-
 body, html, #root {
     margin: 0;
     padding: 0;
     height: 100%;
     overflow: auto;
-    box-sizing: border-box;
     color: #333;
     font-size: 13px;
+}
+
+*{
+    box-sizing: border-box;
 }
 
 code {

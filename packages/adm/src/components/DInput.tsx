@@ -8,5 +8,6 @@ export function DInput(props:InputProps){
     const titleStyle = {fontSize:12,marginBottom:3,marginTop:titleIsLeft?10:0,...style.titleStyle};
     const containerStyle = {borderBottom:'unset',...style.containerStyle}
     const errorStyle = {height:15,...style.errorStyle}
+
     return <Input style={{inputStyle,titleStyle,containerStyle,errorStyle}} {...p}/>
 }

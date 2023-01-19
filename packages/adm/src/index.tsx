@@ -8,6 +8,7 @@ import "antd/dist/reset.css";
 import {secured} from "./components/secured";
 import {CollectionRoute} from "./routes/CollectionRoute";
 
+
 interface AppState extends BaseState {
 }
 
@@ -18,7 +19,7 @@ const routes: Routes = {
         component: secured(Home),
         initial: 'left'
     },
-    'collection/$collection/$id' : {
+    'collection/$collection' : {
         component : CollectionRoute,
         initial : 'right'
     }

@@ -13,8 +13,8 @@ const nothing = () => {
 
 export interface PickerProperties<T> {
     dataProvider: T[],
-    dataToLabel: (param?: T) => any,
-    valueToData: (value: any, data: T) => any,
+    dataToLabel: (data?: T) => any,
+    isValueBelongsToData: (value: any, data: T) => boolean,
     dataToValue: (data: T) => any
 }
 
@@ -22,19 +22,19 @@ export interface ValueOnChangeProperties<T> {
     value?: any,
     onChange?: (value: T) => void
 }
-
+function defaultFalse(){
+    return false;
+}
 export function createPicker<T>(props: PickerProperties<T>) {
-    let {dataProvider, dataToLabel, valueToData, dataToValue} = props;
+    let {dataProvider, dataToLabel, isValueBelongsToData, dataToValue} = props;
     dataProvider = noNull(dataProvider, []);
     dataToLabel = noNull(dataToLabel, nothing);
-    valueToData = noNull(valueToData, nothing);
+    isValueBelongsToData = noNull(isValueBelongsToData,defaultFalse);
     dataToValue = noNull(dataToValue, nothing);
     return function InputPicker(props: ValueOnChangeProperties<T>) {
         let {value, onChange} = props;
-        const data = useMemo(() => dataProvider.find((data) => valueToData(value, data)), [value]);
-
+        const data = useMemo(() => dataProvider.find((data) => isValueBelongsToData(value, data)), [value]);
         onChange = noNull(onChange, nothing);
-
         const store = useStore(data);
         useAfterInit(() => {
             store.set(data);
@@ -62,6 +62,11 @@ export function createPicker<T>(props: PickerProperties<T>) {
                 }}>
                     <Picker data={dataProvider.map((data, index) => ({key: index, value: dataToLabel(data)}))}
                             onChange={index => store.set(dataProvider[index])} fontSize={20} width={'100%'}
+                            onRowClick={index => {
+                                const value = dataProvider[index];
+                                invariant(onChange);
+                                onChange(dataToValue(value))
+                            }}
                     />
                 </StoreValue>
 
@@ -79,7 +84,7 @@ export function createPicker<T>(props: PickerProperties<T>) {
                 <Button title={'Continue'} onTap={() => {
                     const value = store.get();
                     invariant(value);
-                    invariant(onChange)
+                    invariant(onChange);
                     onChange(dataToValue(value))
                 }} icon={AiOutlineSelect}
                         theme={ButtonTheme.promoted}/>

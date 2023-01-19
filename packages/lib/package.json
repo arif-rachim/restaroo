@@ -14,6 +14,7 @@
     "typecheck": "tsc --noEmit src/index.ts"
   },
   "dependencies": {
+    "nanoid": "*",
     "tiny-invariant": "*",
     "framer-motion": "*",
     "react": "^18.2.0",

@@ -14,6 +14,9 @@ import {PickerOptions, ShowPickerFunction} from "../components/input";
 import {BaseState} from "./BaseState";
 import {GuestProfile} from "./profile";
 import invariant from "tiny-invariant";
+import produce from "immer";
+import {nanoid} from "nanoid";
+import noNull from "../components/utils/noNull";
 
 export const HeaderFooterVisibilityContext = createContext<{ footerVisibleStore?: Store<boolean>, headerVisibleStore?: Store<boolean> }>({});
 
@@ -24,7 +27,7 @@ export function useAppContext() {
 
 interface AppContextType {
     showModal: <T>(factoryFunction: FactoryFunction<T>) => Promise<T>,
-    showSlidePanel: <T>(factoryFunction: FactoryFunction<T>) => Promise<T>,
+    showSlidePanel: <T>(factoryFunction: FactoryFunction<T>,config?:FactoryFunctionConfig) => Promise<T>,
     showPicker: PickerFunction,
     store: Store<BaseState>,
     showHeader: Dispatch<SetStateAction<boolean>>,
@@ -44,12 +47,16 @@ const AppContext = createContext<AppContextType>({
     }
 );
 
+export type FactoryFunctionConfig = {
+    position? : 'top'|'left'|'right' | 'bottom';
+    isPopup?:boolean; // is popup meaning that the previous panel should not hide
+}
 
 export type FactoryFunction<T> = (closePanel: (val: T) => void) => ReactElement;
 export type PickerFunction = <T>(props: { picker: PickerOptions, value: T }) => Promise<T>;
 
 export function AppContextProvider<State extends BaseState>(props: PropsWithChildren<{
-    panelStore: Store<{ modalPanel: ReactElement | false, slidePanel: ReactElement | false }>
+    panelStore: Store<{ modalPanel: ReactElement | false, slidePanel: ({element:ReactElement,config:FactoryFunctionConfig,id:string})[] }>
     store: Store<State>,
     showPickerRef: MutableRefObject<ShowPickerFunction | undefined>
 }>) {
@@ -59,7 +66,7 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
     const footerVisibleStore = useStore(true);
     const headerVisibleStore = useStore(true);
 
-    const showModal = useCallback((factory: FactoryFunction<any>) => {
+    const showModal = useCallback((factory: FactoryFunction<any>,config:FactoryFunctionConfig) => {
         return new Promise<any>(resolve => {
             const closePanel = (value: any) => {
                 panelStore.set(old => ({...old, modalPanel: false}))
@@ -70,14 +77,20 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
         })
     }, [panelStore]);
 
-    const showSlidePanel = useCallback((factory: FactoryFunction<any>) => {
+    const showSlidePanel = useCallback((factory: FactoryFunction<any>,config?:FactoryFunctionConfig) => {
         return new Promise<any>(resolve => {
+            const id = nanoid();
             const closePanel = (value: any) => {
-                panelStore.set(old => ({...old, slidePanel: false}))
+                panelStore.set(s => {
+                    return {...s,slidePanel:s.slidePanel.filter(s => s.id !== id)}
+                })
                 resolve(value);
             }
             const element = factory(closePanel);
-            panelStore.set(old => ({...old, slidePanel: element}))
+            const componentConfig:FactoryFunctionConfig = noNull(config,{position:'bottom',isPopup:false});
+            panelStore.set(produce(s => {
+                s.slidePanel.push({id,config:componentConfig,element});
+            }))
         })
     }, [panelStore]);
 
