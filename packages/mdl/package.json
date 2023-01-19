@@ -2,13 +2,13 @@
   "name": "@restaroo/mdl",
   "version": "1.0.0",
   "description": "",
-  "source": "src/schema.ts",
+  "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/module.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "start": "ts-node src/index.ts && parcel watch",
-    "typecheck": "tsc --noEmit src/index.ts"
+    "start": "ts-node src/start.ts && parcel watch",
+    "typecheck": "tsc --noEmit src/start.ts"
   },
   "author": "",
   "license": "ISC"

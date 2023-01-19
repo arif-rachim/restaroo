@@ -18,7 +18,7 @@ const routes: Routes = {
         component: secured(Home),
         initial: 'left'
     },
-    'collection/$collection' : {
+    'collection/$collection/$id' : {
         component : CollectionRoute,
         initial : 'right'
     }
