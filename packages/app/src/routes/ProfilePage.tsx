@@ -21,13 +21,13 @@ import {CgProfile} from "react-icons/cg";
 import {IoSaveOutline} from "react-icons/io5";
 import produce from "immer";
 import {useCallback, useState} from "react";
-import {pocketBase} from "../service";
+import PocketBase from "pocketbase";
 
 export function ProfilePage(props: RouteProps) {
     const [busy, setBusy] = useState(false);
     const navigate = useNavigate();
-    const {store: appStore} = useAppContext();
-    const model = pocketBase.authStore.model;
+    const {store: appStore,pb} = useAppContext();
+    const model = pb.authStore.model;
     const store = useStore<Profile & { errors: any }>(
         {
             verified: model?.verified,
@@ -45,7 +45,7 @@ export function ProfilePage(props: RouteProps) {
             }
         });
     useFocusListener(props.path, () => {
-        const model = pocketBase.authStore.model;
+        const model = pb.authStore.model;
         store.set(produce(s => {
             s.verified = model?.verified;
             s.updated = new Date(model?.updated ?? '');
@@ -137,7 +137,7 @@ export function ProfilePage(props: RouteProps) {
                                 created: state.created,
                                 avatar: state.avatar
                             }
-                            const {result, error} = await updateUserProfile(profile);
+                            const {result, error} = await updateUserProfile(profile,pb);
                             setBusy(false);
                             if (error) {
                                 // do something
@@ -157,7 +157,7 @@ export function ProfilePage(props: RouteProps) {
     </Page>
 }
 
-async function updateUserProfile(profile: Profile): Promise<{ result: Profile, error: string }> {
+async function updateUserProfile(profile: Profile,pb:PocketBase): Promise<{ result: Profile, error: string }> {
 
     const record: {
         "id": string,
@@ -169,7 +169,7 @@ async function updateUserProfile(profile: Profile): Promise<{ result: Profile, e
         "email": string,
         "name": string,
         "avatar": string
-    } = await pocketBase.collection('users').update(profile.id, {name: profile.name});
+    } = await pb.collection('users').update(profile.id, {name: profile.name});
     // await pocketBase.collection('users').requestEmailChange(profile.email);
     return {
         result: {

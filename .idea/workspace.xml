@@ -11,14 +11,15 @@
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/routes/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/routes/Home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/lib/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/lib/src/app/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/lib/src/app/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/lib/src/app/AppShell.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/lib/src/app/profile/useProfile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/lib/src/app/profile/useProfile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/lib/src/app/useAppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/lib/src/app/useAppContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/App.test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/App.test.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/routes/AccountPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/routes/AccountPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/routes/AddressBookPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/routes/AddressBookPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/routes/CameraPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/routes/CameraPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/routes/DeliveryLocationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/routes/DeliveryLocationPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/routes/OtpPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/routes/OtpPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/routes/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/app/src/routes/ProfilePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/app/src/service.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +51,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2HiEk6meaMeJjz3wBkg9iZDR0i8" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

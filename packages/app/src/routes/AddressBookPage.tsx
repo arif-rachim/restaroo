@@ -3,7 +3,6 @@ import {Header, red, SkeletonBox, useAppContext, useNavigate, useStoreValue} fro
 import {IoAdd} from "react-icons/io5";
 import {AnimatePresence, motion} from "framer-motion";
 import {MdDelete, MdOutlineHome, MdOutlineHotel, MdOutlineLocationOn, MdWorkOutline} from "react-icons/md";
-import {pocketBase} from "../service";
 import {produce} from "immer";
 
 const ICONS: any = {
@@ -15,7 +14,7 @@ const ICONS: any = {
 export function AddressBookPage() {
     const isLoading = false;
     const navigate = useNavigate();
-    const {store: appStore} = useAppContext();
+    const {store: appStore,pb} = useAppContext();
     const addresses = useStoreValue(appStore, s => s.addresses);
     return <Page>
         <Header title={'My Address'} size={'big'}>
@@ -62,7 +61,7 @@ export function AddressBookPage() {
                                                 whileTap={{scale: 0.95}} onClick={async (event) => {
                                         event.preventDefault();
                                         event.stopPropagation();
-                                        await pocketBase.collection('address').delete(address.id)
+                                        await pb.collection('address').delete(address.id)
                                         appStore.set(produce(s => {
                                             const addressIndex = s.addresses.findIndex(a => a.id === address.id);
                                             s.addresses.splice(addressIndex, 1);

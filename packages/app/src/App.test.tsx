@@ -1,8 +1,9 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
-import {createApp, GuestProfile} from '@restaroo/lib';
+import {createApp, createFetch, GuestProfile} from '@restaroo/lib';
 import {AppState} from "./component/AppState";
-import {pocketBase} from "./service";
+import PocketBase from "pocketbase";
+
 
 const App = createApp<AppState>();
 test('renders learn react link', () => {
@@ -11,7 +12,7 @@ test('renders learn react link', () => {
         addresses: [],
         shoppingCart: []
     }} onProfileChange={(next, prev, store) => {
-    }} pocketBase={pocketBase} routes={{}}/>);
+    }} pocketBase={new PocketBase()} routes={{}} fetchService={createFetch('')}/>);
     const linkElement = screen.getByText(/learn react/i);
     expect(linkElement).toBeInTheDocument();
 });

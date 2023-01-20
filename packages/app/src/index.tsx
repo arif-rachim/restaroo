@@ -17,8 +17,11 @@ import {OrderDetailPage} from "./routes/OrderDetailPage";
 import {PaymentMethodPage} from "./routes/PaymentMethodPage";
 import {CameraPage} from "./routes/CameraPage";
 import {AppState} from "./component/AppState";
-import {pocketBase} from "./service";
 import {FooterNavigation} from "./component/FooterNavigation";
+import {createFetch} from "@restaroo/lib";
+import PocketBase from "pocketbase";
+
+
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -97,7 +100,9 @@ root.render(<MyApp mobileOnly={true} stateInitValue={{
         return {...currentState, shoppingCart: []};
     })
     // here we can perform fetching other stuff here !
-}} pocketBase={pocketBase} routes={routes}/>);
+}} pocketBase={new PocketBase(process.env.REACT_APP_API_URL ?? '')}
+fetchService={createFetch(process.env.REACT_APP_API_URL ?? '')}
+                   routes={routes}/>);
 
 
 // If you want to start measuring performance in your app, pass a function

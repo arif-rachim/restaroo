@@ -34,8 +34,6 @@ import {AnimatePresence, motion} from "framer-motion";
 import {MdCancel} from "react-icons/md";
 import produce from "immer";
 import {SlideDetail} from "./SlideDetail";
-import {pocketBase} from "../service";
-
 
 function LocationSelector(props: { value?: string, onChange: (value: string) => void, error?: string }) {
     const {value, onChange, error} = props;
@@ -115,7 +113,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
     let {closePanel, address} = props;
     address = address ?? GuestAddress;
 
-    const {store: appStore} = useAppContext();
+    const {store: appStore,pb} = useAppContext();
     const store = useStore<Address & {
         errors: {
             areaOrStreetName: string,
@@ -198,7 +196,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                     // eslint-disable-next-line
                     const currentAddress = store.get();
                     if (currentAddress.id) {
-                        const record: any = await pocketBase.collection('address').update(currentAddress.id, {
+                        const record: any = await pb.collection('address').update(currentAddress.id, {
                             "location": currentAddress.location,
                             "houseOrFlatNo": currentAddress.houseOrFlatNo,
                             "buildingOrPremiseName": currentAddress.buildingOrPremiseName,
@@ -221,7 +219,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
                             })
                         }));
                     } else {
-                        const record: any = await pocketBase.collection('address').create({
+                        const record: any = await pb.collection('address').create({
                             "location": currentAddress.location,
                             "houseOrFlatNo": currentAddress.houseOrFlatNo,
                             "buildingOrPremiseName": currentAddress.buildingOrPremiseName,

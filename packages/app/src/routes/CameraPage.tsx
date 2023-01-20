@@ -4,7 +4,6 @@ import 'react-html5-camera-photo/build/css/index.css';
 import {Button, ButtonTheme, useAppContext, useAppDimension, useProfile} from "@restaroo/lib";
 import {useState} from "react";
 import {IoCamera, IoClose, IoSaveOutline} from "react-icons/io5";
-import {pocketBase} from "../service";
 import {produce} from "immer";
 
 function dataURItoBlob(dataURI: string) {
@@ -30,7 +29,7 @@ function dataURItoBlob(dataURI: string) {
 
 export function CameraPage() {
     const {appDimension} = useAppDimension();
-    const {store: appStore} = useAppContext();
+    const {store: appStore,pb} = useAppContext();
     const [dataUri, setDataUri] = useState('');
 
     const user = useProfile();
@@ -43,7 +42,7 @@ export function CameraPage() {
                     const formData = new FormData();
                     let blob = dataURItoBlob(dataUri); //Converts to blob using link above
                     formData.append("avatar", blob);
-                    const record = await pocketBase.collection('users').update(user.id, formData);
+                    const record = await pb.collection('users').update(user.id, formData);
                     appStore.set(produce(s => {
                         s.user.avatar = record.avatar;
                     }));

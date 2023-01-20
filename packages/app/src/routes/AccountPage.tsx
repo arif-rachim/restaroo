@@ -30,7 +30,6 @@ import {RefObject, useRef} from "react";
 import invariant from "tiny-invariant";
 import {RiDraftLine} from "react-icons/ri";
 import {motion} from "framer-motion";
-import {pocketBase} from "../service";
 import {useLogout} from "@restaroo/lib";
 
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
@@ -64,7 +63,7 @@ export function AccountPage(props: RouteProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const isSessionActive = useSessionIsActive();
     const navigate = useNavigate();
-    const logout = useLogout(pocketBase);
+    const logout = useLogout();
     return <Page style={{padding: 0, background: pageBackgroundColor}}>
         <Header title={''}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto'}}>

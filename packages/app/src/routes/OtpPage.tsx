@@ -19,14 +19,14 @@ import {MdOutlineSms} from "react-icons/md";
 import {IoCallOutline} from "react-icons/io5";
 import {CSSProperties, useEffect, useState} from "react";
 import produce from "immer";
-import {fetchService, pocketBase} from "../service";
+import PocketBase from "pocketbase";
 
 const APP_NAME = process.env.REACT_APP_APPLICATION_NAME;
 
 export function OtpPage(route: RouteProps) {
     const phoneNo = route.params.get('phoneNo');
     const store = useStore({otp: '', countdown: 20, errorMessage: '', token: ''});
-    const {store: appStore} = useAppContext();
+    const {store: appStore,fetchService,pb} = useAppContext();
     const navigate = useNavigate();
     const [isBusy, setIsBusy] = useState(false);
 
@@ -48,7 +48,7 @@ export function OtpPage(route: RouteProps) {
                 s.otp = '';
             }));
 
-            const {valid, profile} = await validateToken(next, phoneNo ?? '', store.get().token);
+            const {valid, profile} = await validateToken(next, phoneNo ?? '', store.get().token,pb);
             if (!valid) {
                 setIsBusy(false);
                 store.set(produce(s => {
@@ -134,11 +134,11 @@ export function OtpPage(route: RouteProps) {
  * @param token
  * @param phoneNo
  */
-async function validateToken(token: string, phoneNo: string, otp: string): Promise<{ valid: boolean, profile: Profile }> {
+async function validateToken(token: string, phoneNo: string, otp: string,pb:PocketBase): Promise<{ valid: boolean, profile: Profile }> {
     const userName = phoneNo.replace('+', '');
     if (token === otp) {
         try {
-            const {record} = await pocketBase.collection('users').authWithPassword(userName, '12345678');
+            const {record} = await pb.collection('users').authWithPassword(userName, '12345678');
             return {
                 valid: true,
                 profile: {
@@ -154,13 +154,13 @@ async function validateToken(token: string, phoneNo: string, otp: string): Promi
                 }
             }
         } catch (err) {
-            await pocketBase.collection('users').create({
+            await pb.collection('users').create({
                 "username": userName,
                 "password": "12345678",
                 "passwordConfirm": "12345678",
                 "name": ""
             });
-            const {record} = await pocketBase.collection('users').authWithPassword(userName, '12345678');
+            const {record} = await pb.collection('users').authWithPassword(userName, '12345678');
             return {
                 valid: true,
                 profile: {
