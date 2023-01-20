@@ -18,6 +18,9 @@ import produce from "immer";
 import {nanoid} from "nanoid";
 import noNull from "../components/utils/noNull";
 import PocketBase from "pocketbase";
+import {ButtonTheme, red} from "../components/Theme";
+import {Button} from "../components/page";
+import {IoClose} from "react-icons/io5";
 
 export const HeaderFooterVisibilityContext = createContext<{ footerVisibleStore?: Store<boolean>, headerVisibleStore?: Store<boolean> }>({});
 
@@ -33,8 +36,8 @@ interface AppContextType {
     store: Store<BaseState>,
     showHeader: Dispatch<SetStateAction<boolean>>,
     showFooter: Dispatch<SetStateAction<boolean>>,
-    pb:PocketBase,
-    fetchService:FetchService
+    pb: PocketBase,
+    fetchService: FetchService
 }
 
 
@@ -64,10 +67,10 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
     store: Store<State>,
     showPickerRef: MutableRefObject<ShowPickerFunction | undefined>,
     pocketBase: PocketBase,
-    fetchService:FetchService
+    fetchService: FetchService
 }>) {
 
-    const {panelStore, store, showPickerRef, pocketBase: pb,fetchService} = props;
+    const {panelStore, store, showPickerRef, pocketBase, fetchService} = props;
 
     const footerVisibleStore = useStore(true);
     const headerVisibleStore = useStore(true);
@@ -105,10 +108,50 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
         return showPickerRef.current.call(null, props.picker, props.value);
     }, [showPickerRef]);
 
+    const proxyHandler: ProxyHandler<any> = useMemo(() => ({
+        get(target: any, p: any): any {
+            const val = target[p];
+            if(p === 'send'){
+                return async function send(...args:any[]){
+                    try{
+                        return await val.apply(target,args);
+                    }catch(err:any){
+                        await showModal(closePanel => {
+                            return <div style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                padding: 10,
+                                background: red,
+                                color: 'white',
+                                borderRadius: 10
+                            }}>
+                                <div>{err.message}</div>
+                                <div style={{display: 'flex', flexDirection: 'row-reverse', marginTop: 5}}>
+                                    <Button onTap={() => {
+                                        closePanel(true);
+                                    }} title={'Ok'} icon={IoClose} theme={ButtonTheme.danger}
+                                            style={{color: 'white', fontSize: 13, padding: '5px 10px'}}
+                                            iconStyle={{width: 13, height: 13}}/>
+                                </div>
+                            </div>
+                        });
+                        throw err;
+                    }
+                }
+            }
+            return val;
+        }
+    }), []);
+
+    function createProxy<Client extends object>(client: Client): Client {
+        return new Proxy(client, proxyHandler)
+    }
+
+    const pb = createProxy(pocketBase);
     const contextValue = useMemo(() => {
         const showHeader = headerVisibleStore.set;
         const showFooter = footerVisibleStore.set;
-        return {showModal, store, showPicker, showSlidePanel, showHeader, showFooter, pb,fetchService}
+        return {showModal, store, showPicker, showSlidePanel, showHeader, showFooter, pb, fetchService}
     }, [showModal, showSlidePanel, showPicker, store, headerVisibleStore.set, footerVisibleStore.set]);
 
     return <AppContext.Provider value={(contextValue as any)}>
@@ -117,6 +160,7 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
         </HeaderFooterVisibilityContext.Provider>
     </AppContext.Provider>
 }
+
 
 export function useFooterVisible() {
     const store = useContext(HeaderFooterVisibilityContext).footerVisibleStore;

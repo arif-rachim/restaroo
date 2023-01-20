@@ -180,7 +180,7 @@ interface ListResult<M extends BaseModel> {
 
 
 function DInputRelation(props: { schema: RelationSchema, value?: string[], onChange?: (param: string[]) => void }) {
-    const go = useErrorWrapper();
+
     const {schema, value, onChange} = props;
     const {showSlidePanel, pb} = useAppContext();
     let val = value ?? [];
@@ -188,7 +188,7 @@ function DInputRelation(props: { schema: RelationSchema, value?: string[], onCha
                    value={val.join(', ')}
                    readOnly={true}
                    placeholder={`Please enter ${schema.name}`} inputMode={'text'} type={'text'}
-                   style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}} onFocus={go(async () => {
+                   style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}} onFocus={async () => {
         const items: ListResult<any> = await pb.collection(schema.options.collectionId).getList(1, 50);
 
         const selectedRelation = await showSlidePanel((closePanel: (param: (string[] | false)) => void) => {
@@ -198,7 +198,7 @@ function DInputRelation(props: { schema: RelationSchema, value?: string[], onCha
         if (selectedRelation !== false && onChange) {
             onChange(selectedRelation);
         }
-    })}/>
+    }}/>
 }
 
 function RenderRowItem(props: { table: Table, item: BaseModel, storeSelectedIds: Store<string[]> }) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {BaseState, createApp, GuestProfile, Routes} from "@restaroo/lib";
+import {BaseState, createApp, GuestProfile, Routes, useAppContext} from "@restaroo/lib";
 import Home from "./routes/Home";
 import {secured} from "./components/secured";
 import {CollectionRoute} from "./routes/CollectionRoute";
@@ -29,8 +29,10 @@ const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
+const pb = new PocketBase(process.env.REACT_APP_API_URL ?? '')
+
 root.render(<MyApp
-    pocketBase={new PocketBase(process.env.REACT_APP_API_URL ?? '')}
+    pocketBase={pb}
     fetchService={createFetch(process.env.REACT_APP_API_URL ?? '')}
     stateInitValue={{user: GuestProfile, addresses: []}}
     onProfileChange={(next, prev, store) => {
