@@ -2,7 +2,15 @@ import {CSSProperties, ReactElement, useEffect, useRef} from "react";
 import {AppContextProvider, FactoryFunctionConfig} from "./useAppContext";
 import {AnimatePresence, motion} from "framer-motion";
 
-import {getProp, isNullOrUndefined, Store, useStore, useStoreListener, useStoreValue} from "../components/utils";
+import {
+    FetchService,
+    getProp,
+    isNullOrUndefined,
+    Store,
+    useStore,
+    useStoreListener,
+    useStoreValue
+} from "../components/utils";
 import {PickerProvider, ShowPickerFunction} from "../components/input";
 import {RouterPageContainer, Routes} from "../components/route";
 import {BaseState} from "./BaseState";
@@ -186,7 +194,7 @@ function useAppStoreInitialization<T extends BaseState>(initializer: T, pocketBa
     return store;
 }
 
-export default function AppShell<T extends BaseState>(props: { initValue: T, onProfileChange: (next: Profile, prev: (Profile | undefined), store: Store<T>) => void, pocketBase: PocketBase, routes: Routes }) {
+export default function AppShell<T extends BaseState>(props: { initValue: T, onProfileChange: (next: Profile, prev: (Profile | undefined), store: Store<T>) => void, pocketBase: PocketBase,fetchService:FetchService, routes: Routes }) {
     const panelStore = useStore<{ modalPanel: ReactElement | false, slidePanel: ({ id: string, element: ReactElement, config: FactoryFunctionConfig })[] }>({
         modalPanel: false,
         slidePanel: []
@@ -194,7 +202,7 @@ export default function AppShell<T extends BaseState>(props: { initValue: T, onP
     const showPickerRef = useRef<ShowPickerFunction>();
     const store = useAppStoreInitialization<T>(props.initValue, props.pocketBase);
     useStoreListener(store, s => s.user, (next, prev) => props.onProfileChange(next, prev, store));
-    return <AppContextProvider panelStore={panelStore} store={store} showPickerRef={showPickerRef} pocketBase={props.pocketBase}>
+    return <AppContextProvider panelStore={panelStore} store={store} showPickerRef={showPickerRef} pocketBase={props.pocketBase} fetchService={props.fetchService}>
         <div style={shellStyle}>
             <RouterPageContainer routes={props.routes}/>
             <SlideAndModalPanel panelStore={panelStore}/>

@@ -12,7 +12,6 @@ import {
     useStoreValue,
     Visible
 } from "@restaroo/lib";
-import {fetchService, pocketBase} from "../service";
 import produce from "immer";
 import {IoLogIn, IoPhonePortrait, IoRefresh, IoSave} from "react-icons/io5";
 import {DInput} from "./DInput";
@@ -27,10 +26,10 @@ export function Login() {
     });
     const {showPicker} = useAppContext();
     const profileStore = useStore<Profile>(GuestProfile)
-    const {login,updateProfile,fetchOtp,validateOtp} = useLogin({fetchService: fetchService, pocketBase: pocketBase});
+    const {login,updateProfile,fetchOtp,validateOtp} = useLogin();
 
     const status = useStoreValue(store, s => s.status);
-    useStoreListener(store, s => s.otp, async (next, prev) => {
+    useStoreListener(store, s => s.otp, async (next) => {
         if (next && next.length === 6) {
             store.set(produce(s => {
                 s.status = 'WAITING-VALIDATION';

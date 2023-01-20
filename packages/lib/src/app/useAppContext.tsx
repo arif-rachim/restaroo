@@ -9,7 +9,7 @@ import {
     useContext,
     useMemo
 } from "react";
-import {createStoreInitValue, Store, useStore, useStoreValue} from "../components/utils";
+import {createStoreInitValue, FetchService, Store, useStore, useStoreValue} from "../components/utils";
 import {PickerOptions, ShowPickerFunction} from "../components/input";
 import {BaseState} from "./BaseState";
 import {GuestProfile} from "./profile";
@@ -33,7 +33,8 @@ interface AppContextType {
     store: Store<BaseState>,
     showHeader: Dispatch<SetStateAction<boolean>>,
     showFooter: Dispatch<SetStateAction<boolean>>,
-    pb:PocketBase
+    pb:PocketBase,
+    fetchService:FetchService
 }
 
 
@@ -62,15 +63,16 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
     panelStore: Store<{ modalPanel: ReactElement | false, slidePanel: ({ element: ReactElement, config: FactoryFunctionConfig, id: string })[] }>
     store: Store<State>,
     showPickerRef: MutableRefObject<ShowPickerFunction | undefined>,
-    pocketBase: PocketBase
+    pocketBase: PocketBase,
+    fetchService:FetchService
 }>) {
 
-    const {panelStore, store, showPickerRef, pocketBase: pb} = props;
+    const {panelStore, store, showPickerRef, pocketBase: pb,fetchService} = props;
 
     const footerVisibleStore = useStore(true);
     const headerVisibleStore = useStore(true);
 
-    const showModal = useCallback((factory: FactoryFunction<any>, config: FactoryFunctionConfig) => {
+    const showModal = useCallback((factory: FactoryFunction<any>) => {
         return new Promise<any>(resolve => {
             const closePanel = (value: any) => {
                 panelStore.set(old => ({...old, modalPanel: false}))
@@ -106,7 +108,7 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
     const contextValue = useMemo(() => {
         const showHeader = headerVisibleStore.set;
         const showFooter = footerVisibleStore.set;
-        return {showModal, store, showPicker, showSlidePanel, showHeader, showFooter, pb}
+        return {showModal, store, showPicker, showSlidePanel, showHeader, showFooter, pb,fetchService}
     }, [showModal, showSlidePanel, showPicker, store, headerVisibleStore.set, footerVisibleStore.set]);
 
     return <AppContext.Provider value={(contextValue as any)}>

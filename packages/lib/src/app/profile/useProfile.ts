@@ -1,9 +1,7 @@
 import {useAppContext} from "../useAppContext";
 import {GuestProfile, Profile} from "./Profile";
-import {FetchService, useStore, useStoreValue} from "../../components/utils";
+import {useStore, useStoreValue} from "../../components/utils";
 import produce from "immer";
-import PocketBase from "pocketbase";
-
 
 export function useProfile(): Profile {
     return useStoreValue(useAppContext().store, s => s.user);
@@ -13,20 +11,19 @@ export function useSessionIsActive(): boolean {
     return useProfile().id !== GuestProfile.id;
 }
 
-export function useLogout(pocketBase: any) {
+export function useLogout() {
     // here we need to perform logout
-    const {store} = useAppContext();
+    const {store,pb} = useAppContext();
     return function logout() {
-        pocketBase.authStore.clear();
+        pb.authStore.clear();
         store.set(produce(s => {
             s.user = GuestProfile
         }));
     }
 }
 
-export function useLogin(props: { fetchService: FetchService, pocketBase: PocketBase, }) {
-    const {fetchService, pocketBase} = props;
-    const {store: appStore} = useAppContext();
+export function useLogin() {
+    const {store: appStore,pb,fetchService} = useAppContext();
     const store = useStore({token: ''})
 
     async function validateOtp(otp: string, phoneNo: string): Promise<Profile | false> {
@@ -55,8 +52,8 @@ export function useLogin(props: { fetchService: FetchService, pocketBase: Pocket
             "email": string,
             "name": string,
             "avatar": string
-        } = await pocketBase.collection('users').update(profile.id, {name: profile.name});
-        // await pocketBase.collection('users').requestEmailChange(profile.email);
+        } = await pb.collection('users').update(profile.id, {name: profile.name});
+        // await pb.collection('users').requestEmailChange(profile.email);
         return {
             name: record.name,
             username: record.username,
@@ -80,13 +77,12 @@ export function useLogin(props: { fetchService: FetchService, pocketBase: Pocket
 
     /**
      * THIS IS THE FUNCTION TO FETCH USER PROFILE
-     * @param token
      * @param phoneNo
      */
     async function getOrCreateProfile(phoneNo: string): Promise<Profile> {
         const userName = phoneNo.replace('+', '');
         try {
-            const {record} = await pocketBase.collection('users').authWithPassword(userName, '12345678');
+            const {record} = await pb.collection('users').authWithPassword(userName, '12345678');
             return {
                 username: record.username,
                 email: record.email,
@@ -99,13 +95,13 @@ export function useLogin(props: { fetchService: FetchService, pocketBase: Pocket
                 avatar: record.avatar
             }
         } catch (err) {
-            await pocketBase.collection('users').create({
+            await pb.collection('users').create({
                 "username": userName,
                 "password": "12345678",
                 "passwordConfirm": "12345678",
                 "name": ""
             });
-            const {record} = await pocketBase.collection('users').authWithPassword(userName, '12345678');
+            const {record} = await pb.collection('users').authWithPassword(userName, '12345678');
             return {
                 username: record.username,
                 email: record.email,

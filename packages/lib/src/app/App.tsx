@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import AppShell from "./AppShell";
 import {Routes} from "../components/route";
-import {Store, WindowSizeContext} from "../components/utils";
+import {FetchService, Store, WindowSizeContext} from "../components/utils";
 import {BaseState} from "./BaseState";
 import {Profile} from "./profile";
 import PocketBase from "pocketbase";
@@ -12,6 +12,7 @@ interface AppProps<T> {
     stateInitValue: T,
     onProfileChange: (next: Profile, prev: (Profile | undefined), store: Store<T>) => void,
     pocketBase: PocketBase,
+    fetchService:FetchService,
     routes: Routes
 }
 
@@ -60,7 +61,7 @@ function Application<T extends BaseState>(props: AppProps<T>) {
                     transform: `scale(${scale})`
                 }}>
                     <AppShell initValue={props.stateInitValue} onProfileChange={props.onProfileChange}
-                              pocketBase={props.pocketBase} routes={props.routes}/>
+                              pocketBase={props.pocketBase} routes={props.routes}  fetchService={props.fetchService}/>
                 </div>
             </WindowSizeContext.Provider>
         </div>
@@ -79,7 +80,7 @@ function Application<T extends BaseState>(props: AppProps<T>) {
                 borderRadius: 0
             }}>
                 <AppShell initValue={props.stateInitValue} onProfileChange={props.onProfileChange}
-                          pocketBase={props.pocketBase} routes={props.routes}/>
+                          pocketBase={props.pocketBase} routes={props.routes} fetchService={props.fetchService}/>
             </div>
         </WindowSizeContext.Provider>
     </div>

@@ -2,7 +2,7 @@ import {ButtonTheme, Card, CardTitle, Image, RouteProps, useLogout, useNavigate,
 import {motion} from "framer-motion";
 import {DButton} from "../components/DButton";
 import {IoLogOut} from "react-icons/io5";
-import {pocketBase} from "../service";
+
 
 interface Modules {
     [key: string]: {
@@ -29,7 +29,7 @@ const modules: Modules = {
 export default function Home(props: RouteProps) {
     const profile = useProfile();
     const navigate = useNavigate();
-    const logout = useLogout(pocketBase);
+    const logout = useLogout();
     return <div style={{
         width: '100%',
         position: 'relative',

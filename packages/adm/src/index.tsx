@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {BaseState, createApp, GuestProfile, Routes} from "@restaroo/lib";
-import {pocketBase} from "./service";
 import Home from "./routes/Home";
 import {secured} from "./components/secured";
 import {CollectionRoute} from "./routes/CollectionRoute";
+import PocketBase from "pocketbase";
+import {createFetch} from "@restaroo/lib";
 
 
 interface AppState extends BaseState {
@@ -29,7 +30,8 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(<MyApp
-    pocketBase={pocketBase}
+    pocketBase={new PocketBase(process.env.REACT_APP_API_URL ?? '')}
+    fetchService={createFetch(process.env.REACT_APP_API_URL ?? '')}
     stateInitValue={{user: GuestProfile, addresses: []}}
     onProfileChange={(next, prev, store) => {
     }}
