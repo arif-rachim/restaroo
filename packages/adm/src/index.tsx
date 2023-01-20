@@ -4,7 +4,6 @@ import './index.css';
 import {BaseState, createApp, GuestProfile, Routes} from "@restaroo/lib";
 import {pocketBase} from "./service";
 import Home from "./routes/Home";
-import "antd/dist/reset.css";
 import {secured} from "./components/secured";
 import {CollectionRoute} from "./routes/CollectionRoute";
 

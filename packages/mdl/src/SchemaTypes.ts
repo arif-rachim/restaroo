@@ -11,7 +11,7 @@ export interface Table{
     createRule: string;// "",
     updateRule: string;// "",
     deleteRule: string;// "",
-    schema : (TextSchema|NumberSchema|RelationSchema|FileSchema|BoolSchema)[];
+    schema : (TextSchema|NumberSchema|RelationSchema|FileSchema|BoolSchema|JsonSchema|SelectSchema|DateSchema|UrlSchema|EmailSchema)[];
     options:unknown;
 }
 
@@ -41,6 +41,14 @@ export interface NumberSchema extends Schema{
     };
 }
 
+export interface DateSchema extends Schema{
+    type : 'date';
+    options : {
+        min? : string;
+        max? : string;
+    };
+}
+
 
 export interface RelationSchema extends Schema{
     type : 'relation';
@@ -63,4 +71,34 @@ export interface FileSchema extends Schema{
 export interface BoolSchema extends Schema{
     type : 'bool';
     options : unknown;
+}
+
+
+export interface JsonSchema extends Schema{
+    type : 'json';
+    options : unknown;
+}
+
+export interface SelectSchema extends Schema{
+    type : 'select';
+    options : {
+        maxSelect?: number;//1,
+        values: string[]
+    }
+}
+
+export interface UrlSchema extends Schema{
+    type : 'url';
+    options : {
+        exceptDomains?: string[],
+        onlyDomains?: string[]
+    }
+}
+
+export interface EmailSchema extends Schema{
+    type : 'email';
+    options : {
+        exceptDomains?: string[],
+        onlyDomains?: string[]
+    }
 }
