@@ -6,7 +6,8 @@ export const pageBackgroundColor = '#F2F2F2';
 export enum ButtonTheme {
     promoted,
     danger,
-    subtle
+    subtle,
+    normal
 }
 
 
@@ -14,4 +15,5 @@ export const theme = {
     [ButtonTheme.promoted]: '#016CBB',
     [ButtonTheme.danger]: '#C30525',
     [ButtonTheme.subtle]: disabledColor,
+    [ButtonTheme.normal] : '#555'
 }

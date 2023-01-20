@@ -1,4 +1,4 @@
-import {ReactElement, useEffect, useId} from "react";
+import {ReactElement, useEffect, useId, useMemo, useRef} from "react";
 import invariant from "tiny-invariant";
 import noNull from "../../utils/noNull";
 
@@ -13,6 +13,7 @@ const VISIBLE_ROW = 7;
 export function Picker(props: { value?: number, onChange?: (param: number) => void, data: KeyValue[], width?: number | string, fontSize?: number | string,onRowClick?:(index:number) => void}) {
     const {value, data, width, onChange, fontSize,onRowClick} = props;
     const compKey = useId();
+    const visibleRow = data.length < 3 ? 3 : data.length < 5 ? 5 : 7;
 
     useEffect(() => {
         const component = document.getElementById(`${compKey}component`);
@@ -24,9 +25,9 @@ export function Picker(props: { value?: number, onChange?: (param: number) => vo
             component.scrollTop = ROW_HEIGHT * (noNull(value, 0));
         }
     }, [compKey, value]);
-    const HALF_ROW = (VISIBLE_ROW - 1) / 2;
+    const HALF_ROW = (visibleRow - 1) / 2;
     return <div style={{
-        height: ROW_HEIGHT * VISIBLE_ROW,
+        height: ROW_HEIGHT * visibleRow,
         overflow: 'auto',
         position: 'relative',
         scrollSnapType: 'y mandatory',

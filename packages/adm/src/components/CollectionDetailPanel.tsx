@@ -145,15 +145,17 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                 })} </div>
             <div
                 style={{display: 'flex', padding: '10px 20px 0px 20px', borderTop: border, justifyContent: 'flex-end'}}>
+
+
                 <DButton title={'Save'} theme={ButtonTheme.danger} icon={IoSave} onTap={async () => {
                     // here we need to add the checking first about the validity of the data
                     const result = await pocketBase.collection(collectionOrCollectionId).create(store.get());
                     closePanel(result);
-                }}/>
-                <DButton title={'Cancel'} theme={ButtonTheme.danger} icon={IoSave} onTap={() => {
+                }} style={{marginRight:10}}/>
+                <DButton title={'Cancel'} theme={ButtonTheme.promoted} icon={IoExit} onTap={() => {
                     // here next time we need to ask question are you sure you want to cancel this ?
                     closePanel(false);
-                }}/>
+                }} />
             </div>
         </Card>
     </div>
