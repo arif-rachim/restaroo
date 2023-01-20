@@ -15,7 +15,7 @@ import {DButton} from "../components/DButton";
 import {IoCreate} from "react-icons/io5";
 import {CollectionDetailPanel} from "../components/CollectionDetailPanel";
 import produce from "immer";
-
+import {motion} from "framer-motion";
 export const EMPTY_TABLE: Table = {
     schema: [],
     name: '',
@@ -63,7 +63,7 @@ export function CollectionRoute(route: RouteProps) {
     const collectionStore = useStore<ListResult<BaseModel>>({
         items: [],
         page: 1,
-        perPage: 50,
+        perPage: 5,
         totalItems: 0,
         totalPages: 0
     });
@@ -133,9 +133,25 @@ export function CollectionRoute(route: RouteProps) {
                 </div>
             })}</div>
         }}/>
-        <StoreValueRenderer store={collectionStore} selector={s => [s.page,s.perPage,s.totalItems,s.totalPages]} render={() => {
-            return <div style={{display:'flex'}}>
-                FUCK YOU
+        <StoreValueRenderer store={collectionStore} selector={s => [s.page,s.perPage,s.totalItems,s.totalPages]} render={([page,perPage,totalItems,totalPage]:number[]) => {
+
+            return <div style={{display:'flex',padding:5,justifyContent:'flex-end'}}>
+                {Array.from({length:5}).map((_,index) => {
+                    if(page > 2){
+                        if(page > (totalPage - 2)){
+                            return index + totalPage - 4;
+                        }
+                        return index - 2 + page
+                    }
+
+                    return index + 1 ;
+                }).filter(t => t <= totalPage).map((val) => {
+                    const isSelected = val === page;
+                    return <motion.div key={val} style={{border:border,padding:5,marginRight:5,minWidth:25,display:"flex",justifyContent:'center',backgroundColor:isSelected?'blue':'white',color:isSelected?'white':'black'}} whileTap={{scale:0.95}} onClick={() => {
+                        loadCollection({page: val}).then()
+                    }}>{val}</motion.div>
+                })}
+
             </div>
         }}/>
         </div>
