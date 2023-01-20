@@ -10,8 +10,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
+      <change afterPath="$PROJECT_DIR$/packages/lib/src/components/utils/useErrorWrapper.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/CollectionDetailPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/CollectionDetailPanel.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/adm/src/routes/CollectionRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/routes/CollectionRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/lib/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/lib/src/app/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/lib/src/app/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/lib/src/app/AppShell.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/lib/src/app/useAppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/lib/src/app/useAppContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/lib/src/components/utils/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/lib/src/components/utils/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,8 +29,8 @@
       <list>
         <option value="JavaScript File" />
         <option value="HTML File" />
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>

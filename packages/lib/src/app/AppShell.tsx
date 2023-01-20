@@ -194,7 +194,7 @@ export default function AppShell<T extends BaseState>(props: { initValue: T, onP
     const showPickerRef = useRef<ShowPickerFunction>();
     const store = useAppStoreInitialization<T>(props.initValue, props.pocketBase);
     useStoreListener(store, s => s.user, (next, prev) => props.onProfileChange(next, prev, store));
-    return <AppContextProvider panelStore={panelStore} store={store} showPickerRef={showPickerRef}>
+    return <AppContextProvider panelStore={panelStore} store={store} showPickerRef={showPickerRef} pocketBase={props.pocketBase}>
         <div style={shellStyle}>
             <RouterPageContainer routes={props.routes}/>
             <SlideAndModalPanel panelStore={panelStore}/>

@@ -16,8 +16,8 @@ import {EMPTY_TABLE} from "../routes/CollectionRoute";
 import {DButton} from "./DButton";
 import {IoAdd, IoCheckmarkOutline, IoExit, IoSave} from "react-icons/io5";
 import produce from "immer";
-import {pocketBase} from "../service";
 import invariant from "tiny-invariant";
+import {useErrorWrapper} from "@restaroo/lib";
 
 const border = '1px solid rgba(0,0,0,0.05)';
 const boolDataProvider = [{label: 'Yes', value: true}, {label: 'No', value: false}];
@@ -26,7 +26,7 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
     const {collectionOrCollectionId, id, closePanel} = props;
     const isNew = id === 'new';
     const table: Table = tables.find(t => (t.name === collectionOrCollectionId || t.id === collectionOrCollectionId)) ?? EMPTY_TABLE;
-    const {showPicker} = useAppContext();
+    const {showPicker, pb} = useAppContext();
     const store = useStore(table.schema.reduce((result: any, schema) => {
         let defaultValue: any = '';
         //const isText = schema.type === 'text';
@@ -48,7 +48,8 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
         }
         result[schema.name] = defaultValue;
         return result;
-    }, {}))
+    }, {}));
+
     return <div
         style={{
             display: 'flex',
@@ -149,13 +150,13 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
 
                 <DButton title={'Save'} theme={ButtonTheme.danger} icon={IoSave} onTap={async () => {
                     // here we need to add the checking first about the validity of the data
-                    const result = await pocketBase.collection(collectionOrCollectionId).create(store.get());
+                    const result = await pb.collection(collectionOrCollectionId).create(store.get());
                     closePanel(result);
-                }} style={{marginRight:10}}/>
+                }} style={{marginRight: 10}}/>
                 <DButton title={'Cancel'} theme={ButtonTheme.promoted} icon={IoExit} onTap={() => {
                     // here next time we need to ask question are you sure you want to cancel this ?
                     closePanel(false);
-                }} />
+                }}/>
             </div>
         </Card>
     </div>
@@ -177,16 +178,18 @@ interface ListResult<M extends BaseModel> {
     items: Array<M>;
 }
 
+
 function DInputRelation(props: { schema: RelationSchema, value?: string[], onChange?: (param: string[]) => void }) {
+    const go = useErrorWrapper();
     const {schema, value, onChange} = props;
-    const {showSlidePanel} = useAppContext();
+    const {showSlidePanel, pb} = useAppContext();
     let val = value ?? [];
     return <DInput title={`${schema.name} : `} titlePosition={'left'} titleWidth={100}
                    value={val.join(', ')}
                    readOnly={true}
                    placeholder={`Please enter ${schema.name}`} inputMode={'text'} type={'text'}
-                   style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}} onFocus={async () => {
-        const items: ListResult<any> = await pocketBase.collection(schema.options.collectionId).getList(1, 50);
+                   style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}} onFocus={go(async () => {
+        const items: ListResult<any> = await pb.collection(schema.options.collectionId).getList(1, 50);
 
         const selectedRelation = await showSlidePanel((closePanel: (param: (string[] | false)) => void) => {
             return <MultipleSelectorGrid closePanel={closePanel} value={val} collectionId={schema.options.collectionId}
@@ -195,7 +198,7 @@ function DInputRelation(props: { schema: RelationSchema, value?: string[], onCha
         if (selectedRelation !== false && onChange) {
             onChange(selectedRelation);
         }
-    }}/>
+    })}/>
 }
 
 function RenderRowItem(props: { table: Table, item: BaseModel, storeSelectedIds: Store<string[]> }) {
@@ -211,12 +214,12 @@ function RenderRowItem(props: { table: Table, item: BaseModel, storeSelectedIds:
                      }
                  }}>
         <div style={{display: 'flex'}}>
-            <div style={{width: 25, display: 'flex', alignItems: 'center',flexShrink:0}}>
+            <div style={{width: 25, display: 'flex', alignItems: 'center', flexShrink: 0}}>
                 {isSelected &&
                     <IoCheckmarkOutline style={{fontSize: 16, color: 'blue'}}/>
                 }
             </div>
-            <div style={{display: "flex", flexWrap: 'wrap', flexGrow: 1,overflow:'hidden'}}>
+            <div style={{display: "flex", flexWrap: 'wrap', flexGrow: 1, overflow: 'hidden'}}>
                 {table.schema.map((schema, index) => {
                     const isText = schema.type === 'text';
                     const isBoolean = schema.type === 'bool';
@@ -224,24 +227,28 @@ function RenderRowItem(props: { table: Table, item: BaseModel, storeSelectedIds:
                     const isFile = schema.type === 'file';
                     const isRelation = schema.type === 'relation';
 
-                    if(isText){
+                    if (isText) {
 
                     }
-                    if(isBoolean){
+                    if (isBoolean) {
 
                     }
-                    if(isNumber){
+                    if (isNumber) {
 
                     }
-                    if(isFile){
+                    if (isFile) {
 
                     }
-                    if(isRelation){
+                    if (isRelation) {
 
                     }
-                    return <div key={index} style={{display: 'flex', flexDirection: 'column',flexGrow:1}}>
+                    return <div key={index} style={{display: 'flex', flexDirection: 'column', flexGrow: 1}}>
                         <div style={{fontWeight: 'bold', fontSize: '0.95rem', marginBottom: 3}}>{schema.name}</div>
-                        <div style={{fontSize: '1.1rem',width:'100%',textOverflow:'clip'}}>{item[schema.name].toString()}</div>
+                        <div style={{
+                            fontSize: '1.1rem',
+                            width: '100%',
+                            textOverflow: 'clip'
+                        }}>{item[schema.name].toString()}</div>
                     </div>
                 })}
             </div>

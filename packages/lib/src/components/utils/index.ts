@@ -20,3 +20,4 @@ export * from "./getProp";
 export * from "./noNull";
 export * from "./OnEnter";
 export * from "./ListResult";
+export * from "./useErrorWrapper"

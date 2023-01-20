@@ -8,7 +8,6 @@ import {
     useAppDimension,
     useStore
 } from "@restaroo/lib";
-import {pocketBase} from "../service";
 import {Table, tables} from "@restaroo/mdl";
 import {CSSProperties, useEffect} from "react";
 import {DButton} from "../components/DButton";
@@ -67,10 +66,10 @@ export function CollectionRoute(route: RouteProps) {
         totalItems: 0,
         totalPages: 0
     });
-    const {showSlidePanel} = useAppContext();
+    const {showSlidePanel,pb} = useAppContext();
 
     async function loadCollection(props: { page: number }) {
-        const list: ListResult<BaseModel> = await pocketBase.collection(collection).getList(props.page, collectionStore.get().perPage);
+        const list: ListResult<BaseModel> = await pb.collection(collection).getList(props.page, collectionStore.get().perPage);
         collectionStore.set({...list});
     }
 

@@ -23,7 +23,6 @@ export function createApp<T extends BaseState>(): App<T> {
 }
 
 function Application<T extends BaseState>(props: AppProps<T>) {
-
     let {width, height} = useMemo(() => ({width: window.innerWidth, height: window.innerHeight}), []);
 
     const isLargeScreen = width > 490;
