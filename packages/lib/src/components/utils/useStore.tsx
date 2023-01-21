@@ -11,6 +11,7 @@ import {
 } from "react";
 import noNull from "./noNull";
 import invariant from "tiny-invariant";
+import {ErrorBoundary} from "./ErrorBoundary";
 
 type Listener<T> = (next: T, prev: T) => void
 
@@ -184,8 +185,7 @@ export function StoreValueRenderer<T, S>(props: { store: Store<T>, selector: Sel
 }
 
 function Renderer<T>(props: { renderer: (value: T) => ReactElement, value?: T }) {
-    const value = props.value;
-    invariant(value)
+    const value:any = props.value;
     return props.renderer(value);
 }
 

@@ -2,6 +2,8 @@ import {
     ButtonTheme,
     Card,
     CardTitle,
+    dateToDdMmm, dateToDdMmmYyyy,
+    dateToHhMm,
     Store,
     StoreValue,
     StoreValueRenderer,
@@ -28,11 +30,18 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
     const {showPicker, pb} = useAppContext();
     const store = useStore(table.schema.reduce((result: any, schema) => {
         let defaultValue: any = '';
-        //const isText = schema.type === 'text';
-        const isBoolean = schema.type === 'bool';
+
         const isNumber = schema.type === 'number';
+        const isDate = schema.type === 'date';
+        const isBoolean = schema.type === 'bool';
+        const isEmail = schema.type === 'email';
         const isFile = schema.type === 'file';
+        const isJson = schema.type === 'json';
         const isRelation = schema.type === 'relation';
+        const isSelect = schema.type === 'select';
+        const isText = schema.type === 'text';
+        const isUrl = schema.type === 'url';
+
         if (isBoolean) {
             defaultValue = undefined;
         }
@@ -44,6 +53,9 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
         }
         if (isRelation) {
             defaultValue = [];
+        }
+        if(isDate){
+            defaultValue = undefined;
         }
 
         result[schema.name] = defaultValue;
@@ -61,11 +73,17 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
             <CardTitle title={isNew ? 'New Collection' : 'Showing Record ID ABC123'}/>
             <div style={{display: 'flex', flexWrap: 'wrap', padding: `10px 20px`}}>
                 {table.schema.map(schema => {
-                    const isText = schema.type === 'text';
-                    const isBoolean = schema.type === 'bool';
+
                     const isNumber = schema.type === 'number';
+                    const isDate = schema.type === 'date';
+                    const isBoolean = schema.type === 'bool';
+                    const isEmail = schema.type === 'email';
                     const isFile = schema.type === 'file';
+                    const isJson = schema.type === 'json';
                     const isRelation = schema.type === 'relation';
+                    const isSelect = schema.type === 'select';
+                    const isText = schema.type === 'text';
+                    const isUrl = schema.type === 'url';
 
                     // const isRequired = schema.required;
                     // const isUnique = schema.unique;
@@ -141,6 +159,84 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                                     }))
                                 }}/>
                             </StoreValue>
+                        }
+                        {isDate &&
+                            <StoreValueRenderer store={store}
+                                                selector={(s: any) => {
+                                                    const value = s[schema.name] ?? new Date().toISOString();
+                                                    return value;
+                                                }}
+                                                render={(dateString: string) => {
+                                                    const date = dateString ? new Date(dateString) : new Date();
+                                                    return <DInput title={<DInput title={`${schema.name} : `}
+
+                                                                                  titlePosition={'left'}
+                                                                                  titleWidth={120}
+                                                                                  placeholder={`Please enter ${schema.name}`}
+                                                                                  style={{
+                                                                                      titleStyle: {
+                                                                                          padding: 0,
+                                                                                          margin:'0px 10px 0px 0px',
+                                                                                          justifyContent: 'flex-end',
+                                                                                          flexShrink:0,
+                                                                                      },
+                                                                                      containerStyle:{
+                                                                                          padding:0,
+                                                                                          margin:0
+                                                                                      },
+                                                                                      errorStyle:{
+                                                                                          margin:0,
+                                                                                          padding:0,
+                                                                                          height:0
+                                                                                      },
+                                                                                      inputStyle : {
+                                                                                          padding : 5
+                                                                                      }
+                                                                                  }}
+                                                                                  value={dateToDdMmmYyyy(date)}
+                                                                                  readOnly={true}
+                                                                                  onFocus={async () => {
+                                                                                      const val = store.get()[schema.name];
+                                                                                      const value = await showPicker({
+                                                                                          picker: 'date',
+                                                                                          value: val
+                                                                                      });
+                                                                                      store.set(produce((s: any) => {
+                                                                                          s[schema.name] = value;
+                                                                                      }))
+                                                                                  }}/>} titlePosition={'left'}
+
+                                                                   placeholder={''}
+                                                                   titleWidth={250}
+                                                                   value={dateToHhMm(date)}
+                                                                   style={{
+                                                                       titleStyle: {
+                                                                           paddingLeft: 0,
+                                                                           paddingBottom:0,
+                                                                           margin:'0px 10px 0px 0px',
+                                                                           justifyContent: 'flex-end',
+                                                                           flexShrink:0
+                                                                       },
+                                                                       containerStyle:{
+                                                                           alignItems:'flex-start'
+                                                                       },
+                                                                       inputStyle:{
+                                                                           padding : '5px 5px'
+                                                                       }
+                                                                   }}
+                                                                   readOnly={true}
+                                                                   onFocus={async () => {
+                                                                       const val = store.get()[schema.name];
+                                                                       const value = await showPicker({
+                                                                           value: val,
+                                                                           picker: "time"
+                                                                       });
+                                                                       store.set(produce((s: any) => {
+                                                                           s[schema.name] = value;
+                                                                       }))
+                                                                   }}/>
+                                                }}/>
+
                         }
                     </div>
                 })} </div>
