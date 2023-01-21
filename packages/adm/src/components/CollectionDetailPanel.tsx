@@ -2,8 +2,8 @@ import {
     ButtonTheme,
     Card,
     CardTitle,
-    dateToDdMmm, dateToDdMmmYyyy,
-    dateToHhMm,
+    dateToDdMmmYyyy,
+    dateToHhMm, PickerOptions,
     Store,
     StoreValue,
     StoreValueRenderer,
@@ -12,7 +12,7 @@ import {
     useStore,
     useStoreValue
 } from "@restaroo/lib";
-import {RelationSchema, Table, tables} from "@restaroo/mdl";
+import {DateSchema, RelationSchema, Table, tables} from "@restaroo/mdl";
 import {DInput} from "./DInput";
 import {EMPTY_TABLE} from "../routes/CollectionRoute";
 import {DButton} from "./DButton";
@@ -22,6 +22,77 @@ import invariant from "tiny-invariant";
 
 const border = '1px solid rgba(0,0,0,0.05)';
 const boolDataProvider = [{label: 'Yes', value: true}, {label: 'No', value: false}];
+
+function DInputDate<T>(props:{schema: DateSchema, date: Date, store: Store<any>, showPicker: <T>(props: { picker: PickerOptions; value: T }) => Promise<T>}) {
+    const {store,showPicker,date,schema} = props;
+    return <DInput title={<DInput title={`${schema.name} : `}
+
+                                  titlePosition={'left'}
+                                  titleWidth={120}
+                                  placeholder={`Please enter ${schema.name}`}
+                                  style={{
+                                      titleStyle: {
+                                          padding: 0,
+                                          margin: '0px 10px 0px 0px',
+                                          justifyContent: 'flex-end',
+                                          flexShrink: 0,
+                                      },
+                                      containerStyle: {
+                                          padding: 0,
+                                          margin: 0
+                                      },
+                                      errorStyle: {
+                                          margin: 0,
+                                          padding: 0,
+                                          height: 0
+                                      },
+                                      inputStyle: {
+                                          padding: 5
+                                      }
+                                  }}
+                                  value={dateToDdMmmYyyy(date)}
+                                  readOnly={true}
+                                  onFocus={async () => {
+                                      const val = store.get()[schema.name];
+                                      const value = await showPicker({
+                                          picker: 'date',
+                                          value: val
+                                      });
+                                      store.set(produce((s: any) => {
+                                          s[schema.name] = value;
+                                      }))
+                                  }}/>} titlePosition={'left'}
+
+                   placeholder={''}
+                   titleWidth={250}
+                   value={dateToHhMm(date)}
+                   style={{
+                       titleStyle: {
+                           paddingLeft: 0,
+                           paddingBottom: 0,
+                           margin: '0px 10px 0px 0px',
+                           justifyContent: 'flex-end',
+                           flexShrink: 0
+                       },
+                       containerStyle: {
+                           alignItems: 'flex-start'
+                       },
+                       inputStyle: {
+                           padding: '5px 5px'
+                       }
+                   }}
+                   readOnly={true}
+                   onFocus={async () => {
+                       const val = store.get()[schema.name];
+                       const value = await showPicker({
+                           value: val,
+                           picker: "time"
+                       });
+                       store.set(produce((s: any) => {
+                           s[schema.name] = value;
+                       }))
+                   }}/>;
+}
 
 export function CollectionDetailPanel(props: { collectionOrCollectionId: string, id: string, closePanel: (params: any) => void }) {
     const {collectionOrCollectionId, id, closePanel} = props;
@@ -162,79 +233,10 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                         }
                         {isDate &&
                             <StoreValueRenderer store={store}
-                                                selector={(s: any) => {
-                                                    const value = s[schema.name] ?? new Date().toISOString();
-                                                    return value;
-                                                }}
+                                                selector={(s: any) => (s[schema.name] ?? new Date().toISOString())}
                                                 render={(dateString: string) => {
                                                     const date = dateString ? new Date(dateString) : new Date();
-                                                    return <DInput title={<DInput title={`${schema.name} : `}
-
-                                                                                  titlePosition={'left'}
-                                                                                  titleWidth={120}
-                                                                                  placeholder={`Please enter ${schema.name}`}
-                                                                                  style={{
-                                                                                      titleStyle: {
-                                                                                          padding: 0,
-                                                                                          margin:'0px 10px 0px 0px',
-                                                                                          justifyContent: 'flex-end',
-                                                                                          flexShrink:0,
-                                                                                      },
-                                                                                      containerStyle:{
-                                                                                          padding:0,
-                                                                                          margin:0
-                                                                                      },
-                                                                                      errorStyle:{
-                                                                                          margin:0,
-                                                                                          padding:0,
-                                                                                          height:0
-                                                                                      },
-                                                                                      inputStyle : {
-                                                                                          padding : 5
-                                                                                      }
-                                                                                  }}
-                                                                                  value={dateToDdMmmYyyy(date)}
-                                                                                  readOnly={true}
-                                                                                  onFocus={async () => {
-                                                                                      const val = store.get()[schema.name];
-                                                                                      const value = await showPicker({
-                                                                                          picker: 'date',
-                                                                                          value: val
-                                                                                      });
-                                                                                      store.set(produce((s: any) => {
-                                                                                          s[schema.name] = value;
-                                                                                      }))
-                                                                                  }}/>} titlePosition={'left'}
-
-                                                                   placeholder={''}
-                                                                   titleWidth={250}
-                                                                   value={dateToHhMm(date)}
-                                                                   style={{
-                                                                       titleStyle: {
-                                                                           paddingLeft: 0,
-                                                                           paddingBottom:0,
-                                                                           margin:'0px 10px 0px 0px',
-                                                                           justifyContent: 'flex-end',
-                                                                           flexShrink:0
-                                                                       },
-                                                                       containerStyle:{
-                                                                           alignItems:'flex-start'
-                                                                       },
-                                                                       inputStyle:{
-                                                                           padding : '5px 5px'
-                                                                       }
-                                                                   }}
-                                                                   readOnly={true}
-                                                                   onFocus={async () => {
-                                                                       const val = store.get()[schema.name];
-                                                                       const value = await showPicker({
-                                                                           value: val,
-                                                                           picker: "time"
-                                                                       });
-                                                                       store.set(produce((s: any) => {
-                                                                           s[schema.name] = value;
-                                                                       }))
-                                                                   }}/>
+                                                    return <DInputDate schema={schema} date={date} store={store} showPicker={showPicker} />
                                                 }}/>
 
                         }
