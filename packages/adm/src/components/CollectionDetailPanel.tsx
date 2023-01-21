@@ -17,7 +17,6 @@ import {DButton} from "./DButton";
 import {IoAdd, IoCheckmarkOutline, IoExit, IoSave} from "react-icons/io5";
 import produce from "immer";
 import invariant from "tiny-invariant";
-import {useErrorWrapper} from "@restaroo/lib";
 
 const border = '1px solid rgba(0,0,0,0.05)';
 const boolDataProvider = [{label: 'Yes', value: true}, {label: 'No', value: false}];
@@ -44,8 +43,9 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
             defaultValue = undefined;
         }
         if (isRelation) {
-            defaultValue = undefined;
+            defaultValue = [];
         }
+
         result[schema.name] = defaultValue;
         return result;
     }, {}));
@@ -86,7 +86,7 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                         }
                         {isBoolean &&
                             <StoreValue store={store}
-                                        selector={(s: any) => boolDataProvider.find(v => v.value === s[schema.name])?.label}
+                                        selector={(s: any) => boolDataProvider.find(v => v.value === s[schema.name])?.label ?? ''}
                                         property={'value'}>
                                 <DInput title={`${schema.name} : `} titlePosition={'left'} titleWidth={100}
                                         placeholder={`Please enter ${schema.name}`}
@@ -248,7 +248,7 @@ function RenderRowItem(props: { table: Table, item: BaseModel, storeSelectedIds:
                             fontSize: '1.1rem',
                             width: '100%',
                             textOverflow: 'clip'
-                        }}>{item[schema.name].toString()}</div>
+                        }}>{(item[schema.name] ?? '').toString()}</div>
                     </div>
                 })}
             </div>

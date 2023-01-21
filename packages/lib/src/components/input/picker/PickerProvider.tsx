@@ -100,11 +100,12 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
                 const result = (typeof s.control === 'string' ? s.control === key : key === 'custom' && s.control !== undefined);
                 return result;
             }} key={key}>
-                <PickerContainer show={false}>
+                <PickerContainer show={false} onClose={() => {
+                    close();
+                }}>
                     <StoreValue store={store}
                                 property={['value', 'onChange', 'dataProvider', 'dataToLabel', 'isValueBelongsToData', 'dataToValue']}
                                 selector={s => {
-
                                     return [
                                         owner(key as PickerOptions, s.control, s.value),
                                         owner(key as PickerOptions, s.control, s.onChange),
@@ -119,23 +120,23 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
                 </PickerContainer>
             </StoreValue>
         })}
-        <motion.div style={{
-            left: (appDimension.width / 2) - 20, position: 'absolute', fontSize: 40, color: 'white'
-        }} animate={{bottom: show ? 405 : -40}} initial={{bottom: -40}} whileTap={{scale: 0.9}} onTap={() => {
-            close();
-        }} transition={{bounce: 0}}>
-            <IoMdCloseCircle/>
-        </motion.div>
     </motion.div>
 })
 
-function PickerContainer(props: PropsWithChildren<{ show: boolean }>) {
-    const {show} = props;
+function PickerContainer(props: PropsWithChildren<{ show: boolean,onClose:() => void }>) {
+    const {show,onClose} = props;
     return <motion.div style={{
         display: 'flex',
         flexDirection: 'column',
+        width:'100%',
+        alignItems:'center',
         position: 'absolute'
     }} initial={{bottom: '-100%'}} animate={{bottom: show ? 0 : '-100%'}} transition={{bounce: 0}}>
+        <div style={{position:'relative',top:-20}}>
+        <IoMdCloseCircle style={{fontSize:40,color:'white'}} onClick={() => {
+            onClose();
+        }}/>
+        </div>
         {props.children}
     </motion.div>
 }

@@ -61,7 +61,8 @@ export function DatePicker(props: { value?: Date, onChange?: (value: Date) => vo
 
     const {appDimension} = useAppDimension();
     return <div style={{
-        display: 'flex', flexDirection: 'column',
+        display: 'flex',
+        flexDirection: 'column',
         width: appDimension.width,
         backgroundColor: 'white'
     }}>

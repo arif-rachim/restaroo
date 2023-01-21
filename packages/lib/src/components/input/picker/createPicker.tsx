@@ -1,4 +1,4 @@
-import {isNullOrUndefined, StoreValue, useAfterInit, useAppDimension, useStore} from "../../utils";
+import {isNullOrUndefined, StoreValue, useAfterInit, useStore} from "../../utils";
 import invariant from "tiny-invariant";
 import {Picker} from "./Picker";
 import {Button} from "../../page";
@@ -22,14 +22,16 @@ export interface ValueOnChangeProperties<T> {
     value?: any,
     onChange?: (value: T) => void
 }
-function defaultFalse(){
+
+function defaultFalse() {
     return false;
 }
+
 export function createPicker<T>(props: PickerProperties<T>) {
     let {dataProvider, dataToLabel, isValueBelongsToData, dataToValue} = props;
     dataProvider = noNull(dataProvider, []);
     dataToLabel = noNull(dataToLabel, nothing);
-    isValueBelongsToData = noNull(isValueBelongsToData,defaultFalse);
+    isValueBelongsToData = noNull(isValueBelongsToData, defaultFalse);
     dataToValue = noNull(dataToValue, nothing);
     return function InputPicker(props: ValueOnChangeProperties<T>) {
         let {value, onChange} = props;
@@ -39,11 +41,10 @@ export function createPicker<T>(props: PickerProperties<T>) {
         useAfterInit(() => {
             store.set(data);
         }, [data, store]);
-
-        const {appDimension} = useAppDimension();
         return <div style={{
             display: 'flex', flexDirection: 'column',
-            width: appDimension.width,
+            width: '100%',
+            maxWidth: 600,
             backgroundColor: 'white',
             borderTopRightRadius: 20, borderTopLeftRadius: 20
         }}>
@@ -69,19 +70,9 @@ export function createPicker<T>(props: PickerProperties<T>) {
                             }}
                     />
                 </StoreValue>
-
-                <div style={{
-                    position: 'absolute',
-                    width: '100%',
-                    top: 150,
-                    height: 50,
-                    backgroundColor: 'rgba(0,0,0,0.1)'
-                }}/>
-
             </div>
-
             <div style={{display: 'flex', flexDirection: 'column', padding: 5}}>
-                <Button title={'Continue'} onTap={() => {
+                <Button title={'Select'} onTap={() => {
                     const value = store.get();
                     invariant(value);
                     invariant(onChange);

@@ -111,6 +111,7 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
     const proxyHandler: ProxyHandler<any> = useMemo(() => ({
         get(target: any, p: any): any {
             const val = target[p];
+            console.log('WE ARE CALLING ',p);
             if(p === 'send'){
                 return async function send(...args:any[]){
                     try{

@@ -1,6 +1,6 @@
 import {ChangeEventHandler, CSSProperties, FocusEventHandler, HTMLInputTypeAttribute, ReactElement} from "react";
 import {ButtonTheme, theme} from "../Theme";
-import {getProp} from "../utils";
+import {getProp, useIsMounted, usePreviousValue} from "../utils";
 
 interface InputStyle {
     containerStyle?: CSSProperties,
@@ -30,7 +30,15 @@ export function Input(props: InputProps) {
 
     const {error, value, defaultValue, style, type, inputMode, titlePosition, titleWidth, onFocus,onChange,title,readOnly} = props;
     if(value !== undefined && onChange === undefined && readOnly !== true){
-        console.error(`You probably wants to set '${title}' to readOnly mode since we have 'value' but there is no 'onChange' registered`);
+        console.log(`You probably wants to set '${title}' to readOnly mode since we have 'value' but there is no 'onChange' registered`);
+    }
+    const prevValue = usePreviousValue(value);
+    const isMounted = useIsMounted();
+    if(isMounted && prevValue === undefined && value !== undefined){
+        console.log(`Input '${title}' has changed from uncontrolled to controlled`);
+    }
+    if(prevValue !== undefined && value === undefined){
+        console.log(`Input '${title}' has changed from controlled to uncontrolled`);
     }
     const inlineTitle = titlePosition === 'left';
     return <label style={{
