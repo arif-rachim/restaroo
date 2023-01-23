@@ -9,7 +9,9 @@ import PocketBase from "pocketbase";
 import {createFetch} from "@restaroo/lib";
 
 
-interface AppState extends BaseState {
+export interface AppState extends BaseState {
+    activateComponentEditor:boolean,
+    locale:'ar-ae'|'en-us'|string
 }
 
 const MyApp = createApp<AppState>();
@@ -34,7 +36,7 @@ const pb = new PocketBase(process.env.REACT_APP_API_URL ?? '')
 root.render(<MyApp
     pocketBase={pb}
     fetchService={createFetch(process.env.REACT_APP_API_URL ?? '')}
-    stateInitValue={{user: GuestProfile, addresses: []}}
+    stateInitValue={{user: GuestProfile, addresses: [],activateComponentEditor:false,locale:'en-us'}}
     onProfileChange={(next, prev, store) => {
     }}
     mobileOnly={false}

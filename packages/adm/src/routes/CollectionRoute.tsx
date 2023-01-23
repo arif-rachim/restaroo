@@ -5,7 +5,7 @@ import {
     RouteProps,
     StoreValueRenderer,
     useAppContext,
-    useAppDimension,
+    useAppDimension, useAppStore,
     useStore
 } from "@restaroo/lib";
 import {Table, tables} from "@restaroo/mdl";
@@ -15,6 +15,8 @@ import {IoCreate} from "react-icons/io5";
 import {CollectionDetailPanel} from "../components/CollectionDetailPanel";
 import produce from "immer";
 import {motion} from "framer-motion";
+import {Label} from "../components/Label";
+import {AppState} from "../index";
 export const EMPTY_TABLE: Table = {
     schema: [],
     name: '',
@@ -38,7 +40,6 @@ const tableColumnStyle: CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: 10,
     borderRight: border,
     borderBottom: border,
     flexGrow: 0,
@@ -76,7 +77,8 @@ export function CollectionRoute(route: RouteProps) {
     useEffect(() => {
         loadCollection({page: 1}).then()
         // eslint-disable-next-line
-    }, [])
+    }, []);
+    const appStore = useAppStore<AppState>();
     return <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
         <div style={{display: 'flex', padding: 10, borderBottom: border}}>
             <DButton title={'New'} icon={IoCreate} theme={ButtonTheme.danger} onTap={async () => {
@@ -98,12 +100,14 @@ export function CollectionRoute(route: RouteProps) {
         <div style={{display: 'flex', flexGrow: 0, flexShrink: 0}}>
             {table.schema.map((schema, index, source) => {
                 const isLastColumn = index === source.length - 1;
-                return <div key={schema.id} style={{
-                    width: averageColumnWidth, ...tableColumnStyle,
-                    borderRight:  border
-                }}>
-                    {schema.name}
-                </div>
+                return <motion.div key={schema.id} style={{
+                    width: averageColumnWidth,
+                    overflow : 'hidden',
+                    ...tableColumnStyle,
+                    borderRight:  border,
+                }} >
+                    <Label label={schema.name} style={{padding: 10,width:'100%',overflow:'hidden'}}/>
+                </motion.div>
             })}
         </div>
         {/*This is the body of the grid*/}
