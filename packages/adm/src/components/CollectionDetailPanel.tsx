@@ -14,11 +14,12 @@ import {
 } from "@restaroo/lib";
 import {DateSchema, RelationSchema, Table, tables} from "@restaroo/mdl";
 import {DInput} from "./DInput";
-import {EMPTY_TABLE} from "../routes/CollectionRoute";
 import {DButton} from "./DButton";
 import {IoAdd, IoCheckmarkOutline, IoExit, IoSave} from "react-icons/io5";
 import produce from "immer";
 import invariant from "tiny-invariant";
+import {blue} from "@restaroo/lib";
+import {EMPTY_TABLE} from "./CollectionGridPanel";
 
 const border = '1px solid rgba(0,0,0,0.05)';
 const boolDataProvider = [{label: 'Yes', value: true}, {label: 'No', value: false}];
@@ -314,7 +315,7 @@ function RenderRowItem(props: { table: Table, item: BaseModel, storeSelectedIds:
         <div style={{display: 'flex'}}>
             <div style={{width: 25, display: 'flex', alignItems: 'center', flexShrink: 0}}>
                 {isSelected &&
-                    <IoCheckmarkOutline style={{fontSize: 16, color: 'blue'}}/>
+                    <IoCheckmarkOutline style={{fontSize: 16, color: blue}}/>
                 }
             </div>
             <div style={{display: "flex", flexWrap: 'wrap', flexGrow: 1, overflow: 'hidden'}}>
