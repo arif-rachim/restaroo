@@ -8,11 +8,11 @@ import {
     StoreValue,
     StoreValueRenderer,
     useAppContext,
-    useAppDimension,
+    useAppDimension, useAppStore,
     useStore,
     useStoreValue
 } from "@restaroo/lib";
-import {DateSchema, RelationSchema, Table, tables} from "@restaroo/mdl";
+import {DateSchema, RelationSchema, Table} from "@restaroo/mdl";
 import {DInput} from "./DInput";
 import {DButton} from "./DButton";
 import {IoAdd, IoCheckmarkOutline, IoExit, IoSave} from "react-icons/io5";
@@ -20,6 +20,7 @@ import produce from "immer";
 import invariant from "tiny-invariant";
 import {blue} from "@restaroo/lib";
 import {EMPTY_TABLE} from "./CollectionGridPanel";
+import {AppState} from "../index";
 
 const border = '1px solid rgba(0,0,0,0.05)';
 const boolDataProvider = [{label: 'Yes', value: true}, {label: 'No', value: false}];
@@ -98,7 +99,8 @@ function DInputDate<T>(props:{schema: DateSchema, date: Date, store: Store<any>,
 export function CollectionDetailPanel(props: { collectionOrCollectionId: string, id: string, closePanel: (params: any) => void }) {
     const {collectionOrCollectionId, id, closePanel} = props;
     const isNew = id === 'new';
-    const table: Table = tables.find(t => (t.name === collectionOrCollectionId || t.id === collectionOrCollectionId)) ?? EMPTY_TABLE;
+    const appStore = useAppStore<AppState>();
+    const table: Table = appStore.get().tables.find(t => (t.name === collectionOrCollectionId || t.id === collectionOrCollectionId)) ?? EMPTY_TABLE;
     const {showPicker, pb} = useAppContext();
     const store = useStore(table.schema.reduce((result: any, schema) => {
         let defaultValue: any = '';
@@ -358,9 +360,10 @@ function RenderRowItem(props: { table: Table, item: BaseModel, storeSelectedIds:
 function MultipleSelectorGrid(props: { closePanel: (params: string[] | false) => void, value: string[], collectionId: string, items: ListResult<any> }) {
     const {closePanel, value, collectionId, items} = props;
     const store = useStore<ListResult<any>>({...items});
+    const appStore = useAppStore<AppState>();
     const storeSelectedIds = useStore<string[]>(value);
     const {showSlidePanel} = useAppContext();
-    const table = tables.find(t => t.id === collectionId);
+    const table = appStore.get().tables.find(t => t.id === collectionId);
     const dimension = useAppDimension();
     invariant(table);
     return <div style={{display: 'flex', justifyContent: 'center'}}>

@@ -1,6 +1,7 @@
-import {Table, tables} from "@restaroo/mdl";
+import {Table} from "@restaroo/mdl";
 import {
-    BaseModel, blue,
+    BaseModel,
+    blue,
     ButtonTheme,
     ListResult,
     StoreValueRenderer,
@@ -17,6 +18,7 @@ import {CollectionDetailPanel} from "./CollectionDetailPanel";
 import produce from "immer";
 import {motion} from "framer-motion";
 import invariant from "tiny-invariant";
+import {ConfigurationForGridPanel} from "./ConfigurationForGridPanel";
 
 
 export const EMPTY_TABLE: Table = {
@@ -62,8 +64,10 @@ const checkboxColumnWidth = 32;
 
 export function CollectionGridPanel(props: { collection: string }) {
     const {collection} = props;
-    //const collection: string = route.params.get('collection') ?? '';
-    const table: Table = tables.find(t => t.name === collection) ?? EMPTY_TABLE;
+
+    const {showSlidePanel, pb} = useAppContext();
+    const store = useAppStore<AppState>();
+    const table: Table = store.get().tables.find(t => t.name === collection) ?? EMPTY_TABLE;
     const {appDimension} = useAppDimension();
     const averageColumnWidth = (appDimension.width - scrollerWidth - checkboxColumnWidth) / table.schema.length;
     const collectionStore = useStore<ListResult<BaseModel>>({
@@ -73,7 +77,7 @@ export function CollectionGridPanel(props: { collection: string }) {
         totalItems: 0,
         totalPages: 0
     });
-    const {showSlidePanel, pb} = useAppContext();
+
 
     async function loadCollection(props: { page: number }) {
         const list: ListResult<BaseModel> = await pb.collection(collection).getList(props.page, collectionStore.get().perPage);
@@ -101,20 +105,14 @@ export function CollectionGridPanel(props: { collection: string }) {
                     s.totalItems = s.totalItems + 1;
                 }));
 
-            }} style={{marginRight:10}}/>
+            }} style={{marginRight: 10}}/>
             <DButton title={'Configure Page'} icon={IoSettings} theme={ButtonTheme.normal} onTap={async () => {
                 const result: BaseModel | false = await showSlidePanel(closePanel => {
-
-                    return <CollectionDetailPanel collectionOrCollectionId={collection} id={'new'}
-                                                  closePanel={closePanel}/>
-                }, {position: "top"});
+                    return <ConfigurationForGridPanel closePanel={closePanel}/>
+                }, {position: "right"});
                 if (result === false) {
                     return;
                 }
-                collectionStore.set(produce(s => {
-                    s.items.push(result);
-                    s.totalItems = s.totalItems + 1;
-                }));
 
             }}/>
         </div>
