@@ -23,7 +23,7 @@ import {DButton} from "./DButton";
 import {IoAdd, IoCheckmarkOutline, IoExit, IoSave} from "react-icons/io5";
 import produce from "immer";
 import invariant from "tiny-invariant";
-import {EMPTY_TABLE} from "./CollectionGridPanel";
+import {EMPTY_TABLE} from "./grid/Grid";
 import {AppState} from "../index";
 import {ButtonSimple} from "./ButtonSimple";
 

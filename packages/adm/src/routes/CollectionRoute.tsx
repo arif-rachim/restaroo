@@ -1,6 +1,6 @@
 import {RouteProps,} from "@restaroo/lib";
-import {CollectionGridPanel} from "../components/CollectionGridPanel";
+import {Grid} from "../components/grid/Grid";
 
 export function CollectionRoute(route: RouteProps) {
-    return <CollectionGridPanel collection={route.params.get('collection') ?? ''}/>;
+    return <Grid collection={route.params.get('collection') ?? ''}/>;
 }
