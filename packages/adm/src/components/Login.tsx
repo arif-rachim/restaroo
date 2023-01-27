@@ -82,7 +82,7 @@ export function Login() {
                                     }} style={{errorStyle:{height:0},containerStyle:{padding:0,margin:0},titleStyle:{margin:0,padding:0,marginRight:5},inputStyle:{width:60,marginRight:5}}} readOnly={true}/>
                                 </StoreValue>} placeholder={'50123456'}
                                        onChange={e => store.set(produce(s => {
-                                           s.phoneNumber = e.target.value.toUpperCase();
+                                           s.phoneNumber = e.target.value;
                                        }))}/>
                             </StoreValue>
                             <DButton title={'Generate OTP'} theme={ButtonTheme.danger} onTap={async () => {
@@ -136,7 +136,13 @@ export function Login() {
                         <div style={{lineHeight:1.5,marginTop:0,marginBottom:20}}>{`You appear to be visiting this application for the first time; please provide your name to complete registration.`}</div>
                         <DInput title={'Name'} titlePosition={'left'} placeholder={'Enter your name'} onChange={event => {
                             profileStore.set(produce(s => {
-                                s.name = event.target.value.toUpperCase();
+                                s.name = event.target.value;
+                            }))
+                        }} onBlur={() => {
+                            profileStore.set(produce(s => {
+                                if(s.name){
+                                    s.name = s.name.toUpperCase();
+                                }
                             }))
                         }}/>
                         <DButton onTap={async () => {

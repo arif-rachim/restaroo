@@ -23,21 +23,36 @@ export interface InputProps {
     titlePosition?: 'top' | 'left',
     titleWidth?: number | string,
     onFocus?: FocusEventHandler<HTMLInputElement>,
+    onBlur?: FocusEventHandler<HTMLInputElement>,
     readOnly?: boolean
 }
 
 export function Input(props: InputProps) {
 
-    const {error, value, defaultValue, style, type, inputMode, titlePosition, titleWidth, onFocus,onChange,title,readOnly} = props;
-    if(value !== undefined && onChange === undefined && readOnly !== true){
+    const {
+        error,
+        value,
+        defaultValue,
+        style,
+        type,
+        inputMode,
+        titlePosition,
+        titleWidth,
+        onFocus,
+        onBlur,
+        onChange,
+        title,
+        readOnly
+    } = props;
+    if (value !== undefined && onChange === undefined && readOnly !== true) {
         console.log(`You probably wants to set '${title}' to readOnly mode since we have 'value' but there is no 'onChange' registered`);
     }
     const prevValue = usePreviousValue(value);
     const isMounted = useIsMounted();
-    if(isMounted && prevValue === undefined && value !== undefined){
+    if (isMounted && prevValue === undefined && value !== undefined) {
         console.log(`Input '${title}' has changed from uncontrolled to controlled`);
     }
-    if(prevValue !== undefined && value === undefined){
+    if (prevValue !== undefined && value === undefined) {
         console.log(`Input '${title}' has changed from controlled to uncontrolled`);
     }
     const inlineTitle = titlePosition === 'left';
@@ -76,12 +91,15 @@ export function Input(props: InputProps) {
                 ...getProp(style, 'inputStyle')
             }} placeholder={props.placeholder} value={value} defaultValue={defaultValue} onChange={props.onChange}
                    title={error} type={type} inputMode={inputMode} onFocus={e => {
-
                 if (onFocus) {
                     onFocus(e);
                 }
             }}
-                   disabled={props.disabled} readOnly={props.readOnly}/>
+                   disabled={props.disabled} readOnly={props.readOnly} onBlur={e => {
+                if (onBlur) {
+                    onBlur(e)
+                }
+            }}/>
             <div style={{
                 paddingRight: 5,
                 fontSize: 12,

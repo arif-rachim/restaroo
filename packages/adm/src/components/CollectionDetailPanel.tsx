@@ -1,14 +1,18 @@
 import {
+    blue,
     ButtonTheme,
     Card,
     CardTitle,
     dateToDdMmmYyyy,
-    dateToHhMm, PickerOptions,
+    dateToHhMm, isNullOrUndefined,
+    PickerOptions,
     Store,
     StoreValue,
     StoreValueRenderer,
     useAppContext,
-    useAppDimension, useAppStore,
+    useAppDimension,
+    useAppStore,
+    useAsyncEffect,
     useStore,
     useStoreValue
 } from "@restaroo/lib";
@@ -18,15 +22,17 @@ import {DButton} from "./DButton";
 import {IoAdd, IoCheckmarkOutline, IoExit, IoSave} from "react-icons/io5";
 import produce from "immer";
 import invariant from "tiny-invariant";
-import {blue} from "@restaroo/lib";
 import {EMPTY_TABLE} from "./CollectionGridPanel";
 import {AppState} from "../index";
 
 const border = '1px solid rgba(0,0,0,0.05)';
 const boolDataProvider = [{label: 'Yes', value: true}, {label: 'No', value: false}];
 
-function DInputDate<T>(props:{schema: DateSchema, date: Date, store: Store<any>, showPicker: <T>(props: { picker: PickerOptions; value: T }) => Promise<T>}) {
-    const {store,showPicker,date,schema} = props;
+interface Errors{
+    [key:string] : string[]
+}
+function DInputDate<T>(props: { schema: DateSchema, date: Date, store: Store<any>, showPicker: <T>(props: { picker: PickerOptions; value: T }) => Promise<T> }) {
+    const {store, showPicker, date, schema} = props;
     return <DInput title={<DInput title={`${schema.name} : `}
 
                                   titlePosition={'left'}
@@ -96,45 +102,82 @@ function DInputDate<T>(props:{schema: DateSchema, date: Date, store: Store<any>,
                    }}/>;
 }
 
+type StoreType<T extends BaseModel> = T & {errors:Errors};
+
+function initializeDefaultValue(table: Table) {
+    const value = table.schema.reduce((result: any, schema) => {
+        // const isRelation = schema.type === 'relation';
+        // const isNumber = schema.type === 'number';
+        // const isDate = schema.type === 'date';
+        // const isBoolean = schema.type === 'bool';
+        // const isEmail = schema.type === 'email';
+        // const isFile = schema.type === 'file';
+        // const isJson = schema.type === 'json';
+        // const isSelect = schema.type === 'select';
+        // const isText = schema.type === 'text';
+        // const isUrl = schema.type === 'url';
+        result[schema.name] = undefined;
+        return result;
+    }, {});
+    value.errors = {...value};
+    return value;
+}
+
 export function CollectionDetailPanel(props: { collectionOrCollectionId: string, id: string, closePanel: (params: any) => void }) {
     const {collectionOrCollectionId, id, closePanel} = props;
     const isNew = id === 'new';
     const appStore = useAppStore<AppState>();
     const table: Table = appStore.get().tables.find(t => (t.name === collectionOrCollectionId || t.id === collectionOrCollectionId)) ?? EMPTY_TABLE;
     const {showPicker, pb} = useAppContext();
-    const store = useStore(table.schema.reduce((result: any, schema) => {
-        let defaultValue: any = '';
+    const current = useStore<any>({});
+    useAsyncEffect(async () => {
+        const result = await pb.collection(collectionOrCollectionId).getFirstListItem(`id="${id}"`);
+        if (result) {
+            current.set(result);
+            store.set({...result});
+        }
+    }, [id]);
 
-        const isNumber = schema.type === 'number';
-        const isDate = schema.type === 'date';
-        const isBoolean = schema.type === 'bool';
-        const isEmail = schema.type === 'email';
-        const isFile = schema.type === 'file';
-        const isJson = schema.type === 'json';
-        const isRelation = schema.type === 'relation';
-        const isSelect = schema.type === 'select';
-        const isText = schema.type === 'text';
-        const isUrl = schema.type === 'url';
+    const store = useStore<StoreType<any>>(initializeDefaultValue(table));
 
-        if (isBoolean) {
-            defaultValue = undefined;
-        }
-        if (isNumber) {
-            defaultValue = undefined;
-        }
-        if (isFile) {
-            defaultValue = undefined;
-        }
-        if (isRelation) {
-            defaultValue = [];
-        }
-        if(isDate){
-            defaultValue = undefined;
-        }
+    function validateForm():Errors{
+        const formValue = store.get();
+        const errors = table.schema.reduce((errors:any,schema) => {
+            const value = formValue[schema.name];
+            const isNumber = schema.type === 'number';
+            const isDate = schema.type === 'date';
+            const isBoolean = schema.type === 'bool';
+            const isEmail = schema.type === 'email';
+            const isFile = schema.type === 'file';
+            const isJson = schema.type === 'json';
+            const isRelation = schema.type === 'relation';
+            const isSelect = schema.type === 'select';
+            const isText = schema.type === 'text';
+            const isUrl = schema.type === 'url';
+            let err = [];
+            if(isText){
+                if(schema.options.min){
+                    if(isNullOrUndefined(value) || value.length < schema.options.min){
+                        err.push('Minimum value is '+schema.options.min);
+                    }
+                }
+                if(schema.options.max){
+                    if(!isNullOrUndefined(value) && value.length > schema.options.max){
+                        err.push('Maximum value is '+schema.options.max)
+                    }
+                }
+                if(schema.options.pattern){
+                    console.log("WE NEED TO ADD VALIDATION AGAINST PATTERN")
+                }
+            }
 
-        result[schema.name] = defaultValue;
-        return result;
-    }, {}));
+            if(err.length > 0){
+                errors[schema.name] = err;
+            }
+            return errors;
+        },{});
+        return errors;
+    }
 
     return <div
         style={{
@@ -144,7 +187,7 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
             alignItems: 'center'
         }}>
         <Card style={{width: '100%', maxWidth: 800, borderTopLeftRadius: 0, borderTopRightRadius: 0}}>
-            <CardTitle title={isNew ? 'New Collection' : 'Showing Record ID ABC123'}/>
+            <CardTitle title={isNew ? 'New Collection' : `Showing Record ID ${id}`}/>
             <div style={{display: 'flex', flexWrap: 'wrap', padding: `10px 20px`}}>
                 {table.schema.map(schema => {
 
@@ -171,9 +214,16 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                                         style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}
                                         onChange={(event) => {
                                             store.set(produce((s: any) => {
-                                                s[schema.name] = event.target.value.toUpperCase();
+                                                s[schema.name] = event.target.value;
                                             }))
-                                        }}/>
+                                        }} onBlur={() => {
+                                    store.set(produce((s: any) => {
+                                        const value = s[schema.name];
+                                        if (value) {
+                                            s[schema.name] = value.toUpperCase();
+                                        }
+                                    }))
+                                }}/>
                             </StoreValue>
                         }
                         {isBoolean &&
@@ -239,7 +289,8 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                                                 selector={(s: any) => (s[schema.name] ?? new Date().toISOString())}
                                                 render={(dateString: string) => {
                                                     const date = dateString ? new Date(dateString) : new Date();
-                                                    return <DInputDate schema={schema} date={date} store={store} showPicker={showPicker} />
+                                                    return <DInputDate schema={schema} date={date} store={store}
+                                                                       showPicker={showPicker}/>
                                                 }}/>
 
                         }
@@ -251,8 +302,15 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
 
                 <DButton title={'Save'} theme={ButtonTheme.danger} icon={IoSave} onTap={async () => {
                     // here we need to add the checking first about the validity of the data
-                    const result = await pb.collection(collectionOrCollectionId).create(store.get());
-                    closePanel(result);
+                    if (isNew) {
+                        const result = await pb.collection(collectionOrCollectionId).create(store.get());
+                        closePanel(result);
+                    } else {
+                        const result = await pb.collection(collectionOrCollectionId).update(id, store.get());
+                        debugger;
+                        closePanel(result);
+                    }
+
                 }} style={{marginRight: 10}}/>
                 <DButton title={'Cancel'} theme={ButtonTheme.promoted} icon={IoExit} onTap={() => {
                     // here next time we need to ask question are you sure you want to cancel this ?
