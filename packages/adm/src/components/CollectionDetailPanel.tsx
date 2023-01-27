@@ -4,7 +4,8 @@ import {
     Card,
     CardTitle,
     dateToDdMmmYyyy,
-    dateToHhMm, isNullOrUndefined,
+    dateToHhMm,
+    isNullOrUndefined,
     PickerOptions,
     Store,
     StoreValue,
@@ -24,13 +25,15 @@ import produce from "immer";
 import invariant from "tiny-invariant";
 import {EMPTY_TABLE} from "./CollectionGridPanel";
 import {AppState} from "../index";
+import {ButtonSimple} from "./ButtonSimple";
 
 const border = '1px solid rgba(0,0,0,0.05)';
 const boolDataProvider = [{label: 'Yes', value: true}, {label: 'No', value: false}];
 
-interface Errors{
-    [key:string] : string[]
+interface Errors {
+    [key: string]: string[]
 }
+
 function DInputDate<T>(props: { schema: DateSchema, date: Date, store: Store<any>, showPicker: <T>(props: { picker: PickerOptions; value: T }) => Promise<T> }) {
     const {store, showPicker, date, schema} = props;
     return <DInput title={<DInput title={`${schema.name} : `}
@@ -102,7 +105,7 @@ function DInputDate<T>(props: { schema: DateSchema, date: Date, store: Store<any
                    }}/>;
 }
 
-type StoreType<T extends BaseModel> = T & {errors:Errors};
+type StoreType<T extends BaseModel> = T & { errors: Errors };
 
 function initializeDefaultValue(table: Table) {
     const value = table.schema.reduce((result: any, schema) => {
@@ -140,9 +143,9 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
 
     const store = useStore<StoreType<any>>(initializeDefaultValue(table));
 
-    function validateForm():Errors{
+    function validateForm(): Errors {
         const formValue = store.get();
-        const errors = table.schema.reduce((errors:any,schema) => {
+        const errors = table.schema.reduce((errors: any, schema) => {
             const value = formValue[schema.name];
             const isNumber = schema.type === 'number';
             const isDate = schema.type === 'date';
@@ -155,27 +158,27 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
             const isText = schema.type === 'text';
             const isUrl = schema.type === 'url';
             let err = [];
-            if(isText){
-                if(schema.options.min){
-                    if(isNullOrUndefined(value) || value.length < schema.options.min){
-                        err.push('Minimum value is '+schema.options.min);
+            if (isText) {
+                if (schema.options.min) {
+                    if (isNullOrUndefined(value) || value.length < schema.options.min) {
+                        err.push('Minimum value is ' + schema.options.min);
                     }
                 }
-                if(schema.options.max){
-                    if(!isNullOrUndefined(value) && value.length > schema.options.max){
-                        err.push('Maximum value is '+schema.options.max)
+                if (schema.options.max) {
+                    if (!isNullOrUndefined(value) && value.length > schema.options.max) {
+                        err.push('Maximum value is ' + schema.options.max)
                     }
                 }
-                if(schema.options.pattern){
+                if (schema.options.pattern) {
                     console.log("WE NEED TO ADD VALIDATION AGAINST PATTERN")
                 }
             }
 
-            if(err.length > 0){
+            if (err.length > 0) {
                 errors[schema.name] = err;
             }
             return errors;
-        },{});
+        }, {});
         return errors;
     }
 
@@ -186,7 +189,14 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
             height: '100%',
             alignItems: 'center'
         }}>
-        <Card style={{width: '100%', maxWidth: 800, borderTopLeftRadius: 0, borderTopRightRadius: 0}}>
+        <Card style={{
+            width: '100%',
+            maxWidth: 800,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            padding: 0,
+            overflow: 'hidden'
+        }}>
             <CardTitle title={isNew ? 'New Collection' : `Showing Record ID ${id}`}/>
             <div style={{display: 'flex', flexWrap: 'wrap', padding: `10px 20px`}}>
                 {table.schema.map(schema => {
@@ -297,22 +307,21 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                     </div>
                 })} </div>
             <div
-                style={{display: 'flex', padding: '10px 20px 0px 20px', borderTop: border, justifyContent: 'flex-end'}}>
+                style={{display: 'flex', padding: 0, borderTop: border, justifyContent: 'flex-end'}}>
 
+                <ButtonSimple title={'Save'} style={{borderLeft: '1px solid rgba(0,0,0,0.1)'}} icon={IoSave}
+                              onClick={async () => {
+                                  // here we need to add the checking first about the validity of the data
+                                  if (isNew) {
+                                      const result = await pb.collection(collectionOrCollectionId).create(store.get());
+                                      closePanel(result);
+                                  } else {
+                                      const result = await pb.collection(collectionOrCollectionId).update(id, store.get());
+                                      closePanel(result);
+                                  }
 
-                <DButton title={'Save'} theme={ButtonTheme.danger} icon={IoSave} onTap={async () => {
-                    // here we need to add the checking first about the validity of the data
-                    if (isNew) {
-                        const result = await pb.collection(collectionOrCollectionId).create(store.get());
-                        closePanel(result);
-                    } else {
-                        const result = await pb.collection(collectionOrCollectionId).update(id, store.get());
-                        debugger;
-                        closePanel(result);
-                    }
-
-                }} style={{marginRight: 10}}/>
-                <DButton title={'Cancel'} theme={ButtonTheme.promoted} icon={IoExit} onTap={() => {
+                              }}/>
+                <ButtonSimple title={'Cancel'} icon={IoExit} onClick={() => {
                     // here next time we need to ask question are you sure you want to cancel this ?
                     closePanel(false);
                 }}/>
@@ -322,11 +331,11 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
 }
 
 interface BaseModel {
-    [key: string]: any;
-
     id: string;
     created: string;
     updated: string;
+
+    [key: string]: any;
 }
 
 interface ListResult<M extends BaseModel> {
