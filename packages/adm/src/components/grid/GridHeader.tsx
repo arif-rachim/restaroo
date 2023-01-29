@@ -1,28 +1,34 @@
 import {useTable} from "../useTable";
-import {checkboxColumnWidth, manageColumnWidth, scrollerWidth, useAverageColumnWidth} from "../useAverageColumn";
+import {useAverageColumnWidth} from "../useAverageColumn";
 import {motion} from "framer-motion";
 import {CSSProperties} from "react";
+import {Store} from "@restaroo/lib";
+import {Config} from "./Grid";
 
-export function GridHeader(props: { gridID: string, collection: string }) {
-    const {gridID: id, collection} = props;
+export function GridHeader(props: { gridID: string, collection: string, configStore: Store<Config> }) {
+    const {gridID: id, collection, configStore} = props;
     const table = useTable(collection);
-    const averageColumnWidth = useAverageColumnWidth(collection);
-    return <div style={{display: 'flex', flexGrow: 0, flexShrink: 0, marginRight: scrollerWidth, overflow: 'hidden'}}
+
+
+    const width = useAverageColumnWidth(collection, configStore);
+    return <div style={{display: 'flex', flexGrow: 0, flexShrink: 0, marginRight: width.scroller, overflow: 'hidden'}}
                 id={`${id}-header`}>
-        <div style={{
-            width: checkboxColumnWidth,
-            flexShrink: 0,
-            borderBottom: '1px solid rgba(0,0,0,0.1)',
-            borderRight: '1px solid rgba(0,0,0,0.1)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-        }}>
-        </div>
+        {width.select > 0 &&
+            <div style={{
+                width: width.select,
+                flexShrink: 0,
+                borderBottom: '1px solid rgba(0,0,0,0.1)',
+                borderRight: '1px solid rgba(0,0,0,0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
+
+            </div>
+        }
         {table.schema.map((schema, index, source) => {
-            const isLastColumn = index === source.length - 1;
             return <motion.div key={schema.id} style={{
-                width: averageColumnWidth,
+                width: width.standard,
                 overflow: 'hidden',
                 ...tableColumnStyle,
                 borderRight: '1px solid rgba(0,0,0,0.1)',
@@ -30,9 +36,25 @@ export function GridHeader(props: { gridID: string, collection: string }) {
                 {schema.name}
             </motion.div>
         })}
-        <div style={{display: 'flex', flexShrink: 0, flexGrow: 0, width: manageColumnWidth}}>
-            {/*    THIS IS FOR THE HEADER COLUMN*/}
-        </div>
+
+        {(width.edit > 0 || width.view > 0) &&
+            <div style={{
+                width: width.edit,
+                overflow: 'hidden',
+                ...tableColumnStyle
+            }}>
+                {/*    THIS IS FOR THE HEADER COLUMN*/}
+            </div>
+        }
+        {width.del > 0 &&
+            <div style={{
+                width: width.del,
+                overflow: 'hidden',
+                ...tableColumnStyle
+            }}>
+                {/*    THIS IS FOR THE HEADER COLUMN*/}
+            </div>
+        }
     </div>;
 }
 

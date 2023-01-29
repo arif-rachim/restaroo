@@ -1,7 +1,6 @@
 import {Table} from "@restaroo/mdl";
 import {BaseModel, ListResult, useAppContext, useStore} from "@restaroo/lib";
 import {useEffect, useId} from "react";
-import {GridConfig} from "./GridConfig";
 import {GridFooter} from "./GridFooter";
 import {GridBody} from "./GridBody";
 import {GridHeader} from "./GridHeader";
@@ -27,7 +26,7 @@ export const EMPTY_TABLE: Table = {
 export const border = '1px solid rgba(0,0,0,0.1)';
 
 
-interface GridConfig {
+export interface Config {
     collectionNameOrId: string,
     maximumSelection: number,
     columns: { name: string, label: string, visible: boolean, minWidth: number, widthPercentage: number }[],
@@ -42,9 +41,9 @@ interface GridConfig {
 export function Grid(props: { collection: string }) {
     const {collection} = props;
     const {pb} = useAppContext();
-    const configStore = useStore<GridConfig>({
+    const configStore = useStore<Config>({
         collectionNameOrId: collection,
-        maximumSelection: 0,
+        maximumSelection: 1,
         columns: [],
         permission: {
             edit: true,
@@ -76,8 +75,8 @@ export function Grid(props: { collection: string }) {
     return <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
         <GridToolbar collection={collection} collectionStore={collectionStore}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-            <GridHeader gridID={id} collection={collection}/>
-            <GridBody collectionStore={collectionStore} gridID={id} collection={collection}/>
+            <GridHeader gridID={id} collection={collection} configStore={configStore}/>
+            <GridBody collectionStore={collectionStore} gridID={id} collection={collection} configStore={configStore} />
             <GridFooter collectionStore={collectionStore} loadCollection={loadCollection}/>
         </div>
     </div>

@@ -307,9 +307,9 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                     </div>
                 })} </div>
             <div
-                style={{display: 'flex', padding: 0, borderTop: border, justifyContent: 'flex-end'}}>
+                style={{display: 'flex', padding: 10, borderTop: border, justifyContent: 'flex-end'}}>
 
-                <ButtonSimple title={'Save'} style={{borderLeft: '1px solid rgba(0,0,0,0.1)'}} icon={IoSave}
+                <ButtonSimple title={'Save'} style={{border: '1px solid rgba(0,0,0,0.1)'}} icon={IoSave}
                               onClick={async () => {
                                   // here we need to add the checking first about the validity of the data
                                   if (isNew) {
@@ -321,7 +321,7 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                                   }
 
                               }}/>
-                <ButtonSimple title={'Cancel'} icon={IoExit} onClick={() => {
+                <ButtonSimple title={'Cancel'} style={{border: '1px solid rgba(0,0,0,0.1)',borderLeft:'unset'}} icon={IoExit} onClick={() => {
                     // here next time we need to ask question are you sure you want to cancel this ?
                     closePanel(false);
                 }}/>

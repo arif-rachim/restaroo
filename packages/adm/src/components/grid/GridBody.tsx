@@ -1,12 +1,13 @@
-import {BaseModel, ListResult, Store, StoreValueRenderer, useAppContext} from "@restaroo/lib";
+import {BaseModel, ListResult, Store, StoreValueRenderer, useAppContext, useStore, useStoreValue} from "@restaroo/lib";
 import {useTable} from "../useTable";
-import {checkboxColumnWidth, manageColumnWidth, useAverageColumnWidth} from "../useAverageColumn";
+import {useAverageColumnWidth} from "../useAverageColumn";
 import invariant from "tiny-invariant";
 import {motion} from "framer-motion";
-import {IoCheckmark, IoPencil, IoTrashOutline} from "react-icons/io5";
+import {IoCheckmark, IoEye, IoPencil, IoTrashOutline} from "react-icons/io5";
 import {CollectionDetailPanel} from "../CollectionDetailPanel";
 import produce from "immer";
 import {CSSProperties} from "react";
+import {Config} from "./Grid";
 
 const cellStyle: CSSProperties = {
     display: 'flex',
@@ -17,11 +18,29 @@ const cellStyle: CSSProperties = {
     flexShrink: 0
 }
 
+function CheckBoxColumn(props: { width: number, selectedItemsStore: Store<BaseModel[]>, row: BaseModel }) {
+    const {width, row, selectedItemsStore} = props;
+    const isSelected = useStoreValue(selectedItemsStore, param => param.map(s => s.id).includes(row.id));
+    return <div style={{
+        width: width,
+        flexShrink: 0,
+        borderBottom: '1px solid rgba(0,0,0,0.1)',
+        borderRight: '1px dashed rgba(0,0,0,0.05)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }}>
+        {isSelected &&
+            <IoCheckmark style={{fontSize: 16}}/>
+        }
+    </div>;
+}
 
-export function GridBody<T>(props: { collectionStore: Store<ListResult<BaseModel>>, gridID: string, collection: string }) {
-    const {collection, collectionStore, gridID: id} = props;
+export function GridBody<T>(props: { collectionStore: Store<ListResult<BaseModel>>, gridID: string, collection: string, configStore: Store<Config> }) {
+    const {collection, collectionStore, gridID: id, configStore} = props;
     const table = useTable(collection);
-    const averageColumnWidth = useAverageColumnWidth(collection);
+    const width = useAverageColumnWidth(collection, configStore);
+    const selectedItemsStore = useStore<BaseModel[]>([]);
 
     const {showSlidePanel} = useAppContext();
     return <StoreValueRenderer store={collectionStore} selector={s => s.items} render={(items: BaseModel[]) => {
@@ -38,27 +57,36 @@ export function GridBody<T>(props: { collectionStore: Store<ListResult<BaseModel
             header.scrollLeft = (event.target as HTMLDivElement).scrollLeft
         }}>{items.map((row, rowIndex, rowArray) => {
             const isEven = rowIndex % 2 === 0;
+
             return <motion.div style={{display: 'flex', backgroundColor: isEven ? '#f2f2f2' : '#fff'}}
                                key={row.id}
                                whileHover={{backgroundColor: '#e2e2e2'}}
+                               onClick={() => {
+                                   selectedItemsStore.set(produce(old => {
+                                       const index = old.findIndex(s => s.id === row.id);
+                                       if(index >= 0){
+                                            old.splice(index,1);
+                                       }else{
+                                           if(configStore.get().maximumSelection === 1){
+                                               for(let i:number = 0;i < old.length;i++){
+                                                   old.pop();
+                                               }
+                                           }
+                                           if(configStore.get().maximumSelection > old.length){
+                                               old.push(row);
+                                           }
+                                       }
+                                   }))
+                               }}
             >
-                <div style={{
-                    width: checkboxColumnWidth,
-                    flexShrink: 0,
-                    borderBottom: '1px solid rgba(0,0,0,0.1)',
-                    borderRight: '1px dashed rgba(0,0,0,0.05)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <IoCheckmark style={{fontSize: 16}}/>
-                </div>
+                {width.select > 0 &&
+                    <CheckBoxColumn width={width.select} selectedItemsStore={selectedItemsStore} row={row}/>
+                }
                 {table.schema.map((schema, cellIndex, source) => {
                     const isLastColumn = cellIndex === source.length - 1;
                     const cellValue = row[schema.name] ?? '';
                     return <div key={`${rowIndex}:${cellIndex}`} style={{
-                        width: averageColumnWidth, ...cellStyle,
-                        borderRight: isLastColumn ? 'unset' : '1px dashed rgba(0,0,0,0.05)',
+                        width: width.standard, ...cellStyle
                     }}>
                         <div style={{
                             display: 'inline-block',
@@ -70,13 +98,14 @@ export function GridBody<T>(props: { collectionStore: Store<ListResult<BaseModel
                         </div>
                     </div>
                 })}
-                <div style={{
+
+
+                {(width.edit > 0 || width.view > 0) && <div style={{
                     ...cellStyle,
                     alignItems: 'center',
                     justifyContent: 'center',
                     padding: 0,
-                    borderRight: 'unset',
-                    width: manageColumnWidth
+                    width: width.edit
                 }}>
                     <div style={{display: 'flex'}}>
                         <motion.div style={{flexGrow: 1, marginRight: 5}} whileHover={{scale: 1.1}}
@@ -95,13 +124,36 @@ export function GridBody<T>(props: { collectionStore: Store<ListResult<BaseModel
                             }));
 
                         }}>
-                            <IoPencil style={{fontSize: 18}}/>
+                            {width.edit > 0 &&
+                                <IoPencil style={{fontSize: 18}}/>
+                            }
+                            {width.edit === 0 && width.view > 0 &&
+                                <IoEye style={{fontSize: 18}}/>
+                            }
                         </motion.div>
-                        <motion.div style={{flexGrow: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.98}}>
+                    </div>
+                </div>
+                }
+
+
+                {width.del > 0 && <div style={{
+                    ...cellStyle,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 0,
+                    width: width.del
+                }}>
+                    <div style={{display: 'flex'}}>
+                        <motion.div style={{flexGrow: 1, marginRight: 5}} whileHover={{scale: 1.1}}
+                                    whileTap={{scale: 0.98}} onClick={async () => {
+                            alert('TODO');
+                        }}>
                             <IoTrashOutline style={{fontSize: 18}}/>
                         </motion.div>
                     </div>
                 </div>
+                }
+
             </motion.div>
         })}</div>
     }}/>;
