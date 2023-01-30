@@ -321,7 +321,8 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                                   }
 
                               }}/>
-                <ButtonSimple title={'Cancel'} style={{border: '1px solid rgba(0,0,0,0.1)',borderLeft:'unset'}} icon={IoExit} onClick={() => {
+                <ButtonSimple title={'Cancel'} style={{border: '1px solid rgba(0,0,0,0.1)', borderLeft: 'unset'}}
+                              icon={IoExit} onClick={() => {
                     // here next time we need to ask question are you sure you want to cancel this ?
                     closePanel(false);
                 }}/>

@@ -3,9 +3,9 @@ import {useAverageColumnWidth} from "../useAverageColumn";
 import {motion} from "framer-motion";
 import {CSSProperties} from "react";
 import {Store} from "@restaroo/lib";
-import {Config} from "./Grid";
+import {PanelConfig} from "./Grid";
 
-export function GridHeader(props: { gridID: string, collection: string, configStore: Store<Config> }) {
+export function GridHeader(props: { gridID: string, collection: string, configStore: Store<PanelConfig> }) {
     const {gridID: id, collection, configStore} = props;
     const table = useTable(collection);
 

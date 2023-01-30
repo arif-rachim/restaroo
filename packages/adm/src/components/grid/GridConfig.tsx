@@ -1,13 +1,14 @@
-import {DButton} from "../DButton";
-import {ButtonTheme, Card, CardTitle, useAppStore} from "@restaroo/lib";
+import {Card, CardTitle, Store, useAppStore} from "@restaroo/lib";
 import {IoClose} from "react-icons/io5";
 import {AppState} from "../../index";
 import {useTable} from "../useTable";
+import {ButtonSimple} from "../ButtonSimple";
+import {PanelConfig} from "./Grid";
 
-export function GridConfig(props: { closePanel: (param: any) => void, collectionOrConfigId: string }) {
-    const {closePanel, collectionOrConfigId} = props;
+export function GridConfig(props: { closePanel: (param: any) => void, collection: string, configStore: Store<PanelConfig> }) {
+    const {closePanel, collection, configStore} = props;
 
-    const table = useTable(collectionOrConfigId);
+    const table = useTable(collection);
 
     const store = useAppStore<AppState>();
 
@@ -19,12 +20,11 @@ export function GridConfig(props: { closePanel: (param: any) => void, collection
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0
     }}>
-        <CardTitle title={'Hello World'}/>
+        <CardTitle title={collection}/>
         <div style={{display: 'flex', flexDirection: 'column', padding: 10}}>
-            <DButton onTap={() => {
+            <ButtonSimple style={{border: '1px solid rgba(0,0,0,0.1)'}} onClick={() => {
                 closePanel(false);
-            }} title={'Close Icon'} icon={IoClose} theme={ButtonTheme.normal}/>
-
+            }} title={'Close'} icon={IoClose}/>
 
         </div>
 

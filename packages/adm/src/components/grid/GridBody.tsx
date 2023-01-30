@@ -7,7 +7,7 @@ import {IoCheckmark, IoEye, IoPencil, IoTrashOutline} from "react-icons/io5";
 import {CollectionDetailPanel} from "../CollectionDetailPanel";
 import produce from "immer";
 import {CSSProperties} from "react";
-import {Config} from "./Grid";
+import {PanelConfig} from "./Grid";
 
 const cellStyle: CSSProperties = {
     display: 'flex',
@@ -36,7 +36,7 @@ function CheckBoxColumn(props: { width: number, selectedItemsStore: Store<BaseMo
     </div>;
 }
 
-export function GridBody<T>(props: { collectionStore: Store<ListResult<BaseModel>>, gridID: string, collection: string, configStore: Store<Config> }) {
+export function GridBody<T>(props: { collectionStore: Store<ListResult<BaseModel>>, gridID: string, collection: string, configStore: Store<PanelConfig> }) {
     const {collection, collectionStore, gridID: id, configStore} = props;
     const table = useTable(collection);
     const width = useAverageColumnWidth(collection, configStore);
@@ -64,15 +64,15 @@ export function GridBody<T>(props: { collectionStore: Store<ListResult<BaseModel
                                onClick={() => {
                                    selectedItemsStore.set(produce(old => {
                                        const index = old.findIndex(s => s.id === row.id);
-                                       if(index >= 0){
-                                            old.splice(index,1);
-                                       }else{
-                                           if(configStore.get().maximumSelection === 1){
-                                               for(let i:number = 0;i < old.length;i++){
+                                       if (index >= 0) {
+                                           old.splice(index, 1);
+                                       } else {
+                                           if (configStore.get().data.maximumSelection === 1) {
+                                               for (let i: number = 0; i < old.length; i++) {
                                                    old.pop();
                                                }
                                            }
-                                           if(configStore.get().maximumSelection > old.length){
+                                           if (configStore.get().data.maximumSelection > old.length) {
                                                old.push(row);
                                            }
                                        }

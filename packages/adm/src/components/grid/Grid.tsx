@@ -25,9 +25,12 @@ export const EMPTY_TABLE: Table = {
 
 export const border = '1px solid rgba(0,0,0,0.1)';
 
+export interface PanelConfig {
+    id: string,
+    data: Config
+}
 
 export interface Config {
-    collectionNameOrId: string,
     maximumSelection: number,
     columns: { name: string, label: string, visible: boolean, minWidth: number, widthPercentage: number }[],
     permission: {
@@ -41,15 +44,17 @@ export interface Config {
 export function Grid(props: { collection: string }) {
     const {collection} = props;
     const {pb} = useAppContext();
-    const configStore = useStore<Config>({
-        collectionNameOrId: collection,
-        maximumSelection: 1,
-        columns: [],
-        permission: {
-            edit: true,
-            delete: true,
-            create: true,
-            view: true
+    const configStore = useStore<PanelConfig>({
+        id: '',
+        data: {
+            maximumSelection: 1,
+            columns: [],
+            permission: {
+                edit: true,
+                delete: true,
+                create: true,
+                view: true
+            }
         }
     });
     const collectionStore = useStore<ListResult<BaseModel>>({
@@ -73,10 +78,10 @@ export function Grid(props: { collection: string }) {
 
     const id = useId();
     return <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
-        <GridToolbar collection={collection} collectionStore={collectionStore}/>
+        <GridToolbar collection={collection} collectionStore={collectionStore} configStore={configStore}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
             <GridHeader gridID={id} collection={collection} configStore={configStore}/>
-            <GridBody collectionStore={collectionStore} gridID={id} collection={collection} configStore={configStore} />
+            <GridBody collectionStore={collectionStore} gridID={id} collection={collection} configStore={configStore}/>
             <GridFooter collectionStore={collectionStore} loadCollection={loadCollection}/>
         </div>
     </div>
