@@ -30,9 +30,17 @@ export interface PanelConfig {
     data: Config
 }
 
+export interface ConfigColumn {
+    schemaId: string,
+    label: string,
+    visible: boolean,
+    minWidth: number,
+    widthPercentage: number
+}
+
 export interface Config {
     maximumSelection: number,
-    columns: { name: string, label: string, visible: boolean, minWidth: number, widthPercentage: number }[],
+    columns: ConfigColumn[],
     permission: {
         edit: boolean,
         delete: boolean,

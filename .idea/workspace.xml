@@ -16,7 +16,7 @@
       <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/grid/GridConfig.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/grid/GridHeader.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridToolbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/grid/GridToolbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/useAverageColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/useAverageColumn.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

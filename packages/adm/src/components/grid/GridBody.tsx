@@ -36,7 +36,7 @@ function CheckBoxColumn(props: { width: number, selectedItemsStore: Store<BaseMo
     </div>;
 }
 
-export function GridBody<T>(props: { collectionStore: Store<ListResult<BaseModel>>, gridID: string, collection: string, configStore: Store<PanelConfig> }) {
+export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>, gridID: string, collection: string, configStore: Store<PanelConfig> }) {
     const {collection, collectionStore, gridID: id, configStore} = props;
     const table = useTable(collection);
     const width = useAverageColumnWidth(collection, configStore);

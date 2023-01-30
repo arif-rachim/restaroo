@@ -6,7 +6,7 @@ import produce from "immer";
 import {GridConfig} from "./GridConfig";
 import {border, PanelConfig} from "./Grid";
 
-export function GridToolbar<T>(props: { collection: string, collectionStore: Store<ListResult<BaseModel>>, configStore: Store<PanelConfig> }) {
+export function GridToolbar(props: { collection: string, collectionStore: Store<ListResult<BaseModel>>, configStore: Store<PanelConfig> }) {
     const {collection, collectionStore, configStore} = props;
     const {showSlidePanel} = useAppContext();
     return <div style={{display: 'flex', borderBottom: border}}>
@@ -25,13 +25,11 @@ export function GridToolbar<T>(props: { collection: string, collectionStore: Sto
 
         }}/>
         <ButtonSimple title={'Configure'} icon={IoSettings} onClick={async () => {
-            const result: BaseModel | false = await showSlidePanel(closePanel => {
-                return <GridConfig closePanel={closePanel} collection={collection} configStore={configStore}/>
+            const result: PanelConfig = await showSlidePanel(closePanel => {
+                return <GridConfig closePanel={closePanel} collection={collection} panelConfig={configStore.get()}/>
             }, {position: "right"});
-            if (result === false) {
-                return;
-            }
-
+            configStore.set(result);
+            // @TODO To save this to server
         }}/>
 
     </div>;
