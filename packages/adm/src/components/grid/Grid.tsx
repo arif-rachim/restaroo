@@ -73,14 +73,13 @@ export function Grid(props: { collection: string }) {
         totalPages: 0
     });
 
-
     async function loadCollection(props: { page: number }) {
         const list: ListResult<BaseModel> = await pb.collection(collection).getList(props.page, collectionStore.get().perPage);
         collectionStore.set({...list});
     }
 
     useEffect(() => {
-        loadCollection({page: 1}).then()
+        loadCollection({page: 1}).then();
         // eslint-disable-next-line
     }, []);
 

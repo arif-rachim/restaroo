@@ -119,7 +119,7 @@ function initializeDefaultValue(table: Table) {
         // const isSelect = schema.type === 'select';
         // const isText = schema.type === 'text';
         // const isUrl = schema.type === 'url';
-        result[schema.name] = undefined;
+        result[schema.name] = '';
         return result;
     }, {});
     value.errors = {...value};
