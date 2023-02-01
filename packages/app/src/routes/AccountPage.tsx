@@ -9,6 +9,7 @@ import {
     Header,
     pageBackgroundColor,
     RouteProps,
+    useLogout,
     useNavigate,
     useProfile,
     useSessionIsActive,
@@ -30,7 +31,6 @@ import {RefObject, useRef} from "react";
 import invariant from "tiny-invariant";
 import {RiDraftLine} from "react-icons/ri";
 import {motion} from "framer-motion";
-import {useLogout} from "@restaroo/lib";
 
 function ProfilePanel(props: { containerRef: RefObject<HTMLDivElement> }) {
     const isSessionActive = useSessionIsActive();

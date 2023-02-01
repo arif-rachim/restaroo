@@ -345,7 +345,7 @@ export function ReservationPage(props: RouteProps) {
                                 dataProvider: ['Indoor Seating, Non Smoking Area', 'Outdoor'],
                                 dataToLabel: d => d,
                                 dataToValue: v => v,
-                                isValueBelongsToData: (value,data) => {
+                                isValueBelongsToData: (value, data) => {
                                     debugger;
                                     return value === data;
                                 },

@@ -7,7 +7,7 @@ import {IoCheckmark, IoEye, IoPencil, IoTrashOutline} from "react-icons/io5";
 import {CollectionDetailPanel} from "../CollectionDetailPanel";
 import produce from "immer";
 import {CSSProperties} from "react";
-import {PanelConfig} from "./Grid";
+import {GridConfig, RouteConfig} from "./Grid";
 
 const cellStyle: CSSProperties = {
     display: 'flex',
@@ -36,7 +36,7 @@ function CheckBoxColumn(props: { width: number, selectedItemsStore: Store<BaseMo
     </div>;
 }
 
-export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>, gridID: string, collection: string, configStore: Store<PanelConfig> }) {
+export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>, gridID: string, collection: string, configStore: Store<RouteConfig<GridConfig>> }) {
     const {collection, collectionStore, gridID: id, configStore} = props;
     const table = useTable(collection);
     const width = useAverageColumnWidth(collection, configStore);

@@ -12,7 +12,7 @@ interface AppProps<T> {
     stateInitValue: T,
     onProfileChange: (next: Profile, prev: (Profile | undefined), store: Store<T>) => void,
     pocketBase: PocketBase,
-    fetchService:FetchService,
+    fetchService: FetchService,
     routes: Routes
 }
 
@@ -61,7 +61,7 @@ function Application<T extends BaseState>(props: AppProps<T>) {
                     transform: `scale(${scale})`
                 }}>
                     <AppShell initValue={props.stateInitValue} onProfileChange={props.onProfileChange}
-                              pocketBase={props.pocketBase} routes={props.routes}  fetchService={props.fetchService}/>
+                              pocketBase={props.pocketBase} routes={props.routes} fetchService={props.fetchService}/>
                 </div>
             </WindowSizeContext.Provider>
         </div>

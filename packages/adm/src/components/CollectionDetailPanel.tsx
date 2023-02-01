@@ -214,12 +214,12 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
 
                     // const isRequired = schema.required;
                     // const isUnique = schema.unique;
-
+                    const title = schema.name;
 
                     return <div key={schema.name} style={{width: '50%'}}>
                         {isText &&
                             <StoreValue store={store} selector={(s: any) => s[schema.name]} property={'value'}>
-                                <DInput title={`${schema.name} : `} titlePosition={'left'} titleWidth={100}
+                                <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
                                         placeholder={`Please enter ${schema.name}`}
                                         style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}
                                         onChange={(event) => {
@@ -240,7 +240,7 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                             <StoreValue store={store}
                                         selector={(s: any) => boolDataProvider.find(v => v.value === s[schema.name])?.label ?? ''}
                                         property={'value'}>
-                                <DInput title={`${schema.name} : `} titlePosition={'left'} titleWidth={100}
+                                <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
                                         placeholder={`Please enter ${schema.name}`}
                                         style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}
                                         readOnly={true}
@@ -267,7 +267,7 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                             <StoreValue store={store}
                                         selector={(s: any) => (s[schema.name] ? s[schema.name].toString() : '')}
                                         property={'value'}>
-                                <DInput title={`${schema.name} : `} titlePosition={'left'} titleWidth={100}
+                                <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
                                         placeholder={`Please enter ${schema.name}`} inputMode={'numeric'}
                                         type={'number'}
                                         style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}
@@ -279,7 +279,7 @@ export function CollectionDetailPanel(props: { collectionOrCollectionId: string,
                             </StoreValue>
                         }
                         {isFile &&
-                            <DInput title={`${schema.name} : `} titlePosition={'left'} titleWidth={100}
+                            <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
                                     placeholder={`Please enter ${schema.name}`} inputMode={'text'} type={'text'}
                                     style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}/>
                         }

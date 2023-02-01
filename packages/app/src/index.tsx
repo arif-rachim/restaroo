@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {createApp, GuestProfile, Routes} from "@restaroo/lib";
+import {createApp, createFetch, GuestProfile, Routes} from "@restaroo/lib";
 import {LandingPage} from "./routes/LandingPage";
 import {DeliveryPage} from "./routes/DeliveryPage";
 import {DiningPage} from "./routes/DiningPage";
@@ -18,9 +18,7 @@ import {PaymentMethodPage} from "./routes/PaymentMethodPage";
 import {CameraPage} from "./routes/CameraPage";
 import {AppState} from "./component/AppState";
 import {FooterNavigation} from "./component/FooterNavigation";
-import {createFetch} from "@restaroo/lib";
 import PocketBase from "pocketbase";
-
 
 
 const root = ReactDOM.createRoot(
@@ -101,7 +99,7 @@ root.render(<MyApp mobileOnly={true} stateInitValue={{
     })
     // here we can perform fetching other stuff here !
 }} pocketBase={new PocketBase(process.env.REACT_APP_API_URL ?? '')}
-fetchService={createFetch(process.env.REACT_APP_API_URL ?? '')}
+                   fetchService={createFetch(process.env.REACT_APP_API_URL ?? '')}
                    routes={routes}/>);
 
 

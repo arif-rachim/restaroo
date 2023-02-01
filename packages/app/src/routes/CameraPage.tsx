@@ -29,7 +29,7 @@ function dataURItoBlob(dataURI: string) {
 
 export function CameraPage() {
     const {appDimension} = useAppDimension();
-    const {store: appStore,pb} = useAppContext();
+    const {store: appStore, pb} = useAppContext();
     const [dataUri, setDataUri] = useState('');
 
     const user = useProfile();

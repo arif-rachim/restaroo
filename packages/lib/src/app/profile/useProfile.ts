@@ -13,7 +13,7 @@ export function useSessionIsActive(): boolean {
 
 export function useLogout() {
     // here we need to perform logout
-    const {store,pb} = useAppContext();
+    const {store, pb} = useAppContext();
     return function logout() {
         pb.authStore.clear();
         store.set(produce(s => {
@@ -23,7 +23,7 @@ export function useLogout() {
 }
 
 export function useLogin() {
-    const {store: appStore,pb,fetchService} = useAppContext();
+    const {store: appStore, pb, fetchService} = useAppContext();
     const store = useStore({token: ''})
 
     async function validateOtp(otp: string, phoneNo: string): Promise<Profile | false> {

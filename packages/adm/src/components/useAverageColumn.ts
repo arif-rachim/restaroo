@@ -1,8 +1,8 @@
 import {useTable} from "./useTable";
 import {Store, useAppDimension, useStoreValue} from "@restaroo/lib";
-import {PanelConfig} from "./grid/Grid";
+import {GridConfig, RouteConfig} from "./grid/Grid";
 
-export function useAverageColumnWidth(collection: string, configStore: Store<PanelConfig>) {
+export function useAverageColumnWidth(collection: string, configStore: Store<RouteConfig<GridConfig>>) {
     const table = useTable(collection);
     const {appDimension} = useAppDimension();
     const showSelectionColumn = useStoreValue(configStore, s => s.data.maximumSelection > 0);

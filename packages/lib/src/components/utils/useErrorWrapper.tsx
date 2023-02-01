@@ -1,4 +1,3 @@
-
 import {IoClose} from "react-icons/io5";
 import {Button} from "../page";
 import {useAppContext} from "../../app";
@@ -25,8 +24,8 @@ export function useErrorWrapper() {
                             <Button onTap={() => {
                                 closePanel(true);
                             }} title={'Ok'} icon={IoClose} theme={ButtonTheme.danger}
-                                     style={{color: 'white', fontSize: 13, padding: '5px 10px'}}
-                                     iconStyle={{width: 13, height: 13}}/>
+                                    style={{color: 'white', fontSize: 13, padding: '5px 10px'}}
+                                    iconStyle={{width: 13, height: 13}}/>
                         </div>
                     </div>
                 });

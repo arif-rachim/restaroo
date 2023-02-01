@@ -51,7 +51,7 @@ const slidePanelStyle: CSSProperties = {
     overflow: 'hidden',
     boxSizing: 'border-box'
 }
-const overlayStyle:CSSProperties = {
+const overlayStyle: CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -61,7 +61,7 @@ const overlayStyle:CSSProperties = {
     WebkitBackdropFilter: 'blur(5px) contrast(60%)',
 }
 
-const overlayStyleNoBlur:CSSProperties = {
+const overlayStyleNoBlur: CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -91,36 +91,36 @@ function Modal(props: { modalPanel?: ReactElement }) {
 
 function renderSlidePanels(props: { panels: { id: string, element: ReactElement, config: FactoryFunctionConfig }[] }) {
     const panels = props.panels;
-    return panels.map((p,index,source) => {
-        let initial:any = {bottom: '-100%', width: '100%'};
-        let animate:any = {bottom: 0};
-        let exit:any = {bottom: '-100%'};
-        if(p.config.position === 'top'){
+    return panels.map((p, index, source) => {
+        let initial: any = {bottom: '-100%', width: '100%'};
+        let animate: any = {bottom: 0};
+        let exit: any = {bottom: '-100%'};
+        if (p.config.position === 'top') {
             initial = {top: '-100%', width: '100%'};
             animate = {top: 0};
-            exit = {top:'-100%'};
+            exit = {top: '-100%'};
         }
-        if(p.config.position === 'right'){
+        if (p.config.position === 'right') {
             initial = {right: '-100%', height: '100%'};
             animate = {right: 0};
-            exit = {right:'-100%'};
+            exit = {right: '-100%'};
         }
-        if(p.config.position === 'left'){
+        if (p.config.position === 'left') {
             initial = {left: '-100%', height: '100%'};
             animate = {left: 0};
-            exit = {left:'-100%'};
+            exit = {left: '-100%'};
         }
         const isLastIndex = index === source.length - 1;
 
-        if(!isLastIndex){
+        if (!isLastIndex) {
             const isNextPanelIsPopup = panels[index + 1].config.isPopup;
-            if(!isNextPanelIsPopup){
+            if (!isNextPanelIsPopup) {
                 animate = exit;
             }
         }
         return <motion.div style={slidePanelStyle}
                            key={p.id}>
-            <OverlayPanel blurBackground={!p.config.isPopup} />
+            <OverlayPanel blurBackground={!p.config.isPopup}/>
             <motion.div style={{position: 'absolute'}} initial={initial}
                         animate={animate} exit={exit} transition={{bounce: 0}}>
                 {p.element}
@@ -128,9 +128,10 @@ function renderSlidePanels(props: { panels: { id: string, element: ReactElement,
         </motion.div>
     })
 }
-function OverlayPanel(props:{blurBackground:boolean}){
 
-    return <motion.div style={props.blurBackground ? overlayStyle:overlayStyleNoBlur}
+function OverlayPanel(props: { blurBackground: boolean }) {
+
+    return <motion.div style={props.blurBackground ? overlayStyle : overlayStyleNoBlur}
                        initial={{opacity: 0}}
                        animate={{opacity: 1}}
                        exit={{opacity: 0}}/>
@@ -140,9 +141,9 @@ function SlideAndModalPanel(props: { panelStore: Store<{ modalPanel: ReactElemen
     const panelStore = props.panelStore;
     const {modalPanel, slidePanel} = useStoreValue(panelStore, param => param);
     return <AnimatePresence>
-            {renderSlidePanels({panels:slidePanel})}
-            {modalPanel !== false && <Modal modalPanel={modalPanel} key={'modal-panel'}/>}
-        </AnimatePresence>
+        {renderSlidePanels({panels: slidePanel})}
+        {modalPanel !== false && <Modal modalPanel={modalPanel} key={'modal-panel'}/>}
+    </AnimatePresence>
 }
 
 function useAppStoreInitialization<T extends BaseState>(initializer: T, pocketBase: PocketBase) {
@@ -194,7 +195,7 @@ function useAppStoreInitialization<T extends BaseState>(initializer: T, pocketBa
     return store;
 }
 
-export default function AppShell<T extends BaseState>(props: { initValue: T, onProfileChange: (next: Profile, prev: (Profile | undefined), store: Store<T>) => void, pocketBase: PocketBase,fetchService:FetchService, routes: Routes }) {
+export default function AppShell<T extends BaseState>(props: { initValue: T, onProfileChange: (next: Profile, prev: (Profile | undefined), store: Store<T>) => void, pocketBase: PocketBase, fetchService: FetchService, routes: Routes }) {
     const panelStore = useStore<{ modalPanel: ReactElement | false, slidePanel: ({ id: string, element: ReactElement, config: FactoryFunctionConfig })[] }>({
         modalPanel: false,
         slidePanel: []
@@ -202,7 +203,8 @@ export default function AppShell<T extends BaseState>(props: { initValue: T, onP
     const showPickerRef = useRef<ShowPickerFunction>();
     const store = useAppStoreInitialization<T>(props.initValue, props.pocketBase);
     useStoreListener(store, s => s.user, (next, prev) => props.onProfileChange(next, prev, store));
-    return <AppContextProvider panelStore={panelStore} store={store} showPickerRef={showPickerRef} pocketBase={props.pocketBase} fetchService={props.fetchService}>
+    return <AppContextProvider panelStore={panelStore} store={store} showPickerRef={showPickerRef}
+                               pocketBase={props.pocketBase} fetchService={props.fetchService}>
         <div style={shellStyle}>
             <RouterPageContainer routes={props.routes}/>
             <SlideAndModalPanel panelStore={panelStore}/>

@@ -14,7 +14,7 @@ const ICONS: any = {
 export function AddressBookPage() {
     const isLoading = false;
     const navigate = useNavigate();
-    const {store: appStore,pb} = useAppContext();
+    const {store: appStore, pb} = useAppContext();
     const addresses = useStoreValue(appStore, s => s.addresses);
     return <Page>
         <Header title={'My Address'} size={'big'}>

@@ -64,6 +64,7 @@ export function CardItemDetail(props: { cart: CartItem }) {
 }
 
 const tipsDataProvider = [2, 4, 8]
+
 export function OrderDetailPage(props: RouteProps) {
     const store = useAppStore<AppState>();
     // const {store:st} = useAppContext();
@@ -174,7 +175,7 @@ export function OrderDetailPage(props: RouteProps) {
                     </div>
                     <div style={{display: 'flex', marginBottom: 5}}>
                         <div style={{flexGrow: 1}}>Tip for delivery partner</div>
-                        <StoreValueRenderer store={tipsStore} selector={s => s} render={(tip:number) => {
+                        <StoreValueRenderer store={tipsStore} selector={s => s} render={(tip: number) => {
                             return <div>AED {tip}</div>
                         }}/>
 
@@ -189,9 +190,9 @@ export function OrderDetailPage(props: RouteProps) {
                         <div style={{flexGrow: 1}}>Grand Total</div>
                         <StoreValueRenderer store={store}
                                             selector={(s) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
-                                            render={(total:number) => {
+                                            render={(total: number) => {
                                                 return <StoreValueRenderer store={tipsStore} selector={s => s}
-                                                                           render={(tip:number) => {
+                                                                           render={(tip: number) => {
                                                                                return <div>AED {total + tip + deliveryCharge}</div>
                                                                            }}/>
                                             }}/>
@@ -261,9 +262,9 @@ export function OrderDetailPage(props: RouteProps) {
                     <div style={{display: 'flex', flexDirection: 'column', flexGrow: '1'}}>
                         <StoreValueRenderer store={store}
                                             selector={(s) => s.shoppingCart.reduce((total, item) => total + item.totalPrice, 0)}
-                                            render={(total:number) => {
+                                            render={(total: number) => {
                                                 return <StoreValueRenderer store={tipsStore} selector={s => s}
-                                                                           render={(tip:number) => {
+                                                                           render={(tip: number) => {
                                                                                return <div
                                                                                    style={{fontWeight: 'bold'}}>AED {total + tip + deliveryCharge}</div>
                                                                            }}/>

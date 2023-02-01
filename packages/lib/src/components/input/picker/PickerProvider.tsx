@@ -123,19 +123,19 @@ export const PickerProvider = forwardRef(function PickerProvider(props, ref: For
     </motion.div>
 })
 
-function PickerContainer(props: PropsWithChildren<{ show: boolean,onClose:() => void }>) {
-    const {show,onClose} = props;
+function PickerContainer(props: PropsWithChildren<{ show: boolean, onClose: () => void }>) {
+    const {show, onClose} = props;
     return <motion.div style={{
         display: 'flex',
         flexDirection: 'column',
-        width:'100%',
-        alignItems:'center',
+        width: '100%',
+        alignItems: 'center',
         position: 'absolute'
     }} initial={{bottom: '-100%'}} animate={{bottom: show ? 0 : '-100%'}} transition={{bounce: 0}}>
-        <div style={{position:'relative',top:-20}}>
-        <IoMdCloseCircle style={{fontSize:40,color:'white'}} onClick={() => {
-            onClose();
-        }}/>
+        <div style={{position: 'relative', top: -20}}>
+            <IoMdCloseCircle style={{fontSize: 40, color: 'white'}} onClick={() => {
+                onClose();
+            }}/>
         </div>
         {props.children}
     </motion.div>

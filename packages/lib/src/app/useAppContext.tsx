@@ -111,11 +111,11 @@ export function AppContextProvider<State extends BaseState>(props: PropsWithChil
     const proxyHandler: ProxyHandler<any> = useMemo(() => ({
         get(target: any, p: any): any {
             const val = target[p];
-            if(p === 'send'){
-                return async function send(...args:any[]){
-                    try{
-                        return await val.apply(target,args);
-                    }catch(err:any){
+            if (p === 'send') {
+                return async function send(...args: any[]) {
+                    try {
+                        return await val.apply(target, args);
+                    } catch (err: any) {
                         await showModal(closePanel => {
                             return <div style={{
                                 display: 'flex',

@@ -26,7 +26,7 @@ const APP_NAME = process.env.REACT_APP_APPLICATION_NAME;
 export function OtpPage(route: RouteProps) {
     const phoneNo = route.params.get('phoneNo');
     const store = useStore({otp: '', countdown: 20, errorMessage: '', token: ''});
-    const {store: appStore,fetchService,pb} = useAppContext();
+    const {store: appStore, fetchService, pb} = useAppContext();
     const navigate = useNavigate();
     const [isBusy, setIsBusy] = useState(false);
 
@@ -48,7 +48,7 @@ export function OtpPage(route: RouteProps) {
                 s.otp = '';
             }));
 
-            const {valid, profile} = await validateToken(next, phoneNo ?? '', store.get().token,pb);
+            const {valid, profile} = await validateToken(next, phoneNo ?? '', store.get().token, pb);
             if (!valid) {
                 setIsBusy(false);
                 store.set(produce(s => {
@@ -134,7 +134,7 @@ export function OtpPage(route: RouteProps) {
  * @param token
  * @param phoneNo
  */
-async function validateToken(token: string, phoneNo: string, otp: string,pb:PocketBase): Promise<{ valid: boolean, profile: Profile }> {
+async function validateToken(token: string, phoneNo: string, otp: string, pb: PocketBase): Promise<{ valid: boolean, profile: Profile }> {
     const userName = phoneNo.replace('+', '');
     if (token === otp) {
         try {

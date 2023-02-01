@@ -1,9 +1,9 @@
-
 export interface BaseModel {
-    [key: string]: any;
     id: string;
     created: string;
     updated: string;
+
+    [key: string]: any;
 }
 
 export interface ListResult<M extends BaseModel> {

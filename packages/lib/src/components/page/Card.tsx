@@ -1,13 +1,4 @@
-import {
-    CSSProperties,
-    ForwardedRef,
-    forwardRef,
-    HTMLAttributes,
-    PropsWithChildren,
-    ReactElement,
-    useEffect,
-    useId
-} from "react";
+import {ForwardedRef, forwardRef, HTMLAttributes, PropsWithChildren, ReactElement, useEffect, useId} from "react";
 import {IconType} from "react-icons";
 import {IoChevronForward} from "react-icons/io5";
 import invariant from "tiny-invariant";
@@ -15,9 +6,8 @@ import {motion} from "framer-motion";
 import noNull from "../utils/noNull";
 
 
-
 export const Card = forwardRef(function Card(props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>, ref: ForwardedRef<HTMLDivElement>) {
-    const {style,children,...p} = props;
+    const {style, children, ...p} = props;
     return <div style={{
         display: 'flex',
         flexDirection: 'column',

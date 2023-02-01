@@ -1,4 +1,4 @@
-import {ReactElement, useEffect, useId, useMemo, useRef} from "react";
+import {ReactElement, useEffect, useId} from "react";
 import invariant from "tiny-invariant";
 import noNull from "../../utils/noNull";
 
@@ -9,8 +9,8 @@ export interface KeyValue {
 
 const ROW_HEIGHT = 50;
 
-export function Picker(props: { value?: number, onChange?: (param: number) => void, data: KeyValue[], width?: number | string, fontSize?: number | string,onRowClick?:(index:number) => void}) {
-    const {value, data, width, onChange, fontSize,onRowClick} = props;
+export function Picker(props: { value?: number, onChange?: (param: number) => void, data: KeyValue[], width?: number | string, fontSize?: number | string, onRowClick?: (index: number) => void }) {
+    const {value, data, width, onChange, fontSize, onRowClick} = props;
     const compKey = useId();
     const visibleRow = data.length < 3 ? 3 : data.length < 5 ? 5 : 7;
     useEffect(() => {
@@ -19,10 +19,10 @@ export function Picker(props: { value?: number, onChange?: (param: number) => vo
         const val = noNull(value, 0);
         const needToReAlign = Math.abs((val * ROW_HEIGHT) - component.scrollTop) > ROW_HEIGHT || component.scrollTop === 0;
         if (needToReAlign) {
-            updateAnimation(compKey, noNull(value, 0), 0,visibleRow);
+            updateAnimation(compKey, noNull(value, 0), 0, visibleRow);
             component.scrollTop = ROW_HEIGHT * (noNull(value, 0));
         }
-    }, [compKey, value,visibleRow]);
+    }, [compKey, value, visibleRow]);
     const HALF_ROW = (visibleRow - 1) / 2;
     return <div style={{
         height: ROW_HEIGHT * visibleRow,
@@ -36,7 +36,7 @@ export function Picker(props: { value?: number, onChange?: (param: number) => vo
         const fromTop = (event.target as HTMLDivElement).scrollTop;
         const selectedIndex = Math.floor(fromTop / ROW_HEIGHT);
         const ratio = (fromTop % ROW_HEIGHT) / ROW_HEIGHT;
-        updateAnimation(compKey, selectedIndex, ratio,visibleRow);
+        updateAnimation(compKey, selectedIndex, ratio, visibleRow);
         if (onChange) {
             onChange(selectedIndex);
         }
@@ -74,7 +74,7 @@ export function Picker(props: { value?: number, onChange?: (param: number) => vo
 }
 
 
-function updateAnimation(compKey: string, selectedIndex: number, movementPercentage: number,visibleRow:number) {
+function updateAnimation(compKey: string, selectedIndex: number, movementPercentage: number, visibleRow: number) {
     const step = 0.2;
     const halfList = (visibleRow - 1) / 2;
     [0].map(val => document.getElementById(`${compKey}${selectedIndex + val}`)).forEach(element => {

@@ -1,5 +1,6 @@
 import {Middleware} from "./Middleware";
 import * as dotenv from "dotenv";
+
 const http = require("http");
 dotenv.config({path: '.env.local'});
 const pocketBasePort = parseInt(process.env.POCKET_BASE_PORT);

@@ -113,7 +113,7 @@ function AddressSlidePanel(props: { closePanel: (val: Address | false) => void, 
     let {closePanel, address} = props;
     address = address ?? GuestAddress;
 
-    const {store: appStore,pb} = useAppContext();
+    const {store: appStore, pb} = useAppContext();
     const store = useStore<Address & {
         errors: {
             areaOrStreetName: string,

@@ -26,7 +26,7 @@ import PocketBase from "pocketbase";
 export function ProfilePage(props: RouteProps) {
     const [busy, setBusy] = useState(false);
     const navigate = useNavigate();
-    const {store: appStore,pb} = useAppContext();
+    const {store: appStore, pb} = useAppContext();
     const model = pb.authStore.model;
     const store = useStore<Profile & { errors: any }>(
         {
@@ -137,7 +137,7 @@ export function ProfilePage(props: RouteProps) {
                                 created: state.created,
                                 avatar: state.avatar
                             }
-                            const {result, error} = await updateUserProfile(profile,pb);
+                            const {result, error} = await updateUserProfile(profile, pb);
                             setBusy(false);
                             if (error) {
                                 // do something
@@ -157,7 +157,7 @@ export function ProfilePage(props: RouteProps) {
     </Page>
 }
 
-async function updateUserProfile(profile: Profile,pb:PocketBase): Promise<{ result: Profile, error: string }> {
+async function updateUserProfile(profile: Profile, pb: PocketBase): Promise<{ result: Profile, error: string }> {
 
     const record: {
         "id": string,

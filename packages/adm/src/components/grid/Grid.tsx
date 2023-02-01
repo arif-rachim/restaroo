@@ -1,6 +1,6 @@
 import {Table} from "@restaroo/mdl";
-import {BaseModel, ListResult, useAppContext, useStore} from "@restaroo/lib";
-import {useEffect, useId} from "react";
+import {BaseModel, ListResult, RouteProps, useAppContext, useAsyncEffect, useStore} from "@restaroo/lib";
+import {useCallback, useEffect, useId} from "react";
 import {GridFooter} from "./GridFooter";
 import {GridBody} from "./GridBody";
 import {GridHeader} from "./GridHeader";
@@ -25,8 +25,9 @@ export const EMPTY_TABLE: Table = {
 
 export const border = '1px solid rgba(0,0,0,0.1)';
 
-export interface PanelConfig {
+export interface RouteConfig<Config> {
     id: string,
+    path: string,
     data: Config
 }
 
@@ -38,7 +39,7 @@ export interface ConfigColumn {
     widthPercentage: number
 }
 
-export interface Config {
+export interface GridConfig {
     maximumSelection: number,
     columns: ConfigColumn[],
     permission: {
@@ -49,22 +50,13 @@ export interface Config {
     }
 }
 
-export function Grid(props: { collection: string }) {
-    const {collection} = props;
+export function Grid(props: { route: RouteProps }) {
+    const {route} = props;
+    const collection = route.params.get('collection') ?? '';
+
+    const {gridConfigStore, saveGridConfig} = useRouteConfig({route});
     const {pb} = useAppContext();
-    const configStore = useStore<PanelConfig>({
-        id: '',
-        data: {
-            maximumSelection: 1,
-            columns: [],
-            permission: {
-                edit: true,
-                delete: true,
-                create: true,
-                view: true
-            }
-        }
-    });
+
     const collectionStore = useStore<ListResult<BaseModel>>({
         items: [],
         page: 1,
@@ -85,11 +77,51 @@ export function Grid(props: { collection: string }) {
 
     const id = useId();
     return <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
-        <GridToolbar collection={collection} collectionStore={collectionStore} configStore={configStore}/>
+        <GridToolbar collection={collection} collectionStore={collectionStore} configStore={gridConfigStore}
+                     onGridConfigUpdate={saveGridConfig}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-            <GridHeader gridID={id} collection={collection} configStore={configStore}/>
-            <GridBody collectionStore={collectionStore} gridID={id} collection={collection} configStore={configStore}/>
+            <GridHeader gridID={id} collection={collection} configStore={gridConfigStore}/>
+            <GridBody collectionStore={collectionStore} gridID={id} collection={collection}
+                      configStore={gridConfigStore}/>
             <GridFooter collectionStore={collectionStore} loadCollection={loadCollection}/>
         </div>
     </div>
+}
+
+function useRouteConfig(props: { route: RouteProps }) {
+    const {pb} = useAppContext();
+    const gridConfigStore = useStore<RouteConfig<GridConfig>>({
+        id: '',
+        path: props.route.path,
+        data: {
+            maximumSelection: 1,
+            columns: [],
+            permission: {
+                edit: true,
+                delete: true,
+                create: true,
+                view: true
+            }
+        }
+    });
+
+    const saveGridConfig = useCallback(async function saveGridConfig() {
+        if (gridConfigStore.get().id.length > 0) {
+            const result: any = await pb.collection('route_config').update(gridConfigStore.get().id, gridConfigStore.get());
+            gridConfigStore.set(result);
+        } else {
+            const result: any = await pb.collection('route_config').create(gridConfigStore.get())
+            gridConfigStore.set(result);
+        }
+    }, []);
+
+    useAsyncEffect(async () => {
+        try {
+            const config: any = await pb.collection('route_config').getFirstListItem(`path="${props.route.path}"`);
+            gridConfigStore.set(config);
+        } catch (err) {
+            console.log(err);
+        }
+    }, []);
+    return {gridConfigStore, saveGridConfig}
 }
