@@ -7,6 +7,7 @@ import {
     dateToHhMm,
     isNullOrUndefined,
     PickerOptions,
+    RouteProps,
     Store,
     StoreValue,
     StoreValueRenderer,
@@ -14,6 +15,8 @@ import {
     useAppDimension,
     useAppStore,
     useAsyncEffect,
+    useNavigateBack,
+    useNavigatePromise,
     useStore,
     useStoreValue
 } from "@restaroo/lib";
@@ -126,8 +129,11 @@ function initializeDefaultValue(table: Table) {
     return value;
 }
 
-export function CollectionDetailPanel(props: { collectionOrCollectionId: string, id: string, closePanel: (params: any) => void }) {
-    const {collectionOrCollectionId, id, closePanel} = props;
+export function CollectionDetailPanel(route: RouteProps) {
+    const collectionOrCollectionId = route.params.get('collection') ?? '';
+    const id = route.params.get('id') ?? '';
+    const closePanel = useNavigateBack();
+
     const isNew = id === 'new';
     const appStore = useAppStore<AppState>();
     const table: Table = appStore.get().tables.find(t => (t.name === collectionOrCollectionId || t.id === collectionOrCollectionId)) ?? EMPTY_TABLE;
@@ -430,7 +436,7 @@ function MultipleSelectorGrid(props: { closePanel: (params: string[] | false) =>
     const store = useStore<ListResult<any>>({...items});
     const appStore = useAppStore<AppState>();
     const storeSelectedIds = useStore<string[]>(value);
-    const {showSlidePanel} = useAppContext();
+    const navigate = useNavigatePromise();
     const table = appStore.get().tables.find(t => t.id === collectionId);
     const dimension = useAppDimension();
     invariant(table);
@@ -453,10 +459,8 @@ function MultipleSelectorGrid(props: { closePanel: (params: string[] | false) =>
                 <DButton title={'New'} icon={IoAdd}
                          style={{backgroundColor: '#f2f2f2', margin: 0, padding: '2px 5px', marginRight: 10}}
                          theme={ButtonTheme.danger} onTap={async () => {
-                    const result = await showSlidePanel(closePanel => {
-                        return <CollectionDetailPanel collectionOrCollectionId={collectionId} id={'new'}
-                                                      closePanel={closePanel}/>
-                    }, {position: "top"});
+                    const result = await navigate(`collection-item/${collectionId}/new`);
+
                     store.set(produce(state => {
                         state.items.push(result);
                         state.totalItems = state.totalItems + 1;

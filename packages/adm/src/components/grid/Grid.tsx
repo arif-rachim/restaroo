@@ -54,7 +54,7 @@ export function Grid(props: { route: RouteProps }) {
     const {route} = props;
     const collection = route.params.get('collection') ?? '';
 
-    const {gridConfigStore, saveGridConfig} = useRouteConfig({route,ignoredParams:[]});
+    const {gridConfigStore, saveGridConfig} = useRouteConfig({route, ignoredParams: []});
     const {pb} = useAppContext();
 
     const collectionStore = useStore<ListResult<BaseModel>>({
@@ -93,9 +93,9 @@ function getPath(props: { route: RouteProps; ignoredParams: string[] }) {
     return path;
 }
 
-function useRouteConfig(props: { route: RouteProps,ignoredParams:string[] }) {
+function useRouteConfig(props: { route: RouteProps, ignoredParams: string[] }) {
     const path = getPath(props);
-    console.log("WE HAVE PATH HERE",path)
+    console.log("WE HAVE PATH HERE", path)
     const {pb} = useAppContext();
     const gridConfigStore = useStore<RouteConfig<GridConfig>>({
         id: '',

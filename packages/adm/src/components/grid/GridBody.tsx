@@ -1,10 +1,17 @@
-import {BaseModel, ListResult, Store, StoreValueRenderer, useAppContext, useStore, useStoreValue} from "@restaroo/lib";
+import {
+    BaseModel,
+    ListResult,
+    Store,
+    StoreValueRenderer,
+    useNavigatePromise,
+    useStore,
+    useStoreValue
+} from "@restaroo/lib";
 import {useTable} from "../useTable";
 import {useAverageColumnWidth} from "../useAverageColumn";
 import invariant from "tiny-invariant";
 import {motion} from "framer-motion";
 import {IoCheckmark, IoEye, IoPencil, IoTrashOutline} from "react-icons/io5";
-import {CollectionDetailPanel} from "../CollectionDetailPanel";
 import produce from "immer";
 import {CSSProperties} from "react";
 import {GridConfig, RouteConfig} from "./Grid";
@@ -42,7 +49,8 @@ export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>,
     const width = useAverageColumnWidth(collection, configStore);
     const selectedItemsStore = useStore<BaseModel[]>([]);
 
-    const {showSlidePanel} = useAppContext();
+    const navigate = useNavigatePromise();
+
     return <StoreValueRenderer store={collectionStore} selector={s => s.items} render={(items: BaseModel[]) => {
         return <div style={{
             flexGrow: 1,
@@ -110,10 +118,11 @@ export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>,
                     <div style={{display: 'flex'}}>
                         <motion.div style={{flexGrow: 1, marginRight: 5}} whileHover={{scale: 1.1}}
                                     whileTap={{scale: 0.98}} onClick={async () => {
-                            const result: BaseModel | false = await showSlidePanel(closePanel => {
-                                return <CollectionDetailPanel collectionOrCollectionId={collection} id={row.id}
-                                                              closePanel={closePanel}/>
-                            }, {position: "top"});
+                            const result: BaseModel | false = await navigate(`collection-item/${collection}/${row.id}`);
+                            // const result: BaseModel | false = await showSlidePanel(closePanel => {
+                            //     return <CollectionDetailPanel collectionOrCollectionId={collection} id={row.id}
+                            //                                   closePanel={closePanel}/>
+                            // }, {position: "top"});
                             if (result === false) {
                                 return;
                             }

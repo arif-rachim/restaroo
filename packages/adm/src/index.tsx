@@ -7,6 +7,7 @@ import {secured} from "./components/secured";
 import {CollectionRoute} from "./routes/CollectionRoute";
 import PocketBase from "pocketbase";
 import {Table, tables} from "@restaroo/mdl";
+import {CollectionDetailPanel} from "./components/CollectionDetailPanel";
 
 
 export interface AppState extends BaseState {
@@ -24,6 +25,10 @@ const routes: Routes = {
     },
     'collection/$collection': {
         component: CollectionRoute,
+        initial: 'right'
+    },
+    'collection-item/$collection/$id': {
+        component: CollectionDetailPanel,
         initial: 'right'
     }
 }
