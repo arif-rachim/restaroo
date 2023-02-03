@@ -72,6 +72,7 @@ const cartButtonPosition = {
 let timeoutId: any = 0;
 
 export function DeliveryPage(props: RouteProps) {
+    console.log(props.params);
     const {appDimension} = useAppDimension();
     const {showFooter} = useAppContext();
     const navigate = useNavigate();

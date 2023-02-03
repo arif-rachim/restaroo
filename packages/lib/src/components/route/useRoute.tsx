@@ -24,7 +24,7 @@ export function useRoute(routes: Routes): ParamsAndComponent {
     return paramsAndComponent;
 }
 
-function getHash() {
+function getHashAndQuery() {
     let hash = decodeURI(window.location.hash).trim();
     if (hash.startsWith('#')) {
         hash = hash.substring(1, hash.length);
@@ -50,7 +50,9 @@ interface FilteredComponents {
 function useParamsAndComponent() {
     const componentCache = useRef<Map<any, MemoExoticComponent<RouteElement>>>(new Map());
     return function getParamsAndComponents(route: [string, RouteElement | MotionRouteElement][]): ParamsAndComponent {
-        const hash = getHash();
+        const hashAndQuery = getHashAndQuery();
+        const [hash,query] = hashAndQuery.split('?');
+
         const hashArray = hash.split('/');
         let params = new Map<string, string>();
         let routeComponent: MemoExoticComponent<RouteElement> = memo(EmptyComponent);
@@ -59,6 +61,12 @@ function useParamsAndComponent() {
 
         let path: string = '';
         let initial: InitialPosition = 'left';
+        if(query && query.length > 0){
+            query.split('&').forEach((keyValue:string) => {
+                const [key,value] = keyValue.split('=');
+                params.set(key,value);
+            });
+        }
         if (hashArray.length > 0) {
             let filteredComponents: FilteredComponents[] = route.map(([path, componentOrMotionComponent]) => {
                 const params: Map<string, any> = new Map();
@@ -101,7 +109,9 @@ function useParamsAndComponent() {
             }
             if (filteredComponents.length > 0) {
                 const fc = filteredComponents[0];
-                params = fc.params;
+                fc.params.forEach((value,key) => {
+                   params.set(key,value);
+                });
                 const FooterComponent = noNull(fc.footerComponent, EmptyComponent);
                 const HeaderComponent = noNull(fc.headerComponent, EmptyComponent);
                 if (!componentCache.current.has(FooterComponent)) {

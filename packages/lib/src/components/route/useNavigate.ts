@@ -9,6 +9,8 @@ export function useNavigate() {
             path = path.substring(1, path.length);
         }
         window.location.hash = '#' + path;
+        console.log('we have history here',window.history);
+
     }, [])
     return navigate;
 }
