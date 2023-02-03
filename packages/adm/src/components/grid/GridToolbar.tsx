@@ -12,11 +12,7 @@ export function GridToolbar(props: { collection: string, collectionStore: Store<
     return <div style={{display: 'flex', borderBottom: border}}>
         <ButtonSimple title={'New'} icon={IoCreate} onClick={async () => {
             const result: BaseModel | false = await navigate('collection-item/product/new');
-            debugger;
-            // const result: BaseModel | false = await showSlidePanel(closePanel => {
-            //     return <CollectionDetailPanel collectionOrCollectionId={collection} id={'new'}
-            //                                   closePanel={closePanel}/>
-            // }, {position: "top"});
+
             if (result === false) {
                 return;
             }
