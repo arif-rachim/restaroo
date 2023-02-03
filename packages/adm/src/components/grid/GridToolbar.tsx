@@ -9,6 +9,7 @@ import {GridConfig} from "./GridConfig";
 export function GridToolbar(props: { collection: string, collectionStore: Store<ListResult<BaseModel>>, configStore: Store<RouteConfig<GConfig>>, onGridConfigUpdate: () => void }) {
     const {collection, collectionStore, configStore, onGridConfigUpdate} = props;
     const {showSlidePanel} = useAppContext();
+
     return <div style={{display: 'flex', borderBottom: border}}>
         <ButtonSimple title={'New'} icon={IoCreate} onClick={async () => {
             const result: BaseModel | false = await showSlidePanel(closePanel => {
@@ -22,7 +23,7 @@ export function GridToolbar(props: { collection: string, collectionStore: Store<
                 s.items.push(result);
                 s.totalItems = s.totalItems + 1;
             }));
-            onGridConfigUpdate();
+
         }}/>
         <ButtonSimple title={'Configure'} icon={IoSettings} onClick={async () => {
             const result: RouteConfig<GConfig> = await showSlidePanel(closePanel => {
@@ -30,6 +31,7 @@ export function GridToolbar(props: { collection: string, collectionStore: Store<
                                    panelConfig={({...configStore.get()})}/>
             }, {position: "right"});
             configStore.set(result);
+            onGridConfigUpdate();
             // @TODO To save this to server
         }}/>
 

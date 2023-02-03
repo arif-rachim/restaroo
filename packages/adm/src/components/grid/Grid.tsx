@@ -54,7 +54,7 @@ export function Grid(props: { route: RouteProps }) {
     const {route} = props;
     const collection = route.params.get('collection') ?? '';
 
-    const {gridConfigStore, saveGridConfig} = useRouteConfig({route});
+    const {gridConfigStore, saveGridConfig} = useRouteConfig({route,ignoredParams:[]});
     const {pb} = useAppContext();
 
     const collectionStore = useStore<ListResult<BaseModel>>({
@@ -88,11 +88,18 @@ export function Grid(props: { route: RouteProps }) {
     </div>
 }
 
-function useRouteConfig(props: { route: RouteProps }) {
+function getPath(props: { route: RouteProps; ignoredParams: string[] }) {
+    const path = Array.from(props.route.params.keys()).filter(s => !props.ignoredParams.includes(s)).reduce((path, key) => path.replace(`$${key}`, props.route.params.get(key) ?? ''), props.route.path)
+    return path;
+}
+
+function useRouteConfig(props: { route: RouteProps,ignoredParams:string[] }) {
+    const path = getPath(props);
+    console.log("WE HAVE PATH HERE",path)
     const {pb} = useAppContext();
     const gridConfigStore = useStore<RouteConfig<GridConfig>>({
         id: '',
-        path: props.route.path,
+        path: path,
         data: {
             maximumSelection: 1,
             columns: [],
@@ -113,11 +120,12 @@ function useRouteConfig(props: { route: RouteProps }) {
             const result: any = await pb.collection('route_config').create(gridConfigStore.get())
             gridConfigStore.set(result);
         }
-    }, []);
+    }, [gridConfigStore, pb]);
 
     useAsyncEffect(async () => {
         try {
-            const config: any = await pb.collection('route_config').getFirstListItem(`path="${props.route.path}"`);
+            const path = getPath(props);
+            const config: any = await pb.collection('route_config').getFirstListItem(`path="${path}"`);
             gridConfigStore.set(config);
         } catch (err) {
             console.log(err);
