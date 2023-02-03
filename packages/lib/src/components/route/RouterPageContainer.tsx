@@ -1,7 +1,8 @@
 import {RouteProps, Routes, useRoute} from "./useRoute";
-import {createContext, FunctionComponent, memo, useContext, useMemo, useRef} from "react";
+import {createContext, FunctionComponent, memo, PropsWithChildren, useContext, useMemo, useRef} from "react";
 import {motion, Variants} from "framer-motion";
 import {createStoreInitValue, isFunction, isPromise, Store, useAfterInit, useStore, useStoreListener} from "../utils";
+import invariant from "tiny-invariant";
 
 const variants: Variants = {
     left: {
@@ -77,7 +78,10 @@ export function RouterPageContainer(props: { routes: Routes }) {
             animate={isFocused ? 'center' : initial}
             variants={variants}
         >
-            <RouteComponent params={props.params} path={props.path}/>
+            <RoutePropsProvider params={props.params} path={props.path}>
+                <RouteComponent params={props.params} path={props.path}/>
+            </RoutePropsProvider>
+
         </motion.div>
         // eslint-disable-next-line
     }, (old, next) => old.isFocused === next.isFocused), [RouteComponent]);
@@ -104,11 +108,15 @@ export function RouterPageContainer(props: { routes: Routes }) {
             })}
 
             <div style={{position: 'absolute', bottom: 0, width: '100%'}}>
-                <RouteFooterComponent path={path} params={params}/>
+                <RoutePropsProvider params={params} path={path}>
+                    <RouteFooterComponent path={path} params={params}/>
+                </RoutePropsProvider>
             </div>
 
             <div style={{position: 'absolute', top: 0, width: '100%'}}>
-                <RouterHeaderComponent path={path} params={params}/>
+                <RoutePropsProvider params={params} path={path}>
+                    <RouterHeaderComponent path={path} params={params}/>
+                </RoutePropsProvider>
             </div>
         </div>
 
@@ -130,7 +138,7 @@ export function useFocusListener(path: string, callback: () => (Promise<nothing 
     const lastFocusResultCallback = useRef<(Promise<nothing | void> | nothing | void)>();
     const callbackRef = useRef(callback);
     callbackRef.current = callback;
-    useStoreListener(currentStorePath, currentPath => currentPath, (next, prev) => {
+    useStoreListener(currentStorePath, currentPath => currentPath, (next) => {
         const isFocused = next === path;
         if (lastFocusStateRef.current !== isFocused) {
             if (isFocused) {
@@ -157,7 +165,7 @@ export function useFocusListener(path: string, callback: () => (Promise<nothing 
 export function useFocusListenerAfterInit(path: string, callback: () => (Promise<nothing | void> | nothing | void)) {
     const readyRef = useRef(false);
     return useFocusListener(path, () => {
-        if (readyRef.current === false) {
+        if (!readyRef.current) {
             readyRef.current = true;
             return;
         }
@@ -166,3 +174,15 @@ export function useFocusListenerAfterInit(path: string, callback: () => (Promise
 }
 
 
+const RoutePropsContext = createContext<RouteProps | undefined>(undefined);
+
+function RoutePropsProvider(props: PropsWithChildren<RouteProps>) {
+    const {children, ...routeProps} = props;
+    return <RoutePropsContext.Provider value={routeProps}>{props.children}</RoutePropsContext.Provider>
+}
+
+export function useRouteProps(): RouteProps {
+    const context = useContext(RoutePropsContext);
+    invariant(context);
+    return context;
+}

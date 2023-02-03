@@ -120,7 +120,7 @@ export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>,
                                     whileTap={{scale: 0.98}} onClick={async () => {
                             const result: BaseModel | false = await navigate(`collection-item/${collection}/${row.id}`);
                             // const result: BaseModel | false = await showSlidePanel(closePanel => {
-                            //     return <CollectionDetailPanel collectionOrCollectionId={collection} id={row.id}
+                            //     return <CollectionItemRoute collectionOrCollectionId={collection} id={row.id}
                             //                                   closePanel={closePanel}/>
                             // }, {position: "top"});
                             if (result === false) {

@@ -21,14 +21,14 @@ import {
     useStoreValue
 } from "@restaroo/lib";
 import {DateSchema, RelationSchema, Table} from "@restaroo/mdl";
-import {DInput} from "./DInput";
-import {DButton} from "./DButton";
+import {DInput} from "../components/DInput";
+import {DButton} from "../components/DButton";
 import {IoAdd, IoCheckmarkOutline, IoExit, IoSave} from "react-icons/io5";
 import produce from "immer";
 import invariant from "tiny-invariant";
-import {EMPTY_TABLE} from "./grid/Grid";
+import {EMPTY_TABLE} from "../components/grid/Grid";
 import {AppState} from "../index";
-import {ButtonSimple} from "./ButtonSimple";
+import {ButtonSimple} from "../components/ButtonSimple";
 
 const border = '1px solid rgba(0,0,0,0.05)';
 const boolDataProvider = [{label: 'Yes', value: true}, {label: 'No', value: false}];
@@ -129,18 +129,21 @@ function initializeDefaultValue(table: Table) {
     return value;
 }
 
-export function CollectionDetailPanel(route: RouteProps) {
-    const collectionOrCollectionId = route.params.get('collection') ?? '';
+export function CollectionItemRoute(route: RouteProps) {
+    const collection = route.params.get('collection') ?? '';
     const id = route.params.get('id') ?? '';
     const closePanel = useNavigateBack();
 
     const isNew = id === 'new';
     const appStore = useAppStore<AppState>();
-    const table: Table = appStore.get().tables.find(t => (t.name === collectionOrCollectionId || t.id === collectionOrCollectionId)) ?? EMPTY_TABLE;
+    const table: Table = appStore.get().tables.find(t => (t.name === collection || t.id === collection)) ?? EMPTY_TABLE;
     const {showPicker, pb} = useAppContext();
     const current = useStore<any>({});
     useAsyncEffect(async () => {
-        const result = await pb.collection(collectionOrCollectionId).getFirstListItem(`id="${id}"`);
+        if (id === 'new') {
+            return;
+        }
+        const result = await pb.collection(collection).getFirstListItem(`id="${id}"`);
         if (result) {
             current.set(result);
             store.set({...result});
@@ -188,152 +191,144 @@ export function CollectionDetailPanel(route: RouteProps) {
         return errors;
     }
 
-    return <div
+    return <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}> <div
         style={{
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
-            alignItems: 'center'
+            maxWidth:1024,
         }}>
-        <Card style={{
-            width: '100%',
-            maxWidth: 800,
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
-            padding: 0,
-            overflow: 'hidden'
-        }}>
-            <CardTitle title={isNew ? 'New Collection' : `Showing Record ID ${id}`}/>
-            <div style={{display: 'flex', flexWrap: 'wrap', padding: `10px 20px`}}>
-                {table.schema.map(schema => {
+        <CardTitle title={isNew ? 'New Collection' : `Showing Record ID ${id}`}/>
+        <div style={{display: 'flex', flexWrap: 'wrap', padding: `10px 20px`}}>
+            {table.schema.map(schema => {
 
-                    const isNumber = schema.type === 'number';
-                    const isDate = schema.type === 'date';
-                    const isBoolean = schema.type === 'bool';
-                    const isEmail = schema.type === 'email';
-                    const isFile = schema.type === 'file';
-                    const isJson = schema.type === 'json';
-                    const isRelation = schema.type === 'relation';
-                    const isSelect = schema.type === 'select';
-                    const isText = schema.type === 'text';
-                    const isUrl = schema.type === 'url';
+                const isNumber = schema.type === 'number';
+                const isDate = schema.type === 'date';
+                const isBoolean = schema.type === 'bool';
+                const isEmail = schema.type === 'email';
+                const isFile = schema.type === 'file';
+                const isJson = schema.type === 'json';
+                const isRelation = schema.type === 'relation';
+                const isSelect = schema.type === 'select';
+                const isText = schema.type === 'text';
+                const isUrl = schema.type === 'url';
 
-                    // const isRequired = schema.required;
-                    // const isUnique = schema.unique;
-                    const title = schema.name;
+                // const isRequired = schema.required;
+                // const isUnique = schema.unique;
+                const title = schema.name;
 
-                    return <div key={schema.name} style={{width: '50%'}}>
-                        {isText &&
-                            <StoreValue store={store} selector={(s: any) => s[schema.name]} property={'value'}>
-                                <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
-                                        placeholder={`Please enter ${schema.name}`}
-                                        style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}
-                                        onChange={(event) => {
-                                            store.set(produce((s: any) => {
-                                                s[schema.name] = event.target.value;
-                                            }))
-                                        }} onBlur={() => {
-                                    store.set(produce((s: any) => {
-                                        const value = s[schema.name];
-                                        if (value) {
-                                            s[schema.name] = value.toUpperCase();
-                                        }
-                                    }))
-                                }}/>
-                            </StoreValue>
-                        }
-                        {isBoolean &&
-                            <StoreValue store={store}
-                                        selector={(s: any) => boolDataProvider.find(v => v.value === s[schema.name])?.label ?? ''}
-                                        property={'value'}>
-                                <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
-                                        placeholder={`Please enter ${schema.name}`}
-                                        style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}
-                                        readOnly={true}
-                                        onFocus={async () => {
-                                            const val = store.get()[schema.name];
-                                            const value = await showPicker({
-                                                value: val,
-                                                picker: {
-                                                    dataProvider: boolDataProvider,
-                                                    dataToLabel: d => d.label,
-                                                    dataToValue: d => d.value,
-                                                    isValueBelongsToData: (val, data) => data.value === val
-                                                }
-                                            });
-                                            store.set(produce((s: any) => {
-                                                s[schema.name] = value;
-                                            }))
-
-                                        }}/>
-                            </StoreValue>
-                        }
-
-                        {isNumber &&
-                            <StoreValue store={store}
-                                        selector={(s: any) => (s[schema.name] ? s[schema.name].toString() : '')}
-                                        property={'value'}>
-                                <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
-                                        placeholder={`Please enter ${schema.name}`} inputMode={'numeric'}
-                                        type={'number'}
-                                        style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}
-                                        onChange={(event) => {
-                                            store.set(produce((s: any) => {
-                                                s[schema.name] = parseFloat(event.target.value);
-                                            }))
-                                        }}/>
-                            </StoreValue>
-                        }
-                        {isFile &&
+                return <div key={schema.name} style={{width: '50%'}}>
+                    {isText &&
+                        <StoreValue store={store} selector={(s: any) => s[schema.name]} property={'value'}>
                             <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
-                                    placeholder={`Please enter ${schema.name}`} inputMode={'text'} type={'text'}
-                                    style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}/>
-                        }
-                        {isRelation &&
-                            <StoreValue store={store}
-                                        selector={(s: any) => (s[schema.name] ? s[schema.name] : [])}
-                                        property={'value'}>
-                                <DInputRelation schema={schema} onChange={value => {
-                                    store.set(produce((s: any) => {
-                                        s[schema.name] = value;
-                                    }))
-                                }}/>
-                            </StoreValue>
-                        }
-                        {isDate &&
-                            <StoreValueRenderer store={store}
-                                                selector={(s: any) => (s[schema.name] ?? new Date().toISOString())}
-                                                render={(dateString: string) => {
-                                                    const date = dateString ? new Date(dateString) : new Date();
-                                                    return <DInputDate schema={schema} date={date} store={store}
-                                                                       showPicker={showPicker}/>
-                                                }}/>
+                                    placeholder={`Please enter ${schema.name}`}
+                                    style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}
+                                    onChange={(event) => {
+                                        store.set(produce((s: any) => {
+                                            s[schema.name] = event.target.value;
+                                        }))
+                                    }} onBlur={() => {
+                                store.set(produce((s: any) => {
+                                    const value = s[schema.name];
+                                    if (value) {
+                                        s[schema.name] = value.toUpperCase();
+                                    }
+                                }))
+                            }}/>
+                        </StoreValue>
+                    }
+                    {isBoolean &&
+                        <StoreValue store={store}
+                                    selector={(s: any) => boolDataProvider.find(v => v.value === s[schema.name])?.label ?? ''}
+                                    property={'value'}>
+                            <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
+                                    placeholder={`Please enter ${schema.name}`}
+                                    style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}
+                                    readOnly={true}
+                                    onFocus={async () => {
+                                        const val = store.get()[schema.name];
+                                        const value = await showPicker({
+                                            value: val,
+                                            picker: {
+                                                dataProvider: boolDataProvider,
+                                                dataToLabel: d => d.label,
+                                                dataToValue: d => d.value,
+                                                isValueBelongsToData: (val, data) => data.value === val
+                                            }
+                                        });
+                                        store.set(produce((s: any) => {
+                                            s[schema.name] = value;
+                                        }))
 
-                        }
-                    </div>
-                })} </div>
-            <div
-                style={{display: 'flex', padding: 10, borderTop: border, justifyContent: 'flex-end'}}>
+                                    }}/>
+                        </StoreValue>
+                    }
 
-                <ButtonSimple title={'Save'} style={{border: '1px solid rgba(0,0,0,0.1)'}} icon={IoSave}
-                              onClick={async () => {
-                                  // here we need to add the checking first about the validity of the data
-                                  if (isNew) {
-                                      const result = await pb.collection(collectionOrCollectionId).create(store.get());
-                                      closePanel(result);
-                                  } else {
-                                      const result = await pb.collection(collectionOrCollectionId).update(id, store.get());
-                                      closePanel(result);
-                                  }
+                    {isNumber &&
+                        <StoreValue store={store}
+                                    selector={(s: any) => (s[schema.name] ? s[schema.name].toString() : '')}
+                                    property={'value'}>
+                            <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
+                                    placeholder={`Please enter ${schema.name}`} inputMode={'numeric'}
+                                    type={'number'}
+                                    style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}
+                                    onChange={(event) => {
+                                        store.set(produce((s: any) => {
+                                            s[schema.name] = parseFloat(event.target.value);
+                                        }))
+                                    }}/>
+                        </StoreValue>
+                    }
+                    {isFile &&
+                        <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
+                                placeholder={`Please enter ${schema.name}`} inputMode={'text'} type={'text'}
+                                style={{titleStyle: {paddingLeft: 0, justifyContent: 'flex-end'}}}/>
+                    }
+                    {isRelation &&
+                        <StoreValue store={store}
+                                    selector={(s: any) => (s[schema.name] ? s[schema.name] : [])}
+                                    property={'value'}>
+                            <DInputRelation schema={schema} onChange={value => {
+                                store.set(produce((s: any) => {
+                                    s[schema.name] = value;
+                                }))
+                            }}/>
+                        </StoreValue>
+                    }
+                    {isDate &&
+                        <StoreValueRenderer store={store}
+                                            selector={(s: any) => (s[schema.name] ?? new Date().toISOString())}
+                                            render={(dateString: string) => {
+                                                const date = dateString ? new Date(dateString) : new Date();
+                                                return <DInputDate schema={schema} date={date} store={store}
+                                                                   showPicker={showPicker}/>
+                                            }}/>
 
-                              }}/>
-                <ButtonSimple title={'Cancel'} style={{border: '1px solid rgba(0,0,0,0.1)', borderLeft: 'unset'}}
-                              icon={IoExit} onClick={() => {
-                    // here next time we need to ask question are you sure you want to cancel this ?
-                    closePanel(false);
-                }}/>
-            </div>
-        </Card>
+                    }
+                </div>
+            })} </div>
+        <div
+            style={{display: 'flex', padding: 10, borderTop: border, justifyContent: 'flex-end'}}>
+
+            <ButtonSimple title={'Save'} style={{border: '1px solid rgba(0,0,0,0.1)'}} icon={IoSave}
+                          onClick={async () => {
+                              // here we need to add the checking first about the validity of the data
+                              if (isNew) {
+                                  const result = await pb.collection(collection).create(store.get());
+                                  closePanel(result);
+                              } else {
+                                  const result = await pb.collection(collection).update(id, store.get());
+                                  closePanel(result);
+                              }
+
+                          }}/>
+            <ButtonSimple title={'Cancel'} style={{border: '1px solid rgba(0,0,0,0.1)', borderLeft: 'unset'}}
+                          icon={IoExit} onClick={() => {
+                // here next time we need to ask question are you sure you want to cancel this ?
+                closePanel(false);
+            }}/>
+        </div>
+    </div>
     </div>
 }
 

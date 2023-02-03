@@ -1,5 +1,5 @@
 import {Table} from "@restaroo/mdl";
-import {BaseModel, ListResult, RouteProps, useAppContext, useAsyncEffect, useStore} from "@restaroo/lib";
+import {BaseModel, ListResult, RouteProps, useAppContext, useAsyncEffect, useRouteProps, useStore} from "@restaroo/lib";
 import {useCallback, useEffect, useId} from "react";
 import {GridFooter} from "./GridFooter";
 import {GridBody} from "./GridBody";
@@ -50,11 +50,12 @@ export interface GridConfig {
     }
 }
 
-export function Grid(props: { route: RouteProps }) {
-    const {route} = props;
+export function Grid() {
+    const route = useRouteProps();
+
     const collection = route.params.get('collection') ?? '';
 
-    const {gridConfigStore, saveGridConfig} = useRouteConfig({route, ignoredParams: []});
+    const {routeConfigStore, saveRouteConfig} = useRouteConfig({ignoredParams: []});
     const {pb} = useAppContext();
 
     const collectionStore = useStore<ListResult<BaseModel>>({
@@ -77,12 +78,12 @@ export function Grid(props: { route: RouteProps }) {
 
     const id = useId();
     return <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
-        <GridToolbar collection={collection} collectionStore={collectionStore} configStore={gridConfigStore}
-                     onGridConfigUpdate={saveGridConfig}/>
+        <GridToolbar collection={collection} collectionStore={collectionStore} routeConfigStore={routeConfigStore}
+                     onRouteConfigUpdate={saveRouteConfig}/>
         <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-            <GridHeader gridID={id} collection={collection} configStore={gridConfigStore}/>
+            <GridHeader gridID={id} collection={collection} configStore={routeConfigStore}/>
             <GridBody collectionStore={collectionStore} gridID={id} collection={collection}
-                      configStore={gridConfigStore}/>
+                      configStore={routeConfigStore}/>
             <GridFooter collectionStore={collectionStore} loadCollection={loadCollection}/>
         </div>
     </div>
@@ -93,11 +94,11 @@ function getPath(props: { route: RouteProps; ignoredParams: string[] }) {
     return path;
 }
 
-function useRouteConfig(props: { route: RouteProps, ignoredParams: string[] }) {
-    const path = getPath(props);
-    console.log("WE HAVE PATH HERE", path)
+function useRouteConfig(props: { ignoredParams: string[] }) {
+    const route = useRouteProps();
+    const path = getPath({ignoredParams: props.ignoredParams, route});
     const {pb} = useAppContext();
-    const gridConfigStore = useStore<RouteConfig<GridConfig>>({
+    const routeConfigStore = useStore<RouteConfig<GridConfig>>({
         id: '',
         path: path,
         data: {
@@ -112,24 +113,24 @@ function useRouteConfig(props: { route: RouteProps, ignoredParams: string[] }) {
         }
     });
 
-    const saveGridConfig = useCallback(async function saveGridConfig() {
-        if (gridConfigStore.get().id.length > 0) {
-            const result: any = await pb.collection('route_config').update(gridConfigStore.get().id, gridConfigStore.get());
-            gridConfigStore.set(result);
+    const saveRouteConfig = useCallback(async function saveRouteConfig() {
+        if (routeConfigStore.get().id.length > 0) {
+            const result: any = await pb.collection('route_config').update(routeConfigStore.get().id, routeConfigStore.get());
+            routeConfigStore.set(result);
         } else {
-            const result: any = await pb.collection('route_config').create(gridConfigStore.get())
-            gridConfigStore.set(result);
+            const result: any = await pb.collection('route_config').create(routeConfigStore.get())
+            routeConfigStore.set(result);
         }
-    }, [gridConfigStore, pb]);
+    }, [routeConfigStore, pb]);
 
     useAsyncEffect(async () => {
         try {
-            const path = getPath(props);
+            const path = getPath({ignoredParams: props.ignoredParams, route});
             const config: any = await pb.collection('route_config').getFirstListItem(`path="${path}"`);
-            gridConfigStore.set(config);
+            routeConfigStore.set(config);
         } catch (err) {
             console.log(err);
         }
     }, []);
-    return {gridConfigStore, saveGridConfig}
+    return {routeConfigStore: routeConfigStore, saveRouteConfig: saveRouteConfig}
 }

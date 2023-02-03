@@ -14,10 +14,10 @@ export function ButtonSimple(props: { title: string, icon: IconType, onClick: ()
         boxShadow: '0 5px 5px -3px rgba(255,255,255,1) inset', ...style
     }} whileHover={{scale: 1.02}} whileTap={{scale: 0.98, boxShadow: '0 5px 5px -3px rgba(0,0,0,0.5) inset'}}
                        onClick={onClick}>
-        <div>
+        {title && <div style={{marginRight:5}}>
             {title}
-        </div>
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 5}}>
+        </div>}
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <Icon style={{fontSize: 16}}/>
         </div>
     </motion.div>;
