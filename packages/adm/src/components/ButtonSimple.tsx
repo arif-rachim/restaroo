@@ -9,7 +9,7 @@ export function ButtonSimple(props: { title: string, icon: IconType, onClick: ()
         fontSize: 14,
         padding: '5px 10px',
         cursor: 'pointer',
-        borderRight: '1px solid rgba(0,0,0,0.1)',
+        border: '1px solid rgba(0,0,0,0.1)',
         backgroundColor: '#f2f2f2',
         boxShadow: '0 5px 5px -3px rgba(255,255,255,1) inset', ...style
     }} whileHover={{scale: 1.02}} whileTap={{scale: 0.98, boxShadow: '0 5px 5px -3px rgba(0,0,0,0.5) inset'}}

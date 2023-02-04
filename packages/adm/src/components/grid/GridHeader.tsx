@@ -3,9 +3,10 @@ import {useAverageColumnWidth} from "../useAverageColumn";
 import {motion} from "framer-motion";
 import {CSSProperties} from "react";
 import {Store, StoreValueRenderer} from "@restaroo/lib";
-import {GridConfig, RouteConfig} from "./Grid";
+import {CollectionRoute} from "./Grid";
+import {RouteConfig} from "../useRouteConfig";
 
-export function GridHeader(props: { gridID: string, collection: string, configStore: Store<RouteConfig<GridConfig>> }) {
+export function GridHeader(props: { gridID: string, collection: string, configStore: Store<RouteConfig<CollectionRoute>> }) {
     const {gridID: id, collection, configStore} = props;
     const table = useTable(collection);
 
@@ -33,7 +34,7 @@ export function GridHeader(props: { gridID: string, collection: string, configSt
                 ...tableColumnStyle,
                 borderRight: '1px solid rgba(0,0,0,0.1)',
             }}>
-                <StoreValueRenderer store={configStore} selector={(s: RouteConfig<GridConfig>) => {
+                <StoreValueRenderer store={configStore} selector={(s: RouteConfig<CollectionRoute>) => {
                     const colIndex = s.data.columns.findIndex(c => c.schemaId === schema.id);
                     if (colIndex >= 0) {
                         return s.data.columns[colIndex].label;

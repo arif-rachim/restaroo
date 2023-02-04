@@ -1,16 +1,17 @@
 import {BaseModel, ListResult, Store, useAppContext, useNavigatePromise} from "@restaroo/lib";
 import {ButtonSimple} from "../ButtonSimple";
-import {IoCreate, IoSettings} from "react-icons/io5";
+import { IoCreateOutline, IoSettingsOutline} from "react-icons/io5";
 import produce from "immer";
-import {border, GridConfig as GConfig, RouteConfig} from "./Grid";
+import {border, CollectionRoute} from "./Grid";
 import {GridConfig} from "./GridConfig";
+import {RouteConfig} from "../useRouteConfig";
 
-export function GridToolbar(props: { collection: string, collectionStore: Store<ListResult<BaseModel>>, routeConfigStore: Store<RouteConfig<GConfig>>, onRouteConfigUpdate: () => void }) {
+export function GridToolbar(props: { collection: string, collectionStore: Store<ListResult<BaseModel>>, routeConfigStore: Store<RouteConfig<CollectionRoute>>, onRouteConfigUpdate: () => void }) {
     const {collection, collectionStore, routeConfigStore, onRouteConfigUpdate} = props;
     const {showSlidePanel} = useAppContext();
     const navigate = useNavigatePromise();
     return <div style={{display: 'flex', borderBottom: border}}>
-        <ButtonSimple title={'New'} icon={IoCreate} onClick={async () => {
+        <ButtonSimple title={'New'} icon={IoCreateOutline} onClick={async () => {
             const result: BaseModel | false = await navigate('collection-item/product/new');
 
             if (result === false) {
@@ -23,8 +24,8 @@ export function GridToolbar(props: { collection: string, collectionStore: Store<
         }}/>
 
 
-        <ButtonSimple title={''} icon={IoSettings} onClick={async () => {
-            const result: RouteConfig<GConfig> = await showSlidePanel(closePanel => {
+        <ButtonSimple title={''} icon={IoSettingsOutline} onClick={async () => {
+            const result: RouteConfig<CollectionRoute> = await showSlidePanel(closePanel => {
                 return <GridConfig closePanel={closePanel} collection={collection}
                                    panelConfig={({...routeConfigStore.get()})}/>
             }, {position: "right"});

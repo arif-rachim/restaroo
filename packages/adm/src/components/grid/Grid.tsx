@@ -1,10 +1,11 @@
 import {Table} from "@restaroo/mdl";
-import {BaseModel, ListResult, RouteProps, useAppContext, useAsyncEffect, useRouteProps, useStore} from "@restaroo/lib";
-import {useCallback, useEffect, useId} from "react";
+import {BaseModel, ListResult, useAppContext, useRouteProps, useStore} from "@restaroo/lib";
+import {useEffect, useId} from "react";
 import {GridFooter} from "./GridFooter";
 import {GridBody} from "./GridBody";
 import {GridHeader} from "./GridHeader";
 import {GridToolbar} from "./GridToolbar";
+import {useRouteConfig} from "../useRouteConfig";
 
 
 export const EMPTY_TABLE: Table = {
@@ -25,11 +26,6 @@ export const EMPTY_TABLE: Table = {
 
 export const border = '1px solid rgba(0,0,0,0.1)';
 
-export interface RouteConfig<Config> {
-    id: string,
-    path: string,
-    data: Config
-}
 
 export interface ConfigColumn {
     schemaId: string,
@@ -39,7 +35,7 @@ export interface ConfigColumn {
     widthPercentage: number
 }
 
-export interface GridConfig {
+export interface CollectionRoute {
     maximumSelection: number,
     columns: ConfigColumn[],
     permission: {
@@ -55,7 +51,17 @@ export function Grid() {
 
     const collection = route.params.get('collection') ?? '';
 
-    const {routeConfigStore, saveRouteConfig} = useRouteConfig({ignoredParams: []});
+    const [routeConfigStore, saveRouteConfig] = useRouteConfig<CollectionRoute>({
+        ignoredParams: [], initialValue: {
+            columns: [], permission: {
+                edit: true,
+                delete: true,
+                create: true,
+                view: true
+            }, maximumSelection: 1
+        }
+    });
+
     const {pb} = useAppContext();
 
     const collectionStore = useStore<ListResult<BaseModel>>({
@@ -87,50 +93,4 @@ export function Grid() {
             <GridFooter collectionStore={collectionStore} loadCollection={loadCollection}/>
         </div>
     </div>
-}
-
-function getPath(props: { route: RouteProps; ignoredParams: string[] }) {
-    const path = Array.from(props.route.params.keys()).filter(s => !props.ignoredParams.includes(s)).reduce((path, key) => path.replace(`$${key}`, props.route.params.get(key) ?? ''), props.route.path)
-    return path;
-}
-
-function useRouteConfig(props: { ignoredParams: string[] }) {
-    const route = useRouteProps();
-    const path = getPath({ignoredParams: props.ignoredParams, route});
-    const {pb} = useAppContext();
-    const routeConfigStore = useStore<RouteConfig<GridConfig>>({
-        id: '',
-        path: path,
-        data: {
-            maximumSelection: 1,
-            columns: [],
-            permission: {
-                edit: true,
-                delete: true,
-                create: true,
-                view: true
-            }
-        }
-    });
-
-    const saveRouteConfig = useCallback(async function saveRouteConfig() {
-        if (routeConfigStore.get().id.length > 0) {
-            const result: any = await pb.collection('route_config').update(routeConfigStore.get().id, routeConfigStore.get());
-            routeConfigStore.set(result);
-        } else {
-            const result: any = await pb.collection('route_config').create(routeConfigStore.get())
-            routeConfigStore.set(result);
-        }
-    }, [routeConfigStore, pb]);
-
-    useAsyncEffect(async () => {
-        try {
-            const path = getPath({ignoredParams: props.ignoredParams, route});
-            const config: any = await pb.collection('route_config').getFirstListItem(`path="${path}"`);
-            routeConfigStore.set(config);
-        } catch (err) {
-            console.log(err);
-        }
-    }, []);
-    return {routeConfigStore: routeConfigStore, saveRouteConfig: saveRouteConfig}
 }

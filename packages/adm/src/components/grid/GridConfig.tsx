@@ -3,12 +3,13 @@ import {IoClose} from "react-icons/io5";
 import {AppState} from "../../index";
 import {useTable} from "../useTable";
 import {ButtonSimple} from "../ButtonSimple";
-import {ConfigColumn, GridConfig as GConfig, RouteConfig} from "./Grid";
+import {ConfigColumn, CollectionRoute} from "./Grid";
 import produce from "immer";
+import {RouteConfig} from "../useRouteConfig";
 
-export function GridConfig(props: { closePanel: (param: RouteConfig<GConfig>) => void, collection: string, panelConfig: RouteConfig<GConfig> }) {
+export function GridConfig(props: { closePanel: (param: RouteConfig<CollectionRoute>) => void, collection: string, panelConfig: RouteConfig<CollectionRoute> }) {
     const {closePanel, collection, panelConfig} = props;
-    const panelConfigStore = useStore<RouteConfig<GConfig>>(panelConfig);
+    const panelConfigStore = useStore<RouteConfig<CollectionRoute>>(panelConfig);
     const table = useTable(collection);
 
     const store = useAppStore<AppState>();

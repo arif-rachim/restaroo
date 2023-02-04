@@ -14,7 +14,8 @@ import {motion} from "framer-motion";
 import {IoCheckmark, IoEye, IoPencil, IoTrashOutline} from "react-icons/io5";
 import produce from "immer";
 import {CSSProperties} from "react";
-import {GridConfig, RouteConfig} from "./Grid";
+import {CollectionRoute} from "./Grid";
+import {RouteConfig} from "../useRouteConfig";
 
 const cellStyle: CSSProperties = {
     display: 'flex',
@@ -43,7 +44,7 @@ function CheckBoxColumn(props: { width: number, selectedItemsStore: Store<BaseMo
     </div>;
 }
 
-export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>, gridID: string, collection: string, configStore: Store<RouteConfig<GridConfig>> }) {
+export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>, gridID: string, collection: string, configStore: Store<RouteConfig<CollectionRoute>> }) {
     const {collection, collectionStore, gridID: id, configStore} = props;
     const table = useTable(collection);
     const width = useAverageColumnWidth(collection, configStore);
