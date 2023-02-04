@@ -1,8 +1,11 @@
 import {
     BaseModel,
+    ButtonTheme,
     ListResult,
+    red,
     Store,
     StoreValueRenderer,
+    useAppContext,
     useNavigatePromise,
     useStore,
     useStoreValue
@@ -11,11 +14,12 @@ import {useTable} from "../useTable";
 import {useAverageColumnWidth} from "../useAverageColumn";
 import invariant from "tiny-invariant";
 import {motion} from "framer-motion";
-import {IoCheckmark, IoEye, IoPencil, IoTrashOutline} from "react-icons/io5";
+import {IoCheckmark, IoExitOutline, IoEye, IoPencil, IoRemove, IoTrashOutline} from "react-icons/io5";
 import produce from "immer";
 import {CSSProperties} from "react";
 import {CollectionRoute} from "./Grid";
 import {RouteConfig} from "../useRouteConfig";
+import {DButton} from "../DButton";
 
 const cellStyle: CSSProperties = {
     display: 'flex',
@@ -51,7 +55,7 @@ export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>,
     const selectedItemsStore = useStore<BaseModel[]>([]);
 
     const navigate = useNavigatePromise();
-
+    const {showModal,pb} = useAppContext();
     return <StoreValueRenderer store={collectionStore} selector={s => s.items} render={(items: BaseModel[]) => {
         return <div style={{
             flexGrow: 1,
@@ -120,10 +124,7 @@ export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>,
                         <motion.div style={{flexGrow: 1, marginRight: 5}} whileHover={{scale: 1.1}}
                                     whileTap={{scale: 0.98}} onClick={async () => {
                             const result: BaseModel | false = await navigate(`collection-item/${collection}/${row.id}`);
-                            // const result: BaseModel | false = await showSlidePanel(closePanel => {
-                            //     return <CollectionItemRoute collectionOrCollectionId={collection} id={row.id}
-                            //                                   closePanel={closePanel}/>
-                            // }, {position: "top"});
+
                             if (result === false) {
                                 return;
                             }
@@ -156,7 +157,32 @@ export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>,
                     <div style={{display: 'flex'}}>
                         <motion.div style={{flexGrow: 1, marginRight: 5}} whileHover={{scale: 1.1}}
                                     whileTap={{scale: 0.98}} onClick={async () => {
-                            alert('TODO');
+                            const remove = await showModal(closePanel => {
+                                return <div style={{
+                                    backgroundColor: red,
+                                    color: 'white',
+                                    padding: 10,
+                                    borderRadius: 10,
+                                    display: 'flex',
+                                    flexDirection: 'column'
+                                }}>
+                                    <div style={{marginBottom:10}}>
+                                        Are you certain you wish to remove this entry? ?
+                                    </div>
+                                    <div style={{display:'flex'}}>
+                                        <div style={{flexGrow:1}}></div>
+                                        <DButton onTap={() => closePanel(true)} icon={IoCheckmark} title={'Yes'} style={{color:'white'}} theme={ButtonTheme.danger}></DButton>
+                                        <DButton onTap={() => closePanel(false)} icon={IoExitOutline} title={'No'} style={{color:'white'}} theme={ButtonTheme.danger}></DButton>
+                                    </div>
+                                </div>
+                            });
+                            if (remove) {
+                                await pb.collection(collection).delete(row.id);
+                                collectionStore.set(produce(s => {
+                                    const index = s.items.findIndex(s => s.id === row.id);
+                                    s.items.splice(index, 1);
+                                }));
+                            }
                         }}>
                             <IoTrashOutline style={{fontSize: 18}}/>
                         </motion.div>
@@ -167,4 +193,4 @@ export function GridBody(props: { collectionStore: Store<ListResult<BaseModel>>,
             </motion.div>
         })}</div>
     }}/>;
-}
+        }

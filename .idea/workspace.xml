@@ -11,11 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/collection-list/Grid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/Grid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridConfig.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridToolbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridToolbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/lib/src/app/AppShell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/lib/src/app/AppShell.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/lib/src/components/route/RouterPageContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/lib/src/components/route/RouterPageContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridBody.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridBody.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
