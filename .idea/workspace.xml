@@ -10,16 +10,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
-      <change afterPath="$PROJECT_DIR$/packages/adm/src/components/useRouteConfig.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-item/DInputDate.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-item/DInputRelation.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-item/Form.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/ButtonSimple.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/ButtonSimple.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/Grid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/grid/Grid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridBody.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/grid/GridBody.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/grid/GridConfig.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/grid/GridHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridToolbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/grid/GridToolbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/Grid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/Grid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridBody.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridBody.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridConfig.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridFooter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridFooter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/grid/GridToolbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridToolbar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/adm/src/components/useAverageColumn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/useAverageColumn.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/useTable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/useTable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/adm/src/routes/CollectionItemRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/routes/CollectionItemRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/routes/CollectionRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/routes/CollectionListRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/routes/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/routes/Home.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,8 +37,8 @@
       <list>
         <option value="JavaScript File" />
         <option value="HTML File" />
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -90,6 +96,9 @@
       <recent name="$PROJECT_DIR$/packages/mdl/src" />
       <recent name="$PROJECT_DIR$/packages/mdl" />
       <recent name="$PROJECT_DIR$/packages/adm/public/images" />
+    </key>
+    <key name="es6.move.members.recent.items">
+      <recent name="$PROJECT_DIR$/packages/adm/src/components/collection-item/DInputRelation.tsx" />
     </key>
   </component>
   <component name="RunManager" selected="Node.js.service.js">

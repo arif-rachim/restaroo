@@ -4,7 +4,7 @@ import './index.css';
 import {BaseState, createApp, createFetch, GuestProfile, Routes} from "@restaroo/lib";
 import Home from "./routes/Home";
 import {secured} from "./components/secured";
-import {CollectionRoute} from "./routes/CollectionRoute";
+import {CollectionListRoute} from "./routes/CollectionListRoute";
 import PocketBase from "pocketbase";
 import {Table, tables} from "@restaroo/mdl";
 import {CollectionItemRoute} from "./routes/CollectionItemRoute";
@@ -23,8 +23,8 @@ const routes: Routes = {
         component: secured(Home),
         initial: 'left'
     },
-    'collection/$collection': {
-        component: CollectionRoute,
+    'collection-list/$collection': {
+        component: CollectionListRoute,
         initial: 'right'
     },
     'collection-item/$collection/$id': {

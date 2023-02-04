@@ -1,6 +1,6 @@
 import {useTable} from "./useTable";
 import {Store, useAppDimension, useStoreValue} from "@restaroo/lib";
-import {CollectionRoute} from "./grid/Grid";
+import {CollectionRoute} from "./collection-list/Grid";
 import {RouteConfig} from "./useRouteConfig";
 
 export function useAverageColumnWidth(collection: string, configStore: Store<RouteConfig<CollectionRoute>>) {
