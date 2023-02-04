@@ -46,6 +46,7 @@ export interface CollectionRoute {
     }
 }
 
+
 export function Grid() {
     const route = useRouteProps();
 

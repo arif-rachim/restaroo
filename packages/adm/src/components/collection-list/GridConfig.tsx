@@ -1,4 +1,4 @@
-import {Card, CardTitle, StoreValueRenderer, useAppStore, useStore} from "@restaroo/lib";
+import {Card, CardTitle, StoreValueRenderer, useAppStore, useRouteProps, useStore} from "@restaroo/lib";
 import {IoClose} from "react-icons/io5";
 import {AppState} from "../../index";
 import {useTable} from "../useTable";
@@ -7,9 +7,10 @@ import {ConfigColumn, CollectionRoute} from "./Grid";
 import produce from "immer";
 import {RouteConfig} from "../useRouteConfig";
 
-export function GridConfig(props: { closePanel: (param: RouteConfig<CollectionRoute>) => void, collection: string, panelConfig: RouteConfig<CollectionRoute> }) {
-    const {closePanel, collection, panelConfig} = props;
+export function GridConfig(props: { closePanel: (param: RouteConfig<CollectionRoute>) => void, panelConfig: RouteConfig<CollectionRoute> }) {
+    const {closePanel,  panelConfig} = props;
     const panelConfigStore = useStore<RouteConfig<CollectionRoute>>(panelConfig);
+    const collection = useRouteProps().params.get('collection') ?? '';
     const table = useTable(collection);
 
     const store = useAppStore<AppState>();

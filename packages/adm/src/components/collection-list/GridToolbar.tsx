@@ -26,8 +26,7 @@ export function GridToolbar(props: { collection: string, collectionStore: Store<
 
         <ButtonSimple title={''} icon={IoSettingsOutline} onClick={async () => {
             const result: RouteConfig<CollectionRoute> = await showSlidePanel(closePanel => {
-                return <GridConfig closePanel={closePanel} collection={collection}
-                                   panelConfig={({...routeConfigStore.get()})}/>
+                return <GridConfig closePanel={closePanel} panelConfig={({...routeConfigStore.get()})}/>
             }, {position: "right"});
             routeConfigStore.set(result);
             onRouteConfigUpdate();
