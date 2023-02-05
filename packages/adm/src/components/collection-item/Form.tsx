@@ -1,15 +1,17 @@
 import {
     BaseModel,
     CardTitle,
-    isNullOrUndefined, StoreValue, StoreValueRenderer,
+    isNullOrUndefined,
+    StoreValue,
+    StoreValueRenderer,
     useAppContext,
     useAppStore,
     useAsyncEffect,
     useNavigateBack,
     useRouteProps,
-    useStore
+    useStore,
 } from "@restaroo/lib";
-import {useRouteConfig} from "../useRouteConfig";
+import {RouteConfig, useRouteConfig} from "../useRouteConfig";
 import {AppState} from "../../index";
 import {Table} from "@restaroo/mdl";
 import {border, EMPTY_TABLE} from "../collection-list/Grid";
@@ -19,10 +21,11 @@ import {DInput} from "../DInput";
 import produce from "immer";
 import {DInputRelation} from "./DInputRelation";
 import {DInputDate} from "./DInputDate";
+import {FormConfig, FormRouteConfig} from "./FormConfig";
 
 export function Form() {
     const {params} = useRouteProps();
-    const [collectionItemConfig,saveCollectionItemConfig] = useRouteConfig({ignoredParams:['id'],initialValue:{}});
+    const [formConfig, saveFormConfig] = useRouteConfig<FormRouteConfig>({ignoredParams: ['id'], initialValue: {}});
 
     const collection = params.get('collection') ?? '';
     const id = params.get('id') ?? '';
@@ -31,7 +34,7 @@ export function Form() {
     const isNew = id === 'new';
     const appStore = useAppStore<AppState>();
     const table: Table = appStore.get().tables.find(t => (t.name === collection || t.id === collection)) ?? EMPTY_TABLE;
-    const {showPicker, pb} = useAppContext();
+    const {showPicker, pb, showSlidePanel} = useAppContext();
     const current = useStore<any>({});
     useAsyncEffect(async () => {
         if (id === 'new') {
@@ -96,8 +99,14 @@ export function Form() {
             <div style={{display: 'flex', alignItems: 'center'}}>
                 <CardTitle title={isNew ? 'New Collection' : `Showing Record ID ${id}`}/>
                 <div style={{flexGrow: 1}}/>
-                <ButtonSimple title={''} onClick={() => {
-                }} icon={IoSettingsOutline}></ButtonSimple>
+                <ButtonSimple title={''} onClick={async () => {
+                    const config:RouteConfig<FormRouteConfig>|false = await showSlidePanel(closePanel => {
+                        return <FormConfig closePanel={closePanel} config={formConfig.get()} />
+                    },{position:'right'});
+                    if(config !== false){
+                        formConfig.set(config);
+                    }
+                }} icon={IoSettingsOutline}/>
             </div>
 
             <div style={{display: 'flex', flexWrap: 'wrap', padding: `10px 0px`}}>
