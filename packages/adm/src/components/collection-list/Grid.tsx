@@ -6,6 +6,8 @@ import {GridBody} from "./GridBody";
 import {GridHeader} from "./GridHeader";
 import {GridToolbar} from "./GridToolbar";
 import {useRouteConfig} from "../useRouteConfig";
+import {Simulate} from "react-dom/test-utils";
+import load = Simulate.load;
 
 
 export const EMPTY_TABLE: Table = {
@@ -46,6 +48,22 @@ export interface CollectionRoute {
     }
 }
 
+export enum FilterOperator {
+    Equal = '=',
+    NotEqual = '!=',
+    GreaterThan = '>',
+    GreaterThanOrEqual = '>=',
+    LessThan = '<',
+    LessThanOrEqual = '<=',
+    Like = '~',
+    NotLike = '!~'
+}
+
+export interface GridFilter {
+    field: string,
+    operator: FilterOperator,
+    value: string
+}
 
 export function Grid() {
     const route = useRouteProps();
@@ -64,7 +82,7 @@ export function Grid() {
     });
 
     const {pb} = useAppContext();
-
+    const gridFiltersAndOrdersStore = useStore<{ filter: GridFilter[], order: string[] }>({order: [], filter: []});
     const collectionStore = useStore<ListResult<BaseModel>>({
         items: [],
         page: 1,
@@ -73,8 +91,11 @@ export function Grid() {
         totalPages: 0
     });
 
+
     async function loadCollection(props: { page: number }) {
-        const list: ListResult<BaseModel> = await pb.collection(collection).getList(props.page, collectionStore.get().perPage);
+        const list: ListResult<BaseModel> = await pb.collection(collection).getList(props.page, collectionStore.get().perPage, {
+            filter : gridFiltersAndOrdersStore.get().filter.map(f => `${f.field} ${f.operator} "${f.value}"`).join(' && ')
+        });
         collectionStore.set({...list});
     }
 
@@ -84,11 +105,13 @@ export function Grid() {
     }, []);
 
     const id = useId();
-    return <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%',overflow:'auto'}}>
+    return <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%', overflow: 'auto'}}>
         <GridToolbar collection={collection} collectionStore={collectionStore} routeConfigStore={routeConfigStore}
                      onRouteConfigUpdate={saveRouteConfig}/>
-        <div style={{display: 'flex', flexDirection: 'column', height: '100%',overflow:'auto'}}>
-            <GridHeader gridID={id} collection={collection} configStore={routeConfigStore}/>
+        <div style={{display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto'}}>
+            <GridHeader gridID={id} collection={collection} configStore={routeConfigStore} gridFiltersAndOrdersStore={gridFiltersAndOrdersStore} onEnter={() => {
+                loadCollection({page:1})
+            }}/>
             <GridBody collectionStore={collectionStore} gridID={id} collection={collection}
                       configStore={routeConfigStore}/>
             <GridFooter collectionStore={collectionStore} loadCollection={loadCollection}/>

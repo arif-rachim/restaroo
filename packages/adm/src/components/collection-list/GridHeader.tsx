@@ -2,12 +2,13 @@ import {useTable} from "../useTable";
 import {useAverageColumnWidth} from "../useAverageColumn";
 import {motion} from "framer-motion";
 import {CSSProperties} from "react";
-import {Store, StoreValueRenderer} from "@restaroo/lib";
-import {CollectionRoute} from "./Grid";
+import {OnEnter, Store, StoreValueRenderer} from "@restaroo/lib";
+import {CollectionRoute, FilterOperator, GridFilter} from "./Grid";
 import {RouteConfig} from "../useRouteConfig";
+import produce from "immer";
 
-export function GridHeader(props: { gridID: string, collection: string, configStore: Store<RouteConfig<CollectionRoute>> }) {
-    const {gridID: id, collection, configStore} = props;
+export function GridHeader(props: { gridID: string, collection: string, configStore: Store<RouteConfig<CollectionRoute>>, gridFiltersAndOrdersStore: Store<{ filter: GridFilter[], order: string[] }>,onEnter:() => void }) {
+    const {gridID: id, collection, configStore, gridFiltersAndOrdersStore,onEnter} = props;
     const table = useTable(collection);
 
 
@@ -24,7 +25,6 @@ export function GridHeader(props: { gridID: string, collection: string, configSt
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-
             </div>
         }
         {table.schema.map((schema, index, source) => {
@@ -41,8 +41,27 @@ export function GridHeader(props: { gridID: string, collection: string, configSt
                     }
                     return schema.name
                 }} render={label => {
-                    return <div>{label}</div>
+                    return <div style={{padding: '2px 5px'}}>{label}</div>
                 }}/>
+                <OnEnter onEnter={() => {
+                    onEnter();
+                }}>
+                    <input style={{width: '100%'}} onChange={(event) => {
+                        gridFiltersAndOrdersStore.set(produce((param:{ filter: GridFilter[], order: string[] }) => {
+                            const filterIndex = param.filter.findIndex(f => f.field === schema.name);
+                            const value = event.target.value;
+                            if(filterIndex >= 0){
+                                param.filter[filterIndex].value = value;
+                                if(value === ''){
+                                    param.filter.splice(filterIndex,1);
+                                }
+                                // do something here
+                            }else if(value !== ''){
+                                param.filter.push({value,field:schema.name,operator:FilterOperator.Like})
+                            }
+                        }));
+                    }}/>
+                </OnEnter>
 
             </motion.div>
         })}
@@ -77,6 +96,5 @@ const tableColumnStyle: CSSProperties = {
     borderBottom: '1px solid rgba(0,0,0,0.1)',
     flexGrow: 0,
     flexShrink: 0,
-    padding: 5
 }
 

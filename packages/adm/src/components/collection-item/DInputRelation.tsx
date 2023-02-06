@@ -26,7 +26,7 @@ export function DInputRelation(props: {title:string, schema: RelationSchema, val
 
     const {schema, value, onChange,title} = props;
     const {showSlidePanel, pb} = useAppContext();
-    let val = value ?? [];
+    let val = (Array.isArray(value) ? value : [value]) as string[];
     return <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
                    value={val.join(', ')}
                    readOnly={true}
@@ -36,7 +36,7 @@ export function DInputRelation(props: {title:string, schema: RelationSchema, val
 
         const selectedRelation = await showSlidePanel((closePanel: (param: (string[] | false)) => void) => {
             return <MultipleSelectorGrid closePanel={closePanel} value={val} collectionId={schema.options.collectionId}
-                                         items={items}/>
+                                         items={items} />
         }, {isPopup: true, position: "bottom"});
         if (selectedRelation !== false && onChange) {
             onChange(selectedRelation);
