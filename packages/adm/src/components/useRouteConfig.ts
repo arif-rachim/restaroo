@@ -10,7 +10,16 @@ export interface RouteConfig<Config> {
 }
 
 function getPath(props: { route: RouteProps; ignoredParams: string[] }) {
-    const path = Array.from(props.route.params.keys()).filter(s => !props.ignoredParams.includes(s)).reduce((path, key) => path.replace(`$${key}`, props.route.params.get(key) ?? ''), props.route.path)
+    const path = Array.from(props.route.params.keys()).filter(s => {
+        return !props.ignoredParams.includes(s);
+    }).reduce((paths, key) => {
+        const keyToReplace = `$${key}`;
+        const indexToReplace = paths.findIndex(p => p === keyToReplace);
+        if(indexToReplace >= 0){
+            paths.splice(indexToReplace,1,props.route.params.get(key)??'')
+        }
+        return paths;
+    }, props.route.path.split('/')).join('/');
     return path;
 }
 

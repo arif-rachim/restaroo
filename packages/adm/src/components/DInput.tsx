@@ -5,7 +5,7 @@ export function DInput(props: InputProps) {
     const titleIsLeft = props.titlePosition === 'left';
     const {style: propStyle, ...p} = props;
     let style: InputStyle = propStyle ?? {errorStyle: {}, containerStyle: {}, titleStyle: {}, inputStyle: {}};
-    const inputStyle: CSSProperties = {fontSize: 14, textTransform: 'capitalize', ...style.inputStyle};
+    const inputStyle: CSSProperties = {fontSize: 14, textTransform: 'uppercase', ...style.inputStyle};
     const titleStyle: CSSProperties = {
         fontSize: 12,
         marginBottom: 3,

@@ -10,9 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="464f554a-daa1-4601-b211-89fe5389aa27" name="Changes" comment="6">
-      <change afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-item/FormConfig.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/DInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/DInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/collection-item/DInputRelation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-item/DInputRelation.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/adm/src/components/collection-item/Form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-item/Form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/collection-item/FormConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-item/FormConfig.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/collection-list/Grid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/Grid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridConfig.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/collection-list/GridConfig.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/components/useRouteConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/components/useRouteConfig.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/adm/src/routes/CollectionListRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/adm/src/routes/CollectionListRoute.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -12,9 +12,7 @@ export function GridConfig(props: { closePanel: (param: RouteConfig<CollectionRo
     const panelConfigStore = useStore<RouteConfig<CollectionRoute>>(panelConfig);
     const collection = useRouteProps().params.get('collection') ?? '';
     const table = useTable(collection);
-
     const store = useAppStore<AppState>();
-
     return <Card style={{
         display: 'flex',
         flexDirection: 'column',
@@ -74,6 +72,5 @@ export function GridConfig(props: { closePanel: (param: RouteConfig<CollectionRo
                 closePanel(panelConfigStore.get());
             }} title={'Close'} icon={IoClose}/>
         </div>
-
     </Card>
 }

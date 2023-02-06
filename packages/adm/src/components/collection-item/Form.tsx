@@ -9,7 +9,7 @@ import {
     useAsyncEffect,
     useNavigateBack,
     useRouteProps,
-    useStore,
+    useStore, useStoreValue,
 } from "@restaroo/lib";
 import {RouteConfig, useRouteConfig} from "../useRouteConfig";
 import {AppState} from "../../index";
@@ -25,7 +25,7 @@ import {FormConfig, FormRouteConfig} from "./FormConfig";
 
 export function Form() {
     const {params} = useRouteProps();
-    const [formConfig, saveFormConfig] = useRouteConfig<FormRouteConfig>({ignoredParams: ['id'], initialValue: {}});
+    const [formConfig, saveFormConfig] = useRouteConfig<FormRouteConfig>({ignoredParams: ['id'], initialValue: {fields:[]}});
 
     const collection = params.get('collection') ?? '';
     const id = params.get('id') ?? '';
@@ -87,7 +87,7 @@ export function Form() {
         }, {});
         return errors;
     }
-
+    const formConfigValue = useStoreValue(formConfig,s => s);
     return <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <div
             style={{
@@ -101,10 +101,11 @@ export function Form() {
                 <div style={{flexGrow: 1}}/>
                 <ButtonSimple title={''} onClick={async () => {
                     const config:RouteConfig<FormRouteConfig>|false = await showSlidePanel(closePanel => {
-                        return <FormConfig closePanel={closePanel} config={formConfig.get()} />
+                        return <FormConfig closePanel={closePanel} panelConfig={({...formConfig.get()})} />
                     },{position:'right'});
                     if(config !== false){
                         formConfig.set(config);
+                        saveFormConfig()
                     }
                 }} icon={IoSettingsOutline}/>
             </div>
@@ -125,8 +126,9 @@ export function Form() {
 
                     // const isRequired = schema.required;
                     // const isUnique = schema.unique;
-                    const title = schema.name;
 
+                    const field = formConfigValue.data.fields.find(f => f.schemaId === schema.id);
+                    const title = field?.label ?? schema.name;
                     return <div key={schema.name} style={{width: '50%'}}>
                         {isText &&
                             <StoreValue store={store} selector={(s: any) => s[schema.name]} property={'value'}>
@@ -198,7 +200,7 @@ export function Form() {
                             <StoreValue store={store}
                                         selector={(s: any) => (s[schema.name] ? s[schema.name] : [])}
                                         property={'value'}>
-                                <DInputRelation schema={schema} onChange={value => {
+                                <DInputRelation title={title} schema={schema} onChange={value => {
                                     store.set(produce((s: any) => {
                                         s[schema.name] = value;
                                     }))

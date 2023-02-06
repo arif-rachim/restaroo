@@ -22,12 +22,12 @@ import {IoAdd, IoCheckmarkOutline, IoExitOutline, IoSaveOutline} from "react-ico
 import produce from "immer";
 import {border} from "../collection-list/Grid";
 
-export function DInputRelation(props: { schema: RelationSchema, value?: string[], onChange?: (param: string[]) => void }) {
+export function DInputRelation(props: {title:string, schema: RelationSchema, value?: string[], onChange?: (param: string[]) => void }) {
 
-    const {schema, value, onChange} = props;
+    const {schema, value, onChange,title} = props;
     const {showSlidePanel, pb} = useAppContext();
     let val = value ?? [];
-    return <DInput title={`${schema.name} : `} titlePosition={'left'} titleWidth={100}
+    return <DInput title={`${title} : `} titlePosition={'left'} titleWidth={100}
                    value={val.join(', ')}
                    readOnly={true}
                    placeholder={`Please enter ${schema.name}`} inputMode={'text'} type={'text'}

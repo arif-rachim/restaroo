@@ -68,7 +68,7 @@ export function Grid() {
     const collectionStore = useStore<ListResult<BaseModel>>({
         items: [],
         page: 1,
-        perPage: 5,
+        perPage: 50,
         totalItems: 0,
         totalPages: 0
     });
@@ -84,10 +84,10 @@ export function Grid() {
     }, []);
 
     const id = useId();
-    return <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
+    return <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%',overflow:'auto'}}>
         <GridToolbar collection={collection} collectionStore={collectionStore} routeConfigStore={routeConfigStore}
                      onRouteConfigUpdate={saveRouteConfig}/>
-        <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+        <div style={{display: 'flex', flexDirection: 'column', height: '100%',overflow:'auto'}}>
             <GridHeader gridID={id} collection={collection} configStore={routeConfigStore}/>
             <GridBody collectionStore={collectionStore} gridID={id} collection={collection}
                       configStore={routeConfigStore}/>
